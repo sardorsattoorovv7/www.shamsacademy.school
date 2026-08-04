@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HTML & CSS Bilim Testi</title>
+<title>Python: O'zgaruvchilar va Ma'lumot Turlari - Test</title>
 <style>
   :root{
     --bg:#0f172a;
     --panel:#1e293b;
     --panel2:#243044;
-    --accent:#38bdf8;
+    --accent:#facc15;
     --accent2:#22c55e;
     --danger:#ef4444;
     --text:#e2e8f0;
@@ -21,7 +21,7 @@
   body{
     margin:0;
     font-family:'Segoe UI',Tahoma,Arial,sans-serif;
-    background:linear-gradient(135deg,#0f172a,#1e1b4b);
+    background:linear-gradient(135deg,#0f172a,#1b2338);
     color:var(--text);
     min-height:100vh;
     padding:24px 12px 80px;
@@ -62,8 +62,8 @@
     transition:.15s transform,.15s box-shadow;
   }
   button:active{transform:scale(.97);}
-  .btn-primary{background:var(--accent);color:#03253a;}
-  .btn-primary:hover{box-shadow:0 0 0 3px rgba(56,189,248,.25);}
+  .btn-primary{background:var(--accent);color:#1a1400;}
+  .btn-primary:hover{box-shadow:0 0 0 3px rgba(250,204,21,.25);}
   .btn-secondary{background:var(--panel2);color:var(--text);border:1px solid var(--border);}
   .btn-secondary:hover{border-color:var(--accent);}
 
@@ -93,8 +93,8 @@
     letter-spacing:.03em;
     text-transform:uppercase;
     color:var(--accent);
-    background:rgba(56,189,248,.12);
-    border:1px solid rgba(56,189,248,.35);
+    background:rgba(250,204,21,.12);
+    border:1px solid rgba(250,204,21,.35);
     padding:3px 10px;
     border-radius:20px;
     margin-bottom:12px;
@@ -111,10 +111,11 @@
     overflow-x:auto;
     margin-bottom:18px;
     white-space:pre;
+    line-height:1.6;
   }
-  .q-code .tag{color:#f472b6;}
-  .q-code .attr{color:#fbbf24;}
+  .q-code .kw{color:#f472b6;}
   .q-code .str{color:#a3e635;}
+  .q-code .num{color:#fbbf24;}
   .q-code .cm{color:#64748b;font-style:italic;}
 
   .options{display:flex;flex-direction:column;gap:10px;}
@@ -138,15 +139,14 @@
     display:flex;align-items:center;justify-content:center;
     font-size:.8rem;font-weight:700;color:var(--muted);
   }
-  .option.selected{border-color:var(--accent);background:rgba(56,189,248,.1);}
-  .option.selected .letter{background:var(--accent);color:#03253a;}
+  .option.selected{border-color:var(--accent);background:rgba(250,204,21,.1);}
+  .option.selected .letter{background:var(--accent);color:#1a1400;}
   .option.correct{border-color:var(--accent2);background:rgba(34,197,94,.14);}
   .option.correct .letter{background:var(--accent2);color:#04240f;}
   .option.wrong{border-color:var(--danger);background:rgba(239,68,68,.14);}
   .option.wrong .letter{background:var(--danger);color:#2b0505;}
   .option.disabled{cursor:default;pointer-events:none;}
 
-  /* Fill-in-the-blank (kod yozish) */
   .fill-wrap{display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
   .fill-wrap input[type=text]{
     background:#0b1220;
@@ -162,7 +162,6 @@
   .fill-wrap input.correct{border-color:var(--accent2);color:var(--accent2);background:rgba(34,197,94,.1);}
   .fill-wrap input.wrong{border-color:var(--danger);color:var(--danger);background:rgba(239,68,68,.1);}
 
-  /* Drag and drop */
   .dd-area{display:flex;gap:24px;flex-wrap:wrap;}
   .dd-col{flex:1;min-width:230px;}
   .dd-col h4{margin:0 0 10px;color:var(--muted);font-size:.82rem;text-transform:uppercase;letter-spacing:.04em;}
@@ -179,6 +178,7 @@
     font-size:.9rem;
     user-select:none;
     transition:.15s;
+    font-family:'Consolas','Courier New',monospace;
   }
   .dd-item:active{cursor:grabbing;}
   .dd-item.dragging{opacity:.4;}
@@ -195,7 +195,7 @@
     margin-bottom:8px;
     transition:.15s;
   }
-  .dd-target.over{border-color:var(--accent);background:rgba(56,189,248,.08);}
+  .dd-target.over{border-color:var(--accent);background:rgba(250,204,21,.08);}
   .dd-target .label{color:var(--muted);min-width:120px;font-weight:600;}
   .dd-target .slot{flex:1;min-height:24px;}
   .dd-target.correct{border-color:var(--accent2);border-style:solid;}
@@ -265,8 +265,8 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>🧪 HTML &amp; CSS bo'yicha bilim testi</h1>
-    <p>O'tilgan mavzular asosida tayyorlangan interaktiv test</p>
+    <h1>🐍 Python: O'zgaruvchilar va Ma'lumot Turlari</h1>
+    <p>Amaliy kod savollari bilan bilim testi</p>
   </header>
 
   <!-- START SCREEN -->
@@ -274,21 +274,16 @@
     <h2>Testni boshlashdan oldin</h2>
     <p style="color:var(--muted)">Quyidagi mavzular bo'yicha savollar bo'ladi:</p>
     <ul class="topic-list">
-      <li>Hujjat strukturasi va Doctype</li>
-      <li>Elementlar va Atributlar</li>
-      <li>Heading, Paragraph</li>
-      <li>Comments, Formatlash, Styles</li>
-      <li>Img, Links, Lists</li>
-      <li>CSS ga kirish</li>
-      <li>Audio, Video, iframe</li>
-      <li>ID, Class</li>
-      <li>Block va Inline elementlar</li>
-      <li>Formalar</li>
-      <li>CSS strukturasi</li>
-      <li>Selectors, Oila shajarasi</li>
-      <li>Box Model, margin/padding</li>
+      <li>Kerakli dasturlar</li>
+      <li>Hello World!</li>
+      <li>print(), sintaksis, arifmetik amallar</li>
+      <li>O'zgaruvchilar</li>
+      <li>String (matn)</li>
+      <li>Sonlar</li>
+      <li>List (ro'yxat)</li>
+      <li>Ro'yxatlar bilan ishlash</li>
     </ul>
-    <p style="color:var(--muted);font-size:.85rem">Testda bir nechta variantli, kod yozish va sudrab tashlash (drag &amp; drop) turidagi savollar bor.</p>
+    <p style="color:var(--muted);font-size:.85rem">Testda kod natijasini topish, kod yozib to'ldirish va sudrab tashlash (drag &amp; drop) turidagi savollar bor.</p>
     <button class="btn-primary" onclick="startQuiz()">Testni boshlash ▶</button>
   </div>
 
@@ -331,271 +326,164 @@
 const QUESTIONS = [
   {
     type:"mcq",
-    tag:"Hujjat strukturasi",
-    text:"HTML hujjatining eng boshida qaysi qator yoziladi va u nimani anglatadi?",
-    options:[
-      "&lt;!DOCTYPE html&gt; — brauzerga hujjat HTML5 ekanini bildiradi",
-      "&lt;html version=\"5\"&gt; — hujjat versiyasini ko'rsatadi",
-      "&lt;head&gt; — hujjatning boshlanishi",
-      "&lt;start&gt; — sahifa boshlanishini bildiradi"
-    ],
-    correct:0,
-    explain:"<b>&lt;!DOCTYPE html&gt;</b> deklaratsiyasi brauzerga ushbu hujjat HTML5 standartida yozilganini bildiradi va brauzerni 'standart rejim'da render qilishga majburlaydi."
-  },
-  {
-    type:"mcq",
-    tag:"Hujjat strukturasi",
-    text:"To'g'ri HTML hujjat strukturasini tanlang.",
-    options:[
-      "html &gt; head + body (head ichida meta/title, body ichida ko'rinadigan kontent)",
-      "html &gt; body + head (tartib farqi yo'q)",
-      "head &gt; html + body",
-      "body &gt; html + head"
-    ],
-    correct:0,
-    explain:"To'g'ri struktura: <code>&lt;html&gt;</code> ichida <code>&lt;head&gt;</code> (meta-ma'lumot) va <code>&lt;body&gt;</code> (ko'rinadigan kontent) joylashadi."
-  },
-  {
-    type:"mcq",
-    tag:"Elementlar va Atributlar",
-    text:"Quyidagi kodda nechta atribut ishlatilgan?<br><code>&lt;img src=\"logo.png\" alt=\"Logo\" width=\"200\"&gt;</code>",
-    options:["2 ta","3 ta","1 ta","4 ta"],
+    tag:"Kerakli dasturlar",
+    text:"Python kodini yozish va ishga tushirish uchun eng ko'p ishlatiladigan bepul kod muharriri (editor) qaysi?",
+    options:["Adobe Photoshop","Visual Studio Code","Microsoft Word","Excel"],
     correct:1,
-    explain:"<code>src</code>, <code>alt</code> va <code>width</code> — jami 3 ta atribut ishlatilgan."
+    explain:"<b>Visual Studio Code (VS Code)</b> — Python va boshqa tillar uchun eng mashhur, bepul va qulay kod muharriri hisoblanadi."
   },
   {
     type:"mcq",
-    tag:"Heading, Paragraph",
-    text:"Eng katta va eng muhim sarlavha (heading) tegi qaysi?",
-    options:["&lt;h6&gt;","&lt;h1&gt;","&lt;head&gt;","&lt;title&gt;"],
+    tag:"Hello World!",
+    text:"Ekranga 'Hello, World!' matnini chiqarish uchun to'g'ri kodni tanlang.",
+    options:[
+      "echo(\"Hello, World!\")",
+      "print(\"Hello, World!\")",
+      "console.log(\"Hello, World!\")",
+      "printf(\"Hello, World!\")"
+    ],
     correct:1,
-    explain:"<code>&lt;h1&gt;</code> — eng katta va eng muhim sarlavha, <code>&lt;h6&gt;</code> esa eng kichigi."
+    explain:"Python'da ekranga biror narsa chiqarish uchun <code>print()</code> funksiyasi ishlatiladi."
   },
   {
     type:"fill",
-    tag:"Comments, Formatlash",
-    text:"HTML izoh (comment) yozish sintaksisini to'ldiring — matnni ko'rinmas qiling:",
-    codeBefore:"&lt;!--",
-    codeAfter:"Bu izoh --&gt;",
-    answers:["", " "], // placeholder ichi bo'sh yoki matn bo'lishi mumkin — quyida maxsus tekshiruv
-    isCommentCheck:true,
-    explain:"HTML izohlari <code>&lt;!-- izoh matni --&gt;</code> ko'rinishida yoziladi va brauzerda ko'rinmaydi."
+    tag:"print(), sintaksis",
+    text:"Kodni to'ldiring — ekranga <code>25</code> sonini chiqarish kerak:",
+    codeTemplate:"___(20 + 5)",
+    correctAnswer:"print",
+    explain:"<code>print(20 + 5)</code> — avval <code>20 + 5</code> arifmetik amali bajariladi (natija 25), so'ng <code>print()</code> uni ekranga chiqaradi."
   },
   {
     type:"mcq",
-    tag:"Styles",
-    text:"Bitta HTML elementiga to'g'ridan-to'g'ri (inline) stil berish uchun qaysi atribut ishlatiladi?",
-    options:["class","style","css","design"],
+    tag:"Arifmetik amallar",
+    text:"Python'da <code>17 // 5</code> ifodasining natijasi nechaga teng?",
+    options:["3.4","3","2","3.0"],
     correct:1,
-    explain:"<code>style</code> atributi elementga to'g'ridan-to'g'ri CSS qoidalarini yozish imkonini beradi. Masalan: <code>style=\"color:red\"</code>."
+    explain:"<code>//</code> — <b>butun sonli bo'lish (floor division)</b> operatori bo'lib, natijaning faqat butun qismini qaytaradi: <code>17 // 5 = 3</code>. Qoldiqni olish uchun <code>%</code> ishlatiladi (<code>17 % 5 = 2</code>)."
   },
   {
     type:"mcq",
-    tag:"img, links",
-    text:"Yangi oynada (yangi tab'da) ochiladigan havola yaratish uchun qaysi atribut kerak?",
-    options:[
-      "&lt;a href=\"...\" target=\"_blank\"&gt;",
-      "&lt;a href=\"...\" open=\"new\"&gt;",
-      "&lt;a src=\"...\" newtab&gt;",
-      "&lt;link href=\"...\" tab=\"new\"&gt;"
-    ],
-    correct:0,
-    explain:"<code>target=\"_blank\"</code> atributi havolani yangi tab/oynada ochadi."
-  },
-  {
-    type:"fill",
-    tag:"Lists",
-    text:"Tartibsiz ro'yxat (bullet list) uchun teglarni to'ldiring:",
-    codeTemplate:"&lt;___&gt;\n  &lt;li&gt;Element 1&lt;/li&gt;\n&lt;/___&gt;",
-    correctAnswer:"ul",
-    explain:"Tartibsiz ro'yxat <code>&lt;ul&gt;&lt;li&gt;...&lt;/li&gt;&lt;/ul&gt;</code> orqali, tartibli ro'yxat esa <code>&lt;ol&gt;</code> orqali yaratiladi."
-  },
-  {
-    type:"mcq",
-    tag:"CSSga kirish",
-    text:"CSS faylni HTML hujjatga ulashning to'g'ri usuli qaysi?",
-    options:[
-      "&lt;link rel=\"stylesheet\" href=\"style.css\"&gt; (head ichida)",
-      "&lt;css src=\"style.css\"&gt;",
-      "&lt;style href=\"style.css\"&gt;",
-      "&lt;import css=\"style.css\"&gt;"
-    ],
-    correct:0,
-    explain:"Tashqi CSS fayl <code>&lt;link rel=\"stylesheet\" href=\"style.css\"&gt;</code> orqali, odatda <code>&lt;head&gt;</code> ichida ulanadi."
-  },
-  {
-    type:"mcq",
-    tag:"Audio, Video, iframe",
-    text:"Boshqa veb-sahifani (masalan, YouTube video) o'z sahifangiz ichiga joylashtirish uchun qaysi teg ishlatiladi?",
-    options:["&lt;embed&gt;","&lt;iframe&gt;","&lt;frame&gt;","&lt;object&gt;"],
-    correct:1,
-    explain:"<code>&lt;iframe&gt;</code> tegi boshqa sahifa yoki resursni joriy sahifa ichiga joylashtirish uchun ishlatiladi."
-  },
-  {
-    type:"mcq",
-    tag:"Audio, Video",
-    text:"Video elementida boshqaruv tugmalarini (play, pause, volume) ko'rsatish uchun qaysi atribut kerak?",
-    options:["autoplay","loop","controls","muted"],
+    tag:"O'zgaruvchilar",
+    text:"Python'da o'zgaruvchi nomlarini yaratishda qaysi variant <b>noto'g'ri</b> (xatolikka olib keladi)?",
+    options:["ism_familiya","yosh2","2yosh","_maxfiy"],
     correct:2,
-    explain:"<code>controls</code> atributi brauzer standart boshqaruv panelini (play/pause/volume) ko'rsatadi."
-  },
-  {
-    type:"mcq",
-    tag:"ID, Class",
-    text:"ID va Class orasidagi asosiy farq nima?",
-    options:[
-      "ID bir sahifada faqat bitta elementga, class bir nechta elementga qo'llanadi",
-      "Ular butunlay bir xil, farqi yo'q",
-      "Class faqat CSS uchun, ID faqat JS uchun ishlatiladi",
-      "ID faqat body ichida, class faqat head ichida ishlatiladi"
-    ],
-    correct:0,
-    explain:"<code>id</code> — sahifada noyob (unique), faqat bitta elementga tegishli bo'lishi kerak. <code>class</code> esa bir nechta elementlarga bir xil nom bilan berilishi mumkin."
+    explain:"O'zgaruvchi nomi <b>raqam bilan boshlanishi mumkin emas</b>. <code>2yosh</code> — xato, lekin <code>yosh2</code> to'g'ri, chunki raqam oxirida kelishi mumkin."
   },
   {
     type:"fill",
-    tag:"ID, Class",
-    text:"CSS'da class selectorini to'g'ri yozing (class nomi: <code>card</code>):",
-    codeTemplate:"___card {\n  color: blue;\n}",
-    correctAnswer:".card",
-    altAnswers:[".card"],
-    explain:"Class selector oldiga <b>nuqta (.)</b> qo'yiladi: <code>.card { }</code>. ID selector oldiga esa <b>#</b> qo'yiladi: <code>#card { }</code>."
+    tag:"O'zgaruvchilar",
+    text:"<code>ism</code> nomli o'zgaruvchiga <code>\"Ali\"</code> qiymatini to'g'ri tarzda bering:",
+    codeTemplate:"ism ___ \"Ali\"",
+    correctAnswer:"=",
+    explain:"O'zgaruvchiga qiymat berish uchun <b>teng belgisi (=)</b> ishlatiladi: <code>ism = \"Ali\"</code>. Bu tenglik emas, balki <b>tayinlash (assignment)</b> operatori."
   },
   {
     type:"mcq",
-    tag:"Block va Inline",
-    text:"Quyidagilardan qaysi biri <b>block</b> elementga misol bo'ladi?",
-    options:["&lt;span&gt;","&lt;a&gt;","&lt;div&gt;","&lt;strong&gt;"],
+    tag:"String (matn)",
+    text:"Quyidagi kod natijasida nima chiqadi?<div class='q-code'>ism = \"Vali\"\nprint(\"Salom, \" + ism)</div>",
+    options:["Salom, ism","Salom, Vali","SalomVali","Xatolik chiqadi"],
+    correct:1,
+    explain:"<code>+</code> operatori stringlarni <b>birlashtiradi (concatenation)</b>. Natija: <code>Salom, Vali</code>."
+  },
+  {
+    type:"mcq",
+    tag:"String (matn)",
+    text:"<code>len(\"Python\")</code> ifodasi nechaga teng bo'ladi?",
+    options:["5","6","7","Xatolik"],
+    correct:1,
+    explain:"<code>len()</code> funksiyasi satrdagi belgilar sonini qaytaradi. \"Python\" so'zida 6 ta harf bor: P-y-t-h-o-n."
+  },
+  {
+    type:"fill",
+    tag:"String (matn)",
+    text:"Matnni kichik harflarga o'tkazuvchi metodni yozing:",
+    codeTemplate:"matn = \"SALOM\"\nprint(matn.___())",
+    correctAnswer:"lower",
+    explain:"<code>.lower()</code> metodi barcha harflarni kichik harfga o'tkazadi. Katta harfga o'tkazish uchun <code>.upper()</code> ishlatiladi."
+  },
+  {
+    type:"mcq",
+    tag:"Sonlar",
+    text:"Quyidagi o'zgaruvchilardan qaysi biri <b>float</b> (kasr son) turiga misol bo'ladi?",
+    options:["yosh = 25","narx = 15.99","ism = \"Aziz\"","bor = True"],
+    correct:1,
+    explain:"<code>15.99</code> — kasr qismi bor son, ya'ni <b>float</b> turi. <code>25</code> — int, <code>\"Aziz\"</code> — str, <code>True</code> — bool."
+  },
+  {
+    type:"mcq",
+    tag:"Sonlar",
+    text:"Quyidagi kod natijasida nima chiqadi?<div class='q-code'>x = 10\ny = 3\nprint(x ** y)</div>",
+    options:["30","1000","13","3.33"],
+    correct:1,
+    explain:"<code>**</code> — <b>darajaga ko'tarish (exponentiation)</b> operatori: <code>10 ** 3 = 10 × 10 × 10 = 1000</code>."
+  },
+  {
+    type:"fill",
+    tag:"Sonlar",
+    text:"Matn ko'rinishidagi sonni butun songa (int) aylantiruvchi funksiyani yozing:",
+    codeTemplate:"yosh = ___(\"25\")\nprint(yosh + 5)  # natija: 30",
+    correctAnswer:"int",
+    explain:"<code>int()</code> funksiyasi matn (string) ko'rinishidagi sonni butun songa aylantiradi, shunda u bilan arifmetik amallar bajarish mumkin bo'ladi."
+  },
+  {
+    type:"mcq",
+    tag:"List (ro'yxat)",
+    text:"Python'da bo'sh ro'yxat (list) qanday yaratiladi?",
+    options:["mevalar = ()","mevalar = {}","mevalar = []","mevalar = \"\""],
     correct:2,
-    explain:"<code>&lt;div&gt;</code> — block element bo'lib, butun qatorni egallaydi va oldidan/keyinidan qator boshiga o'tadi. <code>&lt;span&gt;</code>, <code>&lt;a&gt;</code>, <code>&lt;strong&gt;</code> — inline elementlar."
+    explain:"Ro'yxat (list) kvadrat qavslar <code>[]</code> yordamida yaratiladi. <code>()</code> — tuple, <code>{}</code> — dictionary yoki set uchun ishlatiladi."
+  },
+  {
+    type:"mcq",
+    tag:"List (ro'yxat)",
+    text:"Quyidagi kod natijasida nima chiqadi?<div class='q-code'>mevalar = [\"olma\", \"nok\", \"uzum\"]\nprint(mevalar[1])</div>",
+    options:["olma","nok","uzum","Xatolik chiqadi"],
+    correct:1,
+    explain:"Python'da indekslash <b>0 dan</b> boshlanadi. <code>mevalar[0]</code> = \"olma\", <code>mevalar[1]</code> = \"nok\", <code>mevalar[2]</code> = \"uzum\"."
+  },
+  {
+    type:"fill",
+    tag:"Ro'yxatlar bilan ishlash",
+    text:"Ro'yxat oxiriga yangi element qo'shuvchi metodni yozing:",
+    codeTemplate:"mevalar = [\"olma\", \"nok\"]\nmevalar.___(\"uzum\")\nprint(mevalar)  # [\"olma\", \"nok\", \"uzum\"]",
+    correctAnswer:"append",
+    explain:"<code>.append()</code> metodi ro'yxat oxiriga bitta yangi element qo'shadi."
+  },
+  {
+    type:"mcq",
+    tag:"Ro'yxatlar bilan ishlash",
+    text:"Quyidagi kod natijasida nima chiqadi?<div class='q-code'>sonlar = [5, 2, 8, 1]\nprint(len(sonlar))</div>",
+    options:["4","5","8","1"],
+    correct:0,
+    explain:"<code>len()</code> ro'yxatdagi elementlar sonini qaytaradi. Ro'yxatda 4 ta element bor: 5, 2, 8, 1."
   },
   {
     type:"dnd",
-    tag:"Block va Inline elementlar",
-    text:"Quyidagi elementlarni to'g'ri toifasiga (Block yoki Inline) sudrab tashlang:",
+    tag:"O'zgaruvchilar va Ma'lumot Turlari",
+    text:"Quyidagi qiymatlarni ularning to'g'ri ma'lumot turiga (data type) sudrab tashlang:",
     items:[
-      {id:"div", label:"&lt;div&gt;", target:"block"},
-      {id:"span", label:"&lt;span&gt;", target:"inline"},
-      {id:"p", label:"&lt;p&gt;", target:"block"},
-      {id:"a", label:"&lt;a&gt;", target:"inline"},
-      {id:"h1", label:"&lt;h1&gt;", target:"block"},
-      {id:"img", label:"&lt;img&gt;", target:"inline"}
+      {id:"v1", label:"25", target:"int"},
+      {id:"v2", label:"\"Salom\"", target:"str"},
+      {id:"v3", label:"3.14", target:"float"},
+      {id:"v4", label:"True", target:"bool"},
+      {id:"v5", label:"[1, 2, 3]", target:"list"},
+      {id:"v6", label:"12.5", target:"float"}
     ],
     targets:[
-      {id:"block", label:"Block"},
-      {id:"inline", label:"Inline"}
+      {id:"int", label:"int"},
+      {id:"str", label:"str"},
+      {id:"float", label:"float"},
+      {id:"bool", label:"bool"},
+      {id:"list", label:"list"}
     ],
-    explain:"Block elementlar (<code>div, p, h1</code>) butun qatorni egallaydi. Inline elementlar (<code>span, a, img</code>) faqat kerakli joyni egallaydi va matn ichida qatorda qoladi."
-  },
-  {
-    type:"mcq",
-    tag:"Formalar",
-    text:"Foydalanuvchidan ma'lumot yig'ish uchun asosiy HTML teg qaysi?",
-    options:["&lt;form&gt;","&lt;input&gt;","&lt;data&gt;","&lt;collect&gt;"],
-    correct:0,
-    explain:"<code>&lt;form&gt;</code> tegi ichida <code>&lt;input&gt;</code>, <code>&lt;textarea&gt;</code>, <code>&lt;button&gt;</code> kabi elementlar joylashib, ma'lumot yig'ish uchun ishlatiladi."
-  },
-  {
-    type:"mcq",
-    tag:"Formalar",
-    text:"Parolni yashirin (nuqtalar bilan) kiritish maydonini yaratish uchun qaysi kod to'g'ri?",
-    options:[
-      "&lt;input type=\"hidden\"&gt;",
-      "&lt;input type=\"password\"&gt;",
-      "&lt;input type=\"secret\"&gt;",
-      "&lt;input type=\"text\" hidden&gt;"
-    ],
-    correct:1,
-    explain:"<code>&lt;input type=\"password\"&gt;</code> kiritilgan matnni nuqta/yulduzcha shaklida yashiradi."
-  },
-  {
-    type:"mcq",
-    tag:"CSS strukturasi",
-    text:"CSS qoidasining to'g'ri strukturasini tanlang.",
-    options:[
-      "selector { property: value; }",
-      "selector: { property = value }",
-      "{selector} property: value;",
-      "property { selector: value; }"
-    ],
-    correct:0,
-    explain:"CSS qoidasi: <code>selector { property: value; }</code> ko'rinishida bo'ladi. Masalan: <code>p { color: red; }</code>."
-  },
-  {
-    type:"mcq",
-    tag:"Selectors, Oila shajarasi",
-    text:"<code>div p</code> selectori (orada bo'shliq bilan) nimani anglatadi?",
-    options:[
-      "Faqat div ning bevosita farzandi bo'lgan p",
-      "div ichidagi barcha p elementlari (chuqurligidan qat'iy nazar — avlod selektori)",
-      "div dan keyin keladigan p (birodar element)",
-      "Faqat class nomi div bo'lgan p elementi"
-    ],
-    correct:1,
-    explain:"Bo'shliq bilan yozilgan selector (<code>div p</code>) — <b>avlod (descendant) selektori</b> bo'lib, div ichidagi barcha darajadagi p elementlarini tanlaydi. Faqat bevosita farzandni tanlash uchun <code>div &gt; p</code> ishlatiladi."
-  },
-  {
-    type:"fill",
-    tag:"Selectors",
-    text:"Faqat <b>bevosita farzand</b> elementni tanlaydigan (child combinator) selectorni yozing (ul dan bevosita li):",
-    codeTemplate:"ul ___ li {\n  color: green;\n}",
-    correctAnswer:">",
-    explain:"<code>&gt;</code> belgisi — child (bevosita farzand) combinatori. <code>ul &gt; li</code> faqat ul ning to'g'ridan-to'g'ri farzandi bo'lgan li larni tanlaydi."
-  },
-  {
-    type:"mcq",
-    tag:"Box Model",
-    text:"CSS Box Model tarkibiga (ichkaridan tashqariga) qaysi tartib to'g'ri keladi?",
-    options:[
-      "Content → Padding → Border → Margin",
-      "Content → Border → Padding → Margin",
-      "Margin → Border → Padding → Content",
-      "Padding → Content → Border → Margin"
-    ],
-    correct:0,
-    explain:"Box model tartibi: <b>Content</b> (mazmun) → <b>Padding</b> (ichki bo'shliq) → <b>Border</b> (chegara) → <b>Margin</b> (tashqi bo'shliq)."
-  },
-  {
-    type:"mcq",
-    tag:"margin, padding shorthand",
-    text:"<code>margin: 10px 20px;</code> qanday tushuniladi?",
-    options:[
-      "Yuqori/pastki: 10px, chap/o'ng: 20px",
-      "Barcha tomon 10px, keyin 20px qo'shiladi",
-      "Yuqori: 10px, o'ng/pastki/chap: 20px",
-      "Faqat yuqori va chap tomonlarga qo'llanadi"
-    ],
-    correct:0,
-    explain:"2 qiymatli shorthandda: birinchi qiymat — <b>yuqori/pastki (top/bottom)</b>, ikkinchi qiymat — <b>chap/o'ng (left/right)</b>."
-  },
-  {
-    type:"fill",
-    tag:"margin, padding shorthand",
-    text:"Barcha tomonlarga alohida qiymat berish tartibini eslang (soat yo'nalishi bo'yicha: yuqori, o'ng, past, chap). Kodni to'ldiring:",
-    codeTemplate:"padding: 5px 10px ___ 20px;\n/* yuqori: 5px, o'ng: 10px, past: ?, chap: 20px */",
-    correctAnswer:"15px",
-    isFreeform:true,
-    explain:"4 qiymatli shorthand tartibi soat strelkasi bo'yicha: <b>top right bottom left</b>. Bu yerda 3-qiymat — pastki (bottom) qiymat bo'lishi kerak edi, masalan <code>15px</code>."
-  },
-  {
-    type:"mcq",
-    tag:"Box Model",
-    text:"<code>box-sizing: border-box;</code> qanday ta'sir qiladi?",
-    options:[
-      "Padding va border elementning belgilangan width/height ichiga hisoblanadi",
-      "Marginni butunlay olib tashlaydi",
-      "Elementni ko'rinmas qiladi",
-      "Faqat border qalinligini o'zgartiradi"
-    ],
-    correct:0,
-    explain:"<code>border-box</code> bilan padding va border qiymatlari elementning umumiy <code>width</code>/<code>height</code> ichiga kiritiladi, shuning uchun element hisoblangan o'lchamdan katta bo'lib ketmaydi."
+    explain:"<code>int</code> — butun son, <code>str</code> — matn (qo'shtirnoq ichida), <code>float</code> — kasr son, <code>bool</code> — True/False, <code>list</code> — kvadrat qavs ichidagi elementlar to'plami."
   }
 ];
 
 let currentIndex = 0;
 let userAnswers = new Array(QUESTIONS.length).fill(null);
-let answeredCorrect = new Array(QUESTIONS.length).fill(null); // null=not answered, true/false
-let dndState = {}; // per-question drag state
+let answeredCorrect = new Array(QUESTIONS.length).fill(null);
+let dndState = {};
 
 function startQuiz(){
   document.getElementById('start-screen').classList.add('hidden');
@@ -646,12 +534,10 @@ function renderQuestion(){
   html += `</div>`;
   container.innerHTML = html;
 
-  // Post-render bindings
   if(q.type==='mcq') bindMCQ(q);
   if(q.type==='fill') bindFill(q);
   if(q.type==='dnd') bindDnD(q);
 
-  // Restore previous state if answered
   if(answeredCorrect[currentIndex] !== null){
     if(q.type==='mcq') restoreMCQ(q);
     if(q.type==='fill') restoreFill(q);
@@ -700,24 +586,16 @@ function restoreMCQ(q){
 
 /* ---------- FILL (kod yozish) ---------- */
 function renderFill(q){
-  let codeHtml = '';
-  if(q.isCommentCheck){
-    codeHtml = `<div class="q-code">&lt;!-- <input type="text" id="fill-input" placeholder="matn yozing..." style="width:220px"> --&gt;</div>`;
-  } else {
-    const parts = q.codeTemplate.split('___');
-    codeHtml = `<div class="q-code">`;
-    parts.forEach((p,i)=>{
-      codeHtml += escapeForDisplay(p);
-      if(i < parts.length-1){
-        codeHtml += `<input type="text" id="fill-input" style="display:inline-block;width:auto;min-width:60px;">`;
-      }
-    });
-    codeHtml += `</div>`;
-  }
+  const parts = q.codeTemplate.split('___');
+  let codeHtml = `<div class="q-code">`;
+  parts.forEach((p,i)=>{
+    codeHtml += p;
+    if(i < parts.length-1){
+      codeHtml += `<input type="text" id="fill-input" style="display:inline-block;width:auto;min-width:70px;">`;
+    }
+  });
+  codeHtml += `</div>`;
   return codeHtml + `<div style="display:flex;gap:10px;"><button class="btn-primary" id="fill-submit" style="flex:0 0 auto;">Tekshirish</button></div>`;
-}
-function escapeForDisplay(s){
-  return s; // already contains &lt; etc from data, safe as-is
 }
 function bindFill(q){
   const btn = document.getElementById('fill-submit');
@@ -726,16 +604,8 @@ function bindFill(q){
     const input = document.getElementById('fill-input');
     const val = input.value.trim();
     userAnswers[currentIndex] = val;
-    let isCorrect = false;
-    if(q.isCommentCheck){
-      isCorrect = val.length > 0; // any non-empty comment text acceptable
-    } else if(q.isFreeform){
-      // numeric/value freeform - accept anything reasonably matching pattern like Npx
-      isCorrect = /^\d+px$/i.test(val) || val.toLowerCase()===q.correctAnswer.toLowerCase();
-    } else {
-      const candidates = [q.correctAnswer, ...(q.altAnswers||[])].map(a=>a.toLowerCase());
-      isCorrect = candidates.includes(val.toLowerCase());
-    }
+    const candidates = [q.correctAnswer, ...(q.altAnswers||[])].map(a=>a.toLowerCase());
+    const isCorrect = candidates.includes(val.toLowerCase());
     answeredCorrect[currentIndex] = isCorrect;
     restoreFill(q);
     showExplain(q, isCorrect);
@@ -756,11 +626,11 @@ function restoreFill(q){
 /* ---------- DRAG & DROP ---------- */
 function renderDnD(q){
   if(!dndState[currentIndex]){
-    dndState[currentIndex] = { placed:{} }; // itemId -> targetId
+    dndState[currentIndex] = { placed:{} };
   }
   let html = `<div class="dd-area">`;
-  html += `<div class="dd-col"><h4>Elementlar (sudrab tashlang)</h4><div class="dd-pool" id="dd-pool"></div></div>`;
-  html += `<div class="dd-col"><h4>Toifalar</h4>`;
+  html += `<div class="dd-col"><h4>Qiymatlar (sudrab tashlang)</h4><div class="dd-pool" id="dd-pool"></div></div>`;
+  html += `<div class="dd-col"><h4>Ma'lumot turlari</h4>`;
   q.targets.forEach(t=>{
     html += `<div class="dd-target" data-target="${t.id}">
       <span class="label">${t.label}</span>
@@ -796,7 +666,6 @@ function bindDnD(q){
     }
   });
 
-  // restore placed items visually
   Object.keys(state.placed).forEach(itemId=>{
     const targetId = state.placed[itemId];
     const item = q.items.find(i=>i.id===itemId);
@@ -822,7 +691,6 @@ function bindDnD(q){
       const item = q.items.find(i=>i.id===itemId);
       if(!item) return;
 
-      // remove item from wherever it currently is
       const existingEl = document.querySelector(`.dd-item[data-id="${itemId}"]`);
       if(existingEl) existingEl.remove();
 
@@ -834,7 +702,6 @@ function bindDnD(q){
     });
   });
 
-  // allow drop back to pool
   pool.addEventListener('dragover', e=>{
     if(answeredCorrect[currentIndex] !== null) return;
     e.preventDefault();
