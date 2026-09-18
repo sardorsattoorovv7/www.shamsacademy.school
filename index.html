@@ -1,2 +1,629 @@
-<a href="https://uniflagellate-menseless-tama.ngrok-free.dev/
-">saytga kirish uchun bos</a>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+    color: #fff;
+    font-family: 'Courier New', monospace;
+    padding: 2rem 1rem;
+    min-height: 100vh;
+  }
+  
+  .container {
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    animation: slideDown 0.6s ease;
+  }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .header h1 {
+    font-size: 52px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    background: linear-gradient(120deg, #ff006e, #8338ec, #3a86ff, #06ffa5);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 4s ease infinite;
+  }
+  
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  .header p {
+    font-size: 14px;
+    color: #aaa;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 1rem;
+  }
+  
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+  
+  .stat-card {
+    background: linear-gradient(135deg, #ff006e 0%, #8338ec 100%);
+    padding: 2rem;
+    border-radius: 0;
+    text-align: center;
+    border: 3px solid #ff006e;
+    box-shadow: 0 8px 24px rgba(255, 0, 110, 0.3);
+    transform: rotate(-1deg);
+  }
+  
+  .stat-card:nth-child(2) {
+    background: linear-gradient(135deg, #3a86ff 0%, #06ffa5 100%);
+    border-color: #3a86ff;
+    box-shadow: 0 8px 24px rgba(58, 134, 255, 0.3);
+    transform: rotate(1deg);
+  }
+  
+  .stat-card:nth-child(3) {
+    background: linear-gradient(135deg, #8338ec 0%, #ff006e 100%);
+    border-color: #8338ec;
+    box-shadow: 0 8px 24px rgba(131, 56, 236, 0.3);
+    transform: rotate(-1deg);
+  }
+  
+  .stat-card .value {
+    font-size: 36px;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  
+  .stat-card .label {
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.9);
+    margin-top: 0.8rem;
+    font-weight: 600;
+  }
+  
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.8rem;
+    margin-bottom: 2rem;
+  }
+  
+  .card {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    min-height: 340px;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .card-inner {
+    width: 100%;
+    height: 100%;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
+  }
+  
+  .card:nth-child(1) {
+    background: linear-gradient(135deg, #ff006e 0%, #ff4757 100%);
+    border: 3px solid #ff006e;
+    transform: perspective(1000px) rotateY(-5deg);
+  }
+  
+  .card:nth-child(2) {
+    background: linear-gradient(135deg, #ffa502 0%, #ffb627 100%);
+    border: 3px solid #ffa502;
+    transform: perspective(1000px) rotateY(5deg);
+  }
+  
+  .card:nth-child(3) {
+    background: linear-gradient(135deg, #3a86ff 0%, #1f77d2 100%);
+    border: 3px solid #3a86ff;
+    transform: perspective(1000px) rotateY(-5deg);
+  }
+  
+  .card:nth-child(4) {
+    background: linear-gradient(135deg, #06ffa5 0%, #00d966 100%);
+    border: 3px solid #06ffa5;
+    transform: perspective(1000px) rotateY(5deg);
+  }
+  
+  .card:nth-child(5) {
+    background: linear-gradient(135deg, #8338ec 0%, #6c3fb8 100%);
+    border: 3px solid #8338ec;
+    transform: perspective(1000px) rotateY(-5deg);
+  }
+  
+  .card:nth-child(6) {
+    background: linear-gradient(135deg, #ff1493 0%, #ff69b4 100%);
+    border: 3px solid #ff1493;
+    transform: perspective(1000px) rotateY(5deg);
+  }
+  
+  .card:nth-child(7) {
+    background: linear-gradient(135deg, #00ced1 0%, #20b2aa 100%);
+    border: 3px solid #00ced1;
+    transform: perspective(1000px) rotateY(-5deg);
+  }
+  
+  .card:nth-child(8) {
+    background: linear-gradient(135deg, #ffb300 0%, #ff8c00 100%);
+    border: 3px solid #ffb300;
+    transform: perspective(1000px) rotateY(5deg);
+  }
+  
+  .card:nth-child(9) {
+    background: linear-gradient(135deg, #ff006e 0%, #d600ff 100%);
+    border: 3px solid #ff006e;
+    transform: perspective(1000px) rotateY(-5deg);
+  }
+  
+  .card:nth-child(10) {
+    background: linear-gradient(135deg, #06ffa5 0%, #00ff88 100%);
+    border: 3px solid #06ffa5;
+    transform: perspective(1000px) rotateY(5deg);
+  }
+  
+  .card:nth-child(11) {
+    background: linear-gradient(135deg, #3a86ff 0%, #0066ff 100%);
+    border: 3px solid #3a86ff;
+    transform: perspective(1000px) rotateY(-5deg);
+  }
+  
+  .card:nth-child(12) {
+    background: linear-gradient(135deg, #8338ec 0%, #5e00ff 100%);
+    border: 3px solid #8338ec;
+    transform: perspective(1000px) rotateY(5deg);
+  }
+  
+  .card:nth-child(13) {
+    background: linear-gradient(135deg, #ff4757 0%, #ff3838 100%);
+    border: 3px solid #ff4757;
+    transform: perspective(1000px) rotateY(-5deg);
+  }
+  
+  .card:nth-child(14) {
+    background: linear-gradient(135deg, #ffa502 0%, #ff8f00 100%);
+    border: 3px solid #ffa502;
+    transform: perspective(1000px) rotateY(5deg);
+  }
+  
+  .card:nth-child(15) {
+    background: linear-gradient(135deg, #06ffa5 0%, #00ff7f 100%);
+    border: 3px solid #06ffa5;
+    transform: perspective(1000px) rotateY(-5deg);
+  }
+  
+  .card:nth-child(16) {
+    background: linear-gradient(135deg, #00ced1 0%, #00bfff 100%);
+    border: 3px solid #00ced1;
+    transform: perspective(1000px) rotateY(5deg);
+  }
+  
+  .card:hover {
+    transform: scale(1.08) translateY(-8px);
+    box-shadow: 0 20px 40px rgba(255, 0, 110, 0.4);
+  }
+  
+  .card:active {
+    transform: scale(0.95);
+  }
+  
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .card-icon {
+    font-size: 42px;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
+  }
+  
+  .card-number {
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  }
+  
+  .card.flipped .front {
+    display: none;
+  }
+  
+  .card.flipped .back {
+    display: flex;
+  }
+  
+  .front, .back {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .back {
+    display: none;
+  }
+  
+  .card-question {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: #fff;
+    letter-spacing: 0.5px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+  }
+  
+  .card-answer {
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: 400;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  }
+  
+  .card-hint {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: 1rem;
+    font-weight: 600;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; }
+  }
+  
+  .card-footer {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 2px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .card-title {
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 700;
+    display: block;
+  }
+  
+  .controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+  
+  button {
+    background: linear-gradient(135deg, #ff006e 0%, #8338ec 100%);
+    border: 3px solid #ff006e;
+    color: #fff;
+    padding: 14px 32px;
+    font-size: 12px;
+    font-weight: 900;
+    cursor: pointer;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: all 0.3s;
+    box-shadow: 0 8px 16px rgba(255, 0, 110, 0.3);
+  }
+  
+  button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 24px rgba(255, 0, 110, 0.5);
+  }
+  
+  button:active {
+    transform: scale(0.98);
+  }
+  
+  .sound-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    font-size: 12px;
+    color: #aaa;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  
+  .sound-toggle input {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    accent-color: #ff006e;
+  }
+</style>
+
+<div class="container">
+  <div class="header">
+    <h1>INFORMATIKA DARSLARI</h1>
+    <p>⌨ Klaviatura, Sichqoncha va Word Dasturi</p>
+  </div>
+  
+  <div class="stats">
+    <div class="stat-card">
+      <div class="value" id="current">0</div>
+      <div class="label">Ochilgan Kartalar</div>
+    </div>
+    <div class="stat-card">
+      <div class="value">16</div>
+      <div class="label">Umumiy Kartalar</div>
+    </div>
+    <div class="stat-card">
+      <div class="value">100%</div>
+      <div class="label">Progres</div>
+    </div>
+  </div>
+  
+  <div class="cards-grid" id="cardsGrid"></div>
+  
+  <div class="controls">
+    <button onclick="resetCards()">↻ QAYTA O'RNATISH</button>
+    <button onclick="flipAll()">⇄ HAMMASINI AYLANDIR</button>
+    <button onclick="shuffleCards()">⚡ ARALASH</button>
+  </div>
+  
+  <div class="sound-toggle">
+    <input type="checkbox" id="soundToggle" checked>
+    <label for="soundToggle">🔊 Ovoz faol</label>
+  </div>
+</div>
+
+<script>
+  const flashcards = [
+    {
+      icon: "🔌",
+      question: "Kompyuter oʻchilish tugmasi qayerda joylashgan?",
+      answer: "CPU korzinkasining oʻng tomoni yoki oldi tomonida joylashgan. Odatda yuqori-oʻng burchagida yoki oldi tomonining markazida topiladi.",
+      number: "01",
+      title: "Oʻchilish tugmasi"
+    },
+    {
+      icon: "💡",
+      question: "Kompyuterni qanday yoqish kerak?",
+      answer: "Oʻchilish tugmasini bir marta bosing. Kompyuter yoʻlga chiqib, startap ovozi chiqadi. Odatda 30-60 soniyada oʻzi oʻrnatiladi.",
+      number: "02",
+      title: "Yoqish"
+    },
+    {
+      icon: "⏽",
+      question: "Kompyuterni toʻgʻri qanday oʻchirish kerak?",
+      answer: "Windows: Start > Shutdown. Mac: Apple menu > Shut Down. Hech qachon kuchli bosib oʻchirmang! Tugmani 10 sekunddan oʻtib bosish faqat shoshilinch holatda.",
+      number: "03",
+      title: "Oʻchirish"
+    },
+    {
+      icon: "⌨️",
+      question: "Klaviaturaning asosiy boʻlimlari nima?",
+      answer: "1. Funktsiya tugmalari (F1-F12) 2. Alfavit-raqam boʻlimi 3. Navigatsiya tugmalari 4. Raqamli klaviatura (numpad)",
+      number: "04",
+      title: "Klaviatura"
+    },
+    {
+      icon: "⇧",
+      question: "SHIFT tugmasi nima qiladi?",
+      answer: "Katta harflar yoki yuqori belgilarni yozishda ishlatiladi. Shift + a = A. Shift + 1 = !. Matn belgilashda ham kerak.",
+      number: "05",
+      title: "SHIFT"
+    },
+    {
+      icon: "⌃",
+      question: "CTRL tugmasi qanday ishlaydi?",
+      answer: "Ctrl+C = nusxa | Ctrl+V = qoʻllash | Ctrl+X = kesib olish | Ctrl+Z = bekor qilish | Ctrl+S = saqlash",
+      number: "06",
+      title: "CTRL"
+    },
+    {
+      icon: "🔑",
+      question: "ALT tugmasi qanday ishlatiladi?",
+      answer: "Alt+Tab = oynalar orasida oʻtish | Alt+F = File menyusi | Alt+F4 = oynani yopish. Dasturlarda turli amallar.",
+      number: "07",
+      title: "ALT"
+    },
+    {
+      icon: "→",
+      question: "Navigatsiya tugmalari qanday ishlaydi?",
+      answer: "Strelkalar = kursorni oʻzgartiradi | Home/End = satr boshi/oxiri | Page Up/Down = yuqori/pastga oʻtish",
+      number: "08",
+      title: "Navigatsiya"
+    },
+    {
+      icon: "⏎",
+      question: "Enter tugmasi nima qiladi?",
+      answer: "Buyruqni tasdiqlaydi yoki yangi qatorga oʻtadi. Word dasturida yangi paragraf yaratadi, kalkulyatorda natijani hisoblaydi.",
+      number: "09",
+      title: "Enter"
+    },
+    {
+      icon: "⎵",
+      question: "Space tugmasi nima uchun ishlatiladi?",
+      answer: "Soʻzlar orasiga boʻsh joy qoʻyadi. Oʻqilishi qulay boʻlishi uchun zarur. Eng koʻp ishlatiladigan tugmalardan biridir.",
+      number: "10",
+      title: "Space"
+    },
+    {
+      icon: "⌫",
+      question: "Backspace tugmasi qanday ishlaydi?",
+      answer: "Kursorning chap tomonidagi belgini oʻchiradi. Xato yozilgan harfni tez oʻchirish uchun foydalaniladi.",
+      number: "11",
+      title: "Backspace"
+    },
+    {
+      icon: "🗑",
+      question: "Delete tugmasi nima qiladi?",
+      answer: "Kursor oʻng tomonidagi belgi yoki tanlangan obyektni oʻchiradi. Backspace dan farqi shundaki, oʻng tomonni oʻchiradi.",
+      number: "12",
+      title: "Delete"
+    },
+    {
+      icon: "📝",
+      question: "Word da Ctrl+B nima qiladi?",
+      answer: "Matnni QALIN qiladi. Matn belgilang, keyin Ctrl+B bosing — matn qalin boʻladi. Yana Ctrl+B bosish qalinlikni olib tashiydi.",
+      number: "13",
+      title: "Word: BOLD"
+    },
+    {
+      icon: "📄",
+      question: "Word da Ctrl+I nima uchun ishlatiladi?",
+      answer: "Matnni QIYA (italik) qiladi. Muhim soʻzlarni belgilashda ishlatiladi. Matn belgilang, keyin Ctrl+I bosing.",
+      number: "14",
+      title: "Word: ITALIC"
+    },
+    {
+      icon: "📑",
+      question: "Word da Ctrl+U nima qiladi?",
+      answer: "Matnning tagiga chiziq qoʻyadi. Matn belgilang, keyin Ctrl+U bosing — matnning tagiga chiziq qoʻyiladi.",
+      number: "15",
+      title: "Word: UNDERLINE"
+    },
+    {
+      icon: "💾",
+      question: "Word da Ctrl+S nima uchun kerak?",
+      answer: "Faylni SAQLAYDI. Darsda yozgan matnni har 5-10 minutda saqlashni odatlashtiring. Quvvat tomonidan yo'qolsa ma'lumotlar yo'qolmaydi!",
+      number: "16",
+      title: "Word: SAVE"
+    }
+  ];
+
+  function playSound() {
+    if (!document.getElementById('soundToggle').checked) return;
+    
+    try {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+      
+      osc.connect(gain);
+      gain.connect(audioContext.destination);
+      
+      osc.frequency.value = 700;
+      osc.type = 'sine';
+      
+      gain.gain.setValueAtTime(0.15, audioContext.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+      
+      osc.start(audioContext.currentTime);
+      osc.stop(audioContext.currentTime + 0.2);
+    } catch (e) {}
+  }
+
+  function createCards() {
+    const grid = document.getElementById('cardsGrid');
+    grid.innerHTML = '';
+    
+    flashcards.forEach((card, index) => {
+      const cardEl = document.createElement('div');
+      cardEl.className = 'card';
+      
+      cardEl.innerHTML = `
+        <div class="card-inner">
+          <div class="card-header">
+            <div class="card-icon">${card.icon}</div>
+            <div class="card-number">${card.number}</div>
+          </div>
+          
+          <div class="card-content">
+            <div class="front">
+              <h3 class="card-question">${card.question}</h3>
+              <div class="card-hint">▶ BOSING</div>
+            </div>
+            <div class="back">
+              <p class="card-answer">${card.answer}</p>
+            </div>
+          </div>
+          
+          <div class="card-footer">
+            <span class="card-title">${card.title}</span>
+          </div>
+        </div>
+      `;
+      
+      cardEl.addEventListener('click', () => {
+        playSound();
+        cardEl.classList.toggle('flipped');
+        updateCounter();
+      });
+      
+      grid.appendChild(cardEl);
+    });
+  }
+
+  function updateCounter() {
+    const flipped = document.querySelectorAll('.card.flipped').length;
+    document.getElementById('current').textContent = flipped;
+  }
+
+  function resetCards() {
+    document.querySelectorAll('.card').forEach(card => {
+      card.classList.remove('flipped');
+    });
+    updateCounter();
+  }
+
+  function flipAll() {
+    document.querySelectorAll('.card').forEach(card => {
+      card.classList.toggle('flipped');
+    });
+    updateCounter();
+  }
+
+  function shuffleCards() {
+    const grid = document.getElementById('cardsGrid');
+    const cards = Array.from(grid.children);
+    
+    for (let i = cards.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [cards[i], cards[j]] = [cards[j], cards[i]];
+    }
+    
+    grid.innerHTML = '';
+    cards.forEach(card => grid.appendChild(card));
+  }
+
+  createCards();
+</script>
