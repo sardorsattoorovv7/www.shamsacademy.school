@@ -1,629 +1,676 @@
-<style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
-    color: #fff;
-    font-family: 'Courier New', monospace;
-    padding: 2rem 1rem;
-    min-height: 100vh;
-  }
-  
-  .container {
-    max-width: 1300px;
-    margin: 0 auto;
-  }
-  
-  .header {
-    text-align: center;
-    margin-bottom: 2.5rem;
-    animation: slideDown 0.6s ease;
-  }
-  
-  @keyframes slideDown {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
-  .header h1 {
-    font-size: 52px;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-    background: linear-gradient(120deg, #ff006e, #8338ec, #3a86ff, #06ffa5);
-    background-size: 300% 300%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: gradientShift 4s ease infinite;
-  }
-  
-  @keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-  
-  .header p {
-    font-size: 14px;
-    color: #aaa;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-top: 1rem;
-  }
-  
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 3rem;
-  }
-  
-  .stat-card {
-    background: linear-gradient(135deg, #ff006e 0%, #8338ec 100%);
-    padding: 2rem;
-    border-radius: 0;
-    text-align: center;
-    border: 3px solid #ff006e;
-    box-shadow: 0 8px 24px rgba(255, 0, 110, 0.3);
-    transform: rotate(-1deg);
-  }
-  
-  .stat-card:nth-child(2) {
-    background: linear-gradient(135deg, #3a86ff 0%, #06ffa5 100%);
-    border-color: #3a86ff;
-    box-shadow: 0 8px 24px rgba(58, 134, 255, 0.3);
-    transform: rotate(1deg);
-  }
-  
-  .stat-card:nth-child(3) {
-    background: linear-gradient(135deg, #8338ec 0%, #ff006e 100%);
-    border-color: #8338ec;
-    box-shadow: 0 8px 24px rgba(131, 56, 236, 0.3);
-    transform: rotate(-1deg);
-  }
-  
-  .stat-card .value {
-    font-size: 36px;
-    font-weight: 900;
-    color: #fff;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  }
-  
-  .stat-card .label {
-    font-size: 11px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.9);
-    margin-top: 0.8rem;
-    font-weight: 600;
-  }
-  
-  .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1.8rem;
-    margin-bottom: 2rem;
-  }
-  
-  .card {
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    min-height: 340px;
-    border: none;
-    border-radius: 0;
-    padding: 0;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .card-inner {
-    width: 100%;
-    height: 100%;
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: relative;
-    z-index: 1;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(5px);
-  }
-  
-  .card:nth-child(1) {
-    background: linear-gradient(135deg, #ff006e 0%, #ff4757 100%);
-    border: 3px solid #ff006e;
-    transform: perspective(1000px) rotateY(-5deg);
-  }
-  
-  .card:nth-child(2) {
-    background: linear-gradient(135deg, #ffa502 0%, #ffb627 100%);
-    border: 3px solid #ffa502;
-    transform: perspective(1000px) rotateY(5deg);
-  }
-  
-  .card:nth-child(3) {
-    background: linear-gradient(135deg, #3a86ff 0%, #1f77d2 100%);
-    border: 3px solid #3a86ff;
-    transform: perspective(1000px) rotateY(-5deg);
-  }
-  
-  .card:nth-child(4) {
-    background: linear-gradient(135deg, #06ffa5 0%, #00d966 100%);
-    border: 3px solid #06ffa5;
-    transform: perspective(1000px) rotateY(5deg);
-  }
-  
-  .card:nth-child(5) {
-    background: linear-gradient(135deg, #8338ec 0%, #6c3fb8 100%);
-    border: 3px solid #8338ec;
-    transform: perspective(1000px) rotateY(-5deg);
-  }
-  
-  .card:nth-child(6) {
-    background: linear-gradient(135deg, #ff1493 0%, #ff69b4 100%);
-    border: 3px solid #ff1493;
-    transform: perspective(1000px) rotateY(5deg);
-  }
-  
-  .card:nth-child(7) {
-    background: linear-gradient(135deg, #00ced1 0%, #20b2aa 100%);
-    border: 3px solid #00ced1;
-    transform: perspective(1000px) rotateY(-5deg);
-  }
-  
-  .card:nth-child(8) {
-    background: linear-gradient(135deg, #ffb300 0%, #ff8c00 100%);
-    border: 3px solid #ffb300;
-    transform: perspective(1000px) rotateY(5deg);
-  }
-  
-  .card:nth-child(9) {
-    background: linear-gradient(135deg, #ff006e 0%, #d600ff 100%);
-    border: 3px solid #ff006e;
-    transform: perspective(1000px) rotateY(-5deg);
-  }
-  
-  .card:nth-child(10) {
-    background: linear-gradient(135deg, #06ffa5 0%, #00ff88 100%);
-    border: 3px solid #06ffa5;
-    transform: perspective(1000px) rotateY(5deg);
-  }
-  
-  .card:nth-child(11) {
-    background: linear-gradient(135deg, #3a86ff 0%, #0066ff 100%);
-    border: 3px solid #3a86ff;
-    transform: perspective(1000px) rotateY(-5deg);
-  }
-  
-  .card:nth-child(12) {
-    background: linear-gradient(135deg, #8338ec 0%, #5e00ff 100%);
-    border: 3px solid #8338ec;
-    transform: perspective(1000px) rotateY(5deg);
-  }
-  
-  .card:nth-child(13) {
-    background: linear-gradient(135deg, #ff4757 0%, #ff3838 100%);
-    border: 3px solid #ff4757;
-    transform: perspective(1000px) rotateY(-5deg);
-  }
-  
-  .card:nth-child(14) {
-    background: linear-gradient(135deg, #ffa502 0%, #ff8f00 100%);
-    border: 3px solid #ffa502;
-    transform: perspective(1000px) rotateY(5deg);
-  }
-  
-  .card:nth-child(15) {
-    background: linear-gradient(135deg, #06ffa5 0%, #00ff7f 100%);
-    border: 3px solid #06ffa5;
-    transform: perspective(1000px) rotateY(-5deg);
-  }
-  
-  .card:nth-child(16) {
-    background: linear-gradient(135deg, #00ced1 0%, #00bfff 100%);
-    border: 3px solid #00ced1;
-    transform: perspective(1000px) rotateY(5deg);
-  }
-  
-  .card:hover {
-    transform: scale(1.08) translateY(-8px);
-    box-shadow: 0 20px 40px rgba(255, 0, 110, 0.4);
-  }
-  
-  .card:active {
-    transform: scale(0.95);
-  }
-  
-  .card-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
-  
-  .card-icon {
-    font-size: 42px;
-    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
-  }
-  
-  .card-number {
-    font-size: 12px;
-    font-weight: 900;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.95);
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-  }
-  
-  .card.flipped .front {
-    display: none;
-  }
-  
-  .card.flipped .back {
-    display: flex;
-  }
-  
-  .front, .back {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .back {
-    display: none;
-  }
-  
-  .card-question {
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 1.5;
-    color: #fff;
-    letter-spacing: 0.5px;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
-  }
-  
-  .card-answer {
-    font-size: 13px;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.95);
-    font-weight: 400;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-  }
-  
-  .card-hint {
-    font-size: 10px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.8);
-    margin-top: 1rem;
-    font-weight: 600;
-    animation: pulse 2s ease-in-out infinite;
-  }
-  
-  @keyframes pulse {
-    0%, 100% { opacity: 0.8; }
-    50% { opacity: 1; }
-  }
-  
-  .card-footer {
-    margin-top: auto;
-    padding-top: 1rem;
-    border-top: 2px solid rgba(255, 255, 255, 0.2);
-  }
-  
-  .card-title {
-    font-size: 10px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.9);
-    font-weight: 700;
-    display: block;
-  }
-  
-  .controls {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    margin-bottom: 2rem;
-    flex-wrap: wrap;
-  }
-  
-  button {
-    background: linear-gradient(135deg, #ff006e 0%, #8338ec 100%);
-    border: 3px solid #ff006e;
-    color: #fff;
-    padding: 14px 32px;
-    font-size: 12px;
-    font-weight: 900;
-    cursor: pointer;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    transition: all 0.3s;
-    box-shadow: 0 8px 16px rgba(255, 0, 110, 0.3);
-  }
-  
-  button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 12px 24px rgba(255, 0, 110, 0.5);
-  }
-  
-  button:active {
-    transform: scale(0.98);
-  }
-  
-  .sound-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 2rem;
-    font-size: 12px;
-    color: #aaa;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-  
-  .sound-toggle input {
-    cursor: pointer;
-    width: 20px;
-    height: 20px;
-    accent-color: #ff006e;
-  }
-</style>
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informatika Olimpiada Testi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<div class="container">
-  <div class="header">
-    <h1>INFORMATIKA DARSLARI</h1>
-    <p>⌨ Klaviatura, Sichqoncha va Word Dasturi</p>
-  </div>
-  
-  <div class="stats">
-    <div class="stat-card">
-      <div class="value" id="current">0</div>
-      <div class="label">Ochilgan Kartalar</div>
-    </div>
-    <div class="stat-card">
-      <div class="value">16</div>
-      <div class="label">Umumiy Kartalar</div>
-    </div>
-    <div class="stat-card">
-      <div class="value">100%</div>
-      <div class="label">Progres</div>
-    </div>
-  </div>
-  
-  <div class="cards-grid" id="cardsGrid"></div>
-  
-  <div class="controls">
-    <button onclick="resetCards()">↻ QAYTA O'RNATISH</button>
-    <button onclick="flipAll()">⇄ HAMMASINI AYLANDIR</button>
-    <button onclick="shuffleCards()">⚡ ARALASH</button>
-  </div>
-  
-  <div class="sound-toggle">
-    <input type="checkbox" id="soundToggle" checked>
-    <label for="soundToggle">🔊 Ovoz faol</label>
-  </div>
-</div>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-<script>
-  const flashcards = [
-    {
-      icon: "🔌",
-      question: "Kompyuter oʻchilish tugmasi qayerda joylashgan?",
-      answer: "CPU korzinkasining oʻng tomoni yoki oldi tomonida joylashgan. Odatda yuqori-oʻng burchagida yoki oldi tomonining markazida topiladi.",
-      number: "01",
-      title: "Oʻchilish tugmasi"
-    },
-    {
-      icon: "💡",
-      question: "Kompyuterni qanday yoqish kerak?",
-      answer: "Oʻchilish tugmasini bir marta bosing. Kompyuter yoʻlga chiqib, startap ovozi chiqadi. Odatda 30-60 soniyada oʻzi oʻrnatiladi.",
-      number: "02",
-      title: "Yoqish"
-    },
-    {
-      icon: "⏽",
-      question: "Kompyuterni toʻgʻri qanday oʻchirish kerak?",
-      answer: "Windows: Start > Shutdown. Mac: Apple menu > Shut Down. Hech qachon kuchli bosib oʻchirmang! Tugmani 10 sekunddan oʻtib bosish faqat shoshilinch holatda.",
-      number: "03",
-      title: "Oʻchirish"
-    },
-    {
-      icon: "⌨️",
-      question: "Klaviaturaning asosiy boʻlimlari nima?",
-      answer: "1. Funktsiya tugmalari (F1-F12) 2. Alfavit-raqam boʻlimi 3. Navigatsiya tugmalari 4. Raqamli klaviatura (numpad)",
-      number: "04",
-      title: "Klaviatura"
-    },
-    {
-      icon: "⇧",
-      question: "SHIFT tugmasi nima qiladi?",
-      answer: "Katta harflar yoki yuqori belgilarni yozishda ishlatiladi. Shift + a = A. Shift + 1 = !. Matn belgilashda ham kerak.",
-      number: "05",
-      title: "SHIFT"
-    },
-    {
-      icon: "⌃",
-      question: "CTRL tugmasi qanday ishlaydi?",
-      answer: "Ctrl+C = nusxa | Ctrl+V = qoʻllash | Ctrl+X = kesib olish | Ctrl+Z = bekor qilish | Ctrl+S = saqlash",
-      number: "06",
-      title: "CTRL"
-    },
-    {
-      icon: "🔑",
-      question: "ALT tugmasi qanday ishlatiladi?",
-      answer: "Alt+Tab = oynalar orasida oʻtish | Alt+F = File menyusi | Alt+F4 = oynani yopish. Dasturlarda turli amallar.",
-      number: "07",
-      title: "ALT"
-    },
-    {
-      icon: "→",
-      question: "Navigatsiya tugmalari qanday ishlaydi?",
-      answer: "Strelkalar = kursorni oʻzgartiradi | Home/End = satr boshi/oxiri | Page Up/Down = yuqori/pastga oʻtish",
-      number: "08",
-      title: "Navigatsiya"
-    },
-    {
-      icon: "⏎",
-      question: "Enter tugmasi nima qiladi?",
-      answer: "Buyruqni tasdiqlaydi yoki yangi qatorga oʻtadi. Word dasturida yangi paragraf yaratadi, kalkulyatorda natijani hisoblaydi.",
-      number: "09",
-      title: "Enter"
-    },
-    {
-      icon: "⎵",
-      question: "Space tugmasi nima uchun ishlatiladi?",
-      answer: "Soʻzlar orasiga boʻsh joy qoʻyadi. Oʻqilishi qulay boʻlishi uchun zarur. Eng koʻp ishlatiladigan tugmalardan biridir.",
-      number: "10",
-      title: "Space"
-    },
-    {
-      icon: "⌫",
-      question: "Backspace tugmasi qanday ishlaydi?",
-      answer: "Kursorning chap tomonidagi belgini oʻchiradi. Xato yozilgan harfni tez oʻchirish uchun foydalaniladi.",
-      number: "11",
-      title: "Backspace"
-    },
-    {
-      icon: "🗑",
-      question: "Delete tugmasi nima qiladi?",
-      answer: "Kursor oʻng tomonidagi belgi yoki tanlangan obyektni oʻchiradi. Backspace dan farqi shundaki, oʻng tomonni oʻchiradi.",
-      number: "12",
-      title: "Delete"
-    },
-    {
-      icon: "📝",
-      question: "Word da Ctrl+B nima qiladi?",
-      answer: "Matnni QALIN qiladi. Matn belgilang, keyin Ctrl+B bosing — matn qalin boʻladi. Yana Ctrl+B bosish qalinlikni olib tashiydi.",
-      number: "13",
-      title: "Word: BOLD"
-    },
-    {
-      icon: "📄",
-      question: "Word da Ctrl+I nima uchun ishlatiladi?",
-      answer: "Matnni QIYA (italik) qiladi. Muhim soʻzlarni belgilashda ishlatiladi. Matn belgilang, keyin Ctrl+I bosing.",
-      number: "14",
-      title: "Word: ITALIC"
-    },
-    {
-      icon: "📑",
-      question: "Word da Ctrl+U nima qiladi?",
-      answer: "Matnning tagiga chiziq qoʻyadi. Matn belgilang, keyin Ctrl+U bosing — matnning tagiga chiziq qoʻyiladi.",
-      number: "15",
-      title: "Word: UNDERLINE"
-    },
-    {
-      icon: "💾",
-      question: "Word da Ctrl+S nima uchun kerak?",
-      answer: "Faylni SAQLAYDI. Darsda yozgan matnni har 5-10 minutda saqlashni odatlashtiring. Quvvat tomonidan yo'qolsa ma'lumotlar yo'qolmaydi!",
-      number: "16",
-      title: "Word: SAVE"
-    }
-  ];
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
 
-  function playSound() {
-    if (!document.getElementById('soundToggle').checked) return;
-    
-    try {
-      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      const osc = audioContext.createOscillator();
-      const gain = audioContext.createGain();
-      
-      osc.connect(gain);
-      gain.connect(audioContext.destination);
-      
-      osc.frequency.value = 700;
-      osc.type = 'sine';
-      
-      gain.gain.setValueAtTime(0.15, audioContext.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
-      
-      osc.start(audioContext.currentTime);
-      osc.stop(audioContext.currentTime + 0.2);
-    } catch (e) {}
-  }
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-  function createCards() {
-    const grid = document.getElementById('cardsGrid');
-    grid.innerHTML = '';
-    
-    flashcards.forEach((card, index) => {
-      const cardEl = document.createElement('div');
-      cardEl.className = 'card';
-      
-      cardEl.innerHTML = `
-        <div class="card-inner">
-          <div class="card-header">
-            <div class="card-icon">${card.icon}</div>
-            <div class="card-number">${card.number}</div>
-          </div>
-          
-          <div class="card-content">
-            <div class="front">
-              <h3 class="card-question">${card.question}</h3>
-              <div class="card-hint">▶ BOSING</div>
-            </div>
-            <div class="back">
-              <p class="card-answer">${card.answer}</p>
-            </div>
-          </div>
-          
-          <div class="card-footer">
-            <span class="card-title">${card.title}</span>
-          </div>
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .timer {
+            font-size: 24px;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 8px;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .timer.warning {
+            background: #e74c3c;
+        }
+
+        .content {
+            padding: 50px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .question-container {
+            margin-bottom: 50px;
+            padding: 25px;
+            border-left: 5px solid #2c3e50;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .question-number {
+            color: #2c3e50;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .question-text {
+            font-size: 17px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option {
+            display: flex;
+            align-items: flex-start;
+            padding: 16px 18px;
+            border: 2px solid #d0d0d0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .option:hover {
+            border-color: #2c3e50;
+            background: #f0f5f9;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 14px;
+            margin-top: 2px;
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+            accent-color: #2c3e50;
+            flex-shrink: 0;
+        }
+
+        .option label {
+            cursor: pointer;
+            flex: 1;
+            user-select: none;
+            color: #333;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .option.selected {
+            border-color: #2c3e50;
+            background: #e8f4f8;
+        }
+
+        .option.selected label {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .footer {
+            padding: 30px 50px;
+            background: #f9f9f9;
+            display: flex;
+            gap: 20px;
+            justify-content: flex-end;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+        }
+
+        .btn-submit:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(44, 62, 80, 0.3);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-reset {
+            background: #ecf0f1;
+            color: #2c3e50;
+        }
+
+        .btn-reset:hover {
+            background: #d5dbdd;
+        }
+
+        .results {
+            display: none;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .score-display {
+            font-size: 56px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .score-display.high {
+            color: #27ae60;
+        }
+
+        .score-display.low {
+            color: #e74c3c;
+        }
+
+        .results-text {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .results-info {
+            background: #f9f9f9;
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 25px;
+            border-left: 5px solid #2c3e50;
+            text-align: left;
+            display: inline-block;
+        }
+
+        .results-info p {
+            margin: 10px 0;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-top: 25px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2c3e50 0%, #34495e 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .answered-counter {
+            font-size: 14px;
+            color: #666;
+            margin-top: 25px;
+            font-weight: 500;
+        }
+
+        @media (max-width: 600px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .content {
+                padding: 25px;
+            }
+
+            .question-container {
+                margin-bottom: 35px;
+                padding: 18px;
+            }
+
+            .footer {
+                flex-direction: column;
+                padding: 20px 25px;
+            }
+
+            .results {
+                padding: 30px;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Informatika Olimpiada Testi</h1>
+            <div class="timer" id="timer">25:00</div>
         </div>
-      `;
-      
-      cardEl.addEventListener('click', () => {
-        playSound();
-        cardEl.classList.toggle('flipped');
-        updateCounter();
-      });
-      
-      grid.appendChild(cardEl);
-    });
-  }
 
-  function updateCounter() {
-    const flipped = document.querySelectorAll('.card.flipped').length;
-    document.getElementById('current').textContent = flipped;
-  }
+        <div class="content" id="content">
+            <div id="questions-container"></div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="answered-counter" id="answered-counter">Javoblar: 0/40</div>
+        </div>
 
-  function resetCards() {
-    document.querySelectorAll('.card').forEach(card => {
-      card.classList.remove('flipped');
-    });
-    updateCounter();
-  }
+        <div class="results" id="results">
+            <h2 style="margin-bottom: 20px;">Test Natijalari</h2>
+            <div class="score-display" id="score-display">0%</div>
+            <div class="results-text" id="results-message"></div>
+            <div class="results-info">
+                <p id="results-details"></p>
+            </div>
+        </div>
 
-  function flipAll() {
-    document.querySelectorAll('.card').forEach(card => {
-      card.classList.toggle('flipped');
-    });
-    updateCounter();
-  }
+        <div class="footer">
+            <button class="btn-reset" onclick="resetQuiz()" id="reset-btn">Qayta boshlash</button>
+            <button class="btn-submit" onclick="submitQuiz()" id="submit-btn">Testni tugatish</button>
+        </div>
+    </div>
 
-  function shuffleCards() {
-    const grid = document.getElementById('cardsGrid');
-    const cards = Array.from(grid.children);
-    
-    for (let i = cards.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [cards[i], cards[j]] = [cards[j], cards[i]];
-    }
-    
-    grid.innerHTML = '';
-    cards.forEach(card => grid.appendChild(card));
-  }
+    <script>
+        const questions = [
+            {
+                question: "Axborotlar qandayshakllardauzatilishimumkin?",
+                options: ["Matnli, raqamli.", "Ovozli, grafik.", "Barcha javobto'g'ri."],
+                correct: 2
+            },
+            {
+                question: "Ma'lumotlarturibu - ……… .",
+                options: ["O'zgaruvchiyokidoimiyqiymatlardagima'lumotlarshakli.", "Kompyuterdaberilganma'lumotar.", "Dasturlashtilihaqidaberiladiganma'lumotlar."],
+                correct: 0
+            },
+            {
+                question: "O'zgaruvchiqabulqilganqiymatturiniqaysifunksiyayordamidaaniqlashmumkin?",
+                options: ["input().", "type().", "str()."],
+                correct: 1
+            },
+            {
+                question: "\" //\" ushbuarifmetikamalnomi?",
+                options: ["Bo'lish.", "Bo'linmaningqoldig'inihisoblash.", "Bo'linmaningbutunqiymatinihisoblash."],
+                correct: 2
+            },
+            {
+                question: "Satr nima?",
+                options: ["So'zlarketma-ketligi.", "Harf, son vabelgilarhamdaprobeldantarkibtopganbelgilarketma-ketligi.", "To'g'rijavobyo'q."],
+                correct: 1
+            },
+            {
+                question: "Satr uzunliginiqaysifunksiyayordamidaaniqlashmumkin?",
+                options: ["len().", "Print().", "input()."],
+                correct: 0
+            },
+            {
+                question: "Satrlarnibirlashtirishuchunqaysiamalqo'llaniladi?",
+                options: ["+", "-", "/"],
+                correct: 0
+            },
+            {
+                question: "Pythondasatrdagibelgilarniraqamlashnechchidanboshlanadi?",
+                options: ["1 dan.", "0 dan.", "2 dan."],
+                correct: 1
+            },
+            {
+                question: "Print() qandayvazifabajaradi?",
+                options: ["Satr uzunliginianiqlaydi.", "Satrlarnibirlashtiradi.", "Ma'lumotlarniekrangachiqarishfaylgayozishvasifasinibajaradi."],
+                correct: 2
+            },
+            {
+                question: "End vasep print nimauchunqo'llaniladi?",
+                options: ["Ma'lumotlarnichiqarishparametrlarinio'zgartirishuchun.", "Python dasturigama'lumotlarniyozishuchun.", "To'g'rijavobyo'q."],
+                correct: 0
+            },
+            {
+                question: "Dasturlashjarayonidaasosannechaxilalgoritmdanfoydalaniladi?",
+                options: ["2 xil.", "3 xil.", "5 xil."],
+                correct: 1
+            },
+            {
+                question: "Buyruqlarning qat'iyketma-ketlikdatartibbilanbajarilishinima deb ataladi?",
+                options: ["Algoritm.", "Dasturlashjarayoni.", "Chizqlialgoritm."],
+                correct: 0
+            },
+            {
+                question: "Chiziqlialgoritmlarnidasturshaklidayozilishiga ………… deyiladi.",
+                options: ["Chiziqlidastur.", "Chizqlialgoritm.", "To'g'rijavobyo'q."],
+                correct: 0
+            },
+            {
+                question: "Amallarningqat'iyketma-ketlikdabajarilishinima deb ataladi?",
+                options: ["Chiziqlidastur.", "Chiziqliijro.", "Chiziqlialgoritm."],
+                correct: 1
+            },
+            {
+                question: "O'zgaruvchilarnitaqqoslashuchunqandayamallardanfoydalaniladi?",
+                options: ["Soddaamallardan.", "Mantiqiyamallardan.", "To'g'rijavobyo'q."],
+                correct: 1
+            },
+            {
+                question: "Taqqoslashamallarigaqaysiamallarkiradi?",
+                options: ["<,>,=,!=.", "<,=,+,-.", ">,+,=."],
+                correct: 0
+            },
+            {
+                question: "Birorta shartgako'rabuyruqlarketma-ketliginingbajarilishiyokibajarilmasliginibelgilovchialgoritmnima deb ataladi?",
+                options: ["Dasturlashalgoritimi.", "Tekshiruvchialgoritm.", "Tarmoqlanuvchialgoritm."],
+                correct: 2
+            },
+            {
+                question: "If operatoritarkibidagishart True quymatqaytarsa, buyruqlar bloke bajariladimi?",
+                options: ["yo'q.", "Ha.", "Bajarilmaydi."],
+                correct: 1
+            },
+            {
+                question: "Buyruqlar_bloki if operatoridan keying satrdaxatboshidannechtaprobelqoldiribkeyinyoziladi?",
+                options: ["4 ta.", "8 ta.", "probelqoldirmayyoziladi."],
+                correct: 0
+            },
+            {
+                question: "Shartnitekshirishuchunqaysioperatordanfoydalaniladi?",
+                options: ["Print().", "if.", "To'g'rijavobyo'q."],
+                correct: 1
+            },
+            {
+                question: "Shartdankelibchiqib, harbirshartgamosbuyruqlarketma-ketliginibajaradiganifningtakomillashganko'rinishi……..?",
+                options: ["Elif operatori.", "If operatori.", "CASE operatori."],
+                correct: 0
+            },
+            {
+                question: "Elif-else va if so'zlariningkombinatsiyasibo'lib, qandayma'nonianglatadi?",
+                options: ["\"Aks holda agar\".", "\"Rost  vayolg'on\".", "To'g'rijavobyo'q."],
+                correct: 0
+            },
+            {
+                question: "Dastur tuzishjarayonidamurakkabshartliifodalarniyozishuchunnimalardanfoydalaniladi?",
+                options: ["operatorlardan.", "Mantiqiyamallardan.", "Barcha javobto'g'ri."],
+                correct: 2
+            },
+            {
+                question: "\"==\" belginingnomi?",
+                options: ["Teng emas.", "Kata yokiteng.", "Aynan teng."],
+                correct: 2
+            },
+            {
+                question: "\"/t  belginingnominima?",
+                options: ["Tabulyatsiyabelgisi.", "Yangi satrgao'tishbelgisi.", "bittalikqo'shtirnoqbelgisi."],
+                correct: 0
+            },
+            {
+                question: "Chiziqli tuzilishgaegabo'lganalgoritmningblok-sxemasiasosannimalaryordamidatuziladi?",
+                options: ["Algoritmniboshlash, tugatishboki.", "Kiritish/chiqarishbloki, funksional bloke.", "Barcha javobto'g'ri."],
+                correct: 2
+            },
+            {
+                question: "…………. Bir chiziqbo'ylabjoylashgan, ketma-ketbajariladiganko'rsatmalarto'plamiko'rinishidabo'ladi.",
+                options: ["Chizqlialgoritm.", "Chiziqlituzilish.", "To'g'rijavobyo'q."],
+                correct: 0
+            },
+            {
+                question: "Hozirgi kundaqandaydasturlashtillarikechtarqalgan?",
+                options: ["Pascal, Delphi, C, C++.", "Java, Python.", "Barcha javobto'g'ri."],
+                correct: 2
+            },
+            {
+                question: "Tarmoqlanuvchistrukturaodatdaqandaydirmantiqiyshartni ………… o'zichigaoladi?",
+                options: ["Tekshirishblokini.", "Tarmoqlanuvchituzilish.", "To'g'rijavobyo'q."],
+                correct: 0
+            },
+            {
+                question: "Birorbirsharttekshirilishiyokiqandaydirparametrningharxilqiymatlariasosidaalgoritmdatakrorlanishiyuzberadiganjarayonlarga …………. .",
+                options: ["Tarmoqanuvchialgoritm.", "Takrorlanuvchialgoritm.", "Tekshiriluvchialgoritm."],
+                correct: 1
+            },
+            {
+                question: "Hisoblash jarayoniningko'pmartatakrorlanadiganqisminima deb yuritiladi?",
+                options: ["SUMM.", "PRODUCT.", "Ichkisikltanasi."],
+                correct: 2
+            },
+            {
+                question: "Tarkibida birnechaturdagialgoritmlarqatnashganalgoriymga …………..deyiladi.",
+                options: ["Aralashalgoritm.", "Tarmoqlanuvchinalgoritm.", "Tekshiruvchialgoritm."],
+                correct: 0
+            },
+            {
+                question: "Kompyuter uchundasturtuzisharayoninimadeyiladi?",
+                options: ["Kompyuter dasturi.", "Dasturlash.", "Dasturchi."],
+                correct: 1
+            },
+            {
+                question: "Kompyuterda birormasalanihalqilishuchunengavvalonimaqilinadi?",
+                options: ["Kompyutergayoziladi.", "Dastur tuziladi.", "Modelivaalgoritmituziladi."],
+                correct: 2
+            },
+            {
+                question: "Yaratilganmatnkompyutertilidanima deb ataladi?",
+                options: ["Yozilgandastur.", "Tuzilgandastur.", "Algoritm."],
+                correct: 0
+            },
+            {
+                question: "Dastur tuzuvchishaxsnima deb yuritiladi?",
+                options: ["Dasturchi.", "Foydalanuvchi.", "To'g'rijavobyo'q."],
+                correct: 0
+            },
+            {
+                question: "Kir yuvishmashinasi ham dasturlashasosidaishlaydimi?",
+                options: ["Yo'q.", "Ha.", "To'g'rijavobyo'q."],
+                correct: 1
+            },
+            {
+                question: "Kompyuter tushunadiganvamuloqatolibboradigan \"til\" ……… deb ataladi.",
+                options: ["Dastur.", "Dasturlashtili.", "Dasturlashalgoritmi."],
+                correct: 1
+            },
+            {
+                question: "Translyatr nima?",
+                options: ["Dastur turi.", "Dasturchinomi.", "Tarjimontili."],
+                correct: 2
+            },
+            {
+                question: "IDE so'ziningto'liqnomi?",
+                options: ["Integrated Development Environment.", "Integrated Development.", "To'g'rijavobyo'q."],
+                correct: 0
+            }
+        ];
 
-  createCards();
-</script>
+        let userAnswers = new Array(questions.length).fill(null);
+        let timeLeft = 25 * 60;
+        let timerInterval;
+        let quizSubmitted = false;
+        let shuffledQuestions = [];
+        let questionIndices = [];
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function initQuiz() {
+            questionIndices = Array.from({ length: questions.length }, (_, i) => i);
+            questionIndices = shuffleArray(questionIndices);
+            shuffledQuestions = questionIndices.map(i => ({ ...questions[i], originalIndex: i }));
+            userAnswers = new Array(questions.length).fill(null);
+            renderQuestions();
+            startTimer();
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            shuffledQuestions.forEach((q, displayIndex) => {
+                const index = q.originalIndex;
+                const div = document.createElement('div');
+                div.className = 'question-container';
+                div.innerHTML = `
+                    <div class="question-number">Savol ${displayIndex + 1}/40</div>
+                    <div class="question-text">${q.question}</div>
+                    <div class="options" id="options-${index}">
+                        ${q.options.map((option, optIndex) => `
+                            <label class="option" id="option-${index}-${optIndex}">
+                                <input type="radio" name="question-${index}" value="${optIndex}" 
+                                    onchange="selectAnswer(${index}, ${optIndex})" 
+                                    ${userAnswers[index] === optIndex ? 'checked' : ''}>
+                                <span>${String.fromCharCode(65 + optIndex)}) ${option}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+
+            updateProgress();
+        }
+
+        function selectAnswer(questionIndex, optionIndex) {
+            userAnswers[questionIndex] = optionIndex;
+            updateProgress();
+
+            const optionLabel = document.getElementById(`option-${questionIndex}-${optionIndex}`);
+            const allOptions = document.querySelectorAll(`[id^="option-${questionIndex}-"]`);
+            allOptions.forEach(opt => opt.classList.remove('selected'));
+            optionLabel.classList.add('selected');
+        }
+
+        function updateProgress() {
+            const answered = userAnswers.filter(a => a !== null).length;
+            const percentage = (answered / questions.length) * 100;
+
+            document.getElementById('progress-fill').style.width = percentage + '%';
+            document.getElementById('answered-counter').textContent = `Javoblar: ${answered}/40`;
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                const timerDisplay = document.getElementById('timer');
+
+                timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+                if (timeLeft <= 300) {
+                    timerDisplay.classList.add('warning');
+                }
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        function submitQuiz() {
+            if (quizSubmitted) return;
+            quizSubmitted = true;
+
+            clearInterval(timerInterval);
+
+            const correct = userAnswers.filter((answer, index) => answer !== null && answer === questions[index].correct).length;
+            const percentage = Math.round((correct / questions.length) * 100);
+
+            const scoreDisplay = document.getElementById('score-display');
+            scoreDisplay.textContent = percentage + '%';
+
+            if (percentage >= 80) {
+                scoreDisplay.classList.add('high');
+            } else if (percentage < 50) {
+                scoreDisplay.classList.add('low');
+            }
+
+            const messagesMap = {
+                100: "Ajoyib! Siz barcha savollarga to'g'ri javob berdingiz!",
+                90: "Juda yaxshi natija! Siz 90% dan ortiq o'zingiz bilan!",
+                80: "Yaxshi! Siz 80% yuqori natija oldinggiz.",
+                70: "O'rta darajali natija. O'z bilimingizni ko'paytiring.",
+                50: "Natija o'rta. Ko'proq o'zini tekshiring.",
+                0: "Iloji bor qayta ko'paytirish. Bilimni o'rganing va qayta urinib ko'ring."
+            };
+
+            const message = Object.keys(messagesMap)
+                .sort((a, b) => b - a)
+                .find(score => percentage >= parseInt(score));
+
+            document.getElementById('results-message').textContent = messagesMap[message];
+            document.getElementById('results-details').innerHTML = `
+                <strong>To'g'ri javoblar:</strong> ${correct}/${questions.length}<br>
+                <strong>Noto'g'ri javoblar:</strong> ${questions.length - correct}/${questions.length}<br>
+                <strong>Javob bermaganlar:</strong> ${userAnswers.filter(a => a === null).length}/${questions.length}
+            `;
+
+            document.getElementById('questions-container').style.display = 'none';
+            document.getElementById('results').classList.add('show');
+            document.getElementById('submit-btn').style.display = 'none';
+        }
+
+        function resetQuiz() {
+            userAnswers = new Array(questions.length).fill(null);
+            quizSubmitted = false;
+            timeLeft = 25 * 60;
+
+            document.getElementById('questions-container').style.display = 'block';
+            document.getElementById('results').classList.remove('show');
+            document.getElementById('submit-btn').style.display = 'block';
+            document.getElementById('timer').classList.remove('warning');
+
+            renderQuestions();
+            startTimer();
+        }
+
+        window.addEventListener('load', initQuiz);
+    </script>
+</body>
+</html>
