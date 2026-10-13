@@ -1,676 +1,239 @@
-<!DOCTYPE html>
-<html lang="uz">
+<!doctype html>
+<html lang="uz" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Informatika Olimpiada Testi</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-            background: #f5f5f5;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            color: white;
-            padding: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header h1 {
-            font-size: 28px;
-            font-weight: 600;
-        }
-
-        .timer {
-            font-size: 24px;
-            font-weight: bold;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 10px 20px;
-            border-radius: 8px;
-            min-width: 120px;
-            text-align: center;
-        }
-
-        .timer.warning {
-            background: #e74c3c;
-        }
-
-        .content {
-            padding: 50px;
-            max-height: 70vh;
-            overflow-y: auto;
-        }
-
-        .question-container {
-            margin-bottom: 50px;
-            padding: 25px;
-            border-left: 5px solid #2c3e50;
-            background: #f9f9f9;
-            border-radius: 8px;
-        }
-
-        .question-number {
-            color: #2c3e50;
-            font-weight: 700;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
-        }
-
-        .question-text {
-            font-size: 17px;
-            font-weight: 600;
-            color: #1a1a1a;
-            margin-bottom: 25px;
-            line-height: 1.7;
-        }
-
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .option {
-            display: flex;
-            align-items: flex-start;
-            padding: 16px 18px;
-            border: 2px solid #d0d0d0;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: white;
-        }
-
-        .option:hover {
-            border-color: #2c3e50;
-            background: #f0f5f9;
-        }
-
-        .option input[type="radio"] {
-            margin-right: 14px;
-            margin-top: 2px;
-            cursor: pointer;
-            width: 18px;
-            height: 18px;
-            accent-color: #2c3e50;
-            flex-shrink: 0;
-        }
-
-        .option label {
-            cursor: pointer;
-            flex: 1;
-            user-select: none;
-            color: #333;
-            font-size: 15px;
-            line-height: 1.6;
-        }
-
-        .option.selected {
-            border-color: #2c3e50;
-            background: #e8f4f8;
-        }
-
-        .option.selected label {
-            color: #2c3e50;
-            font-weight: 600;
-        }
-
-        .footer {
-            padding: 30px 50px;
-            background: #f9f9f9;
-            display: flex;
-            gap: 20px;
-            justify-content: flex-end;
-            border-top: 1px solid #e0e0e0;
-        }
-
-        button {
-            padding: 12px 30px;
-            font-size: 16px;
-            font-weight: 600;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-submit {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            color: white;
-        }
-
-        .btn-submit:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(44, 62, 80, 0.3);
-        }
-
-        .btn-submit:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .btn-reset {
-            background: #ecf0f1;
-            color: #2c3e50;
-        }
-
-        .btn-reset:hover {
-            background: #d5dbdd;
-        }
-
-        .results {
-            display: none;
-            text-align: center;
-            padding: 50px;
-        }
-
-        .results.show {
-            display: block;
-        }
-
-        .score-display {
-            font-size: 56px;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 20px;
-        }
-
-        .score-display.high {
-            color: #27ae60;
-        }
-
-        .score-display.low {
-            color: #e74c3c;
-        }
-
-        .results-text {
-            font-size: 18px;
-            color: #555;
-            margin-bottom: 15px;
-            font-weight: 500;
-        }
-
-        .results-info {
-            background: #f9f9f9;
-            padding: 25px;
-            border-radius: 8px;
-            margin-top: 25px;
-            border-left: 5px solid #2c3e50;
-            text-align: left;
-            display: inline-block;
-        }
-
-        .results-info p {
-            margin: 10px 0;
-            font-size: 16px;
-            color: #333;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: #e0e0e0;
-            border-radius: 3px;
-            margin-top: 25px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #2c3e50 0%, #34495e 100%);
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        .answered-counter {
-            font-size: 14px;
-            color: #666;
-            margin-top: 25px;
-            font-weight: 500;
-        }
-
-        @media (max-width: 600px) {
-            .header {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-                padding: 20px;
-            }
-
-            .header h1 {
-                font-size: 22px;
-            }
-
-            .content {
-                padding: 25px;
-            }
-
-            .question-container {
-                margin-bottom: 35px;
-                padding: 18px;
-            }
-
-            .footer {
-                flex-direction: column;
-                padding: 20px 25px;
-            }
-
-            .results {
-                padding: 30px;
-            }
-
-            button {
-                width: 100%;
-            }
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<meta name="description" content="10-sinf informatika: 5 ta 30 savolli olimpiada varianti, 100/100 bilan ochiladigan bosqichlar va izohli xato tahlili. Internetsiz ishlaydi.">
+<title>10-sinf Informatika · Olimpiada 150</title>
+<style>
+:root{--bg:#0c1423;--surface:#131f31;--surface2:#19273b;--text:#ecf2f9;--muted:#9caec6;--line:#2a384d;--accent:#77e5c1;--accent-ink:#0b3427;--accent-bg:#193c36;--blue:#8cb9ff;--blue-bg:#1c3050;--warning:#f4c46c;--warning-bg:#42351e;--red:#ff959b;--red-bg:#412630;--shadow:0 12px 36px #00000016;--radius:20px}
+html[data-theme="light"]{--bg:#f1f4f8;--surface:#fff;--surface2:#f6f8fb;--text:#19273b;--muted:#607187;--line:#dae2ec;--accent:#167b5d;--accent-ink:#fff;--accent-bg:#e3f5ed;--blue:#346fc2;--blue-bg:#e9f1ff;--warning:#94600e;--warning-bg:#fff4db;--red:#b73645;--red-bg:#fdebee;--shadow:0 12px 36px #30486a0b}
+*{box-sizing:border-box}body{margin:0;font:15px/1.6 'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text)}button,input,select{font:inherit}button,a,input,select,summary{-webkit-tap-highlight-color:transparent}button{cursor:pointer}button:disabled{cursor:not-allowed}a{color:var(--blue);text-underline-offset:3px}button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:4px}button{border:0}h1,h2,h3,p{margin:0}h1,h2,h3{line-height:1.22;letter-spacing:-.035em}h1{font-size:42px}h2{font-size:26px}h3{font-size:19px}small{font-size:12px}.muted{color:var(--muted)}.eyebrow{text-transform:uppercase;letter-spacing:.16em;font-size:11px;font-weight:750;color:var(--accent)}.icon{width:20px;height:20px;flex:none;vertical-align:middle}.row{display:flex;align-items:center;gap:12px}.between{justify-content:space-between}.wrap{flex-wrap:wrap}.spacer{flex:1}.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:44px;padding:10px 18px;border-radius:11px;font-weight:650;transition:background .15s,transform .15s;text-decoration:none}.btn:hover{transform:translateY(-1px)}.btn:disabled{transform:none;opacity:.6}.primary{background:var(--accent);color:var(--accent-ink)}.secondary{background:var(--surface2);color:var(--text);border:1px solid var(--line)}.ghost{background:transparent;color:var(--muted);border:1px solid transparent}.ghost:hover{background:var(--surface2);color:var(--text)}.danger{background:var(--red-bg);color:var(--red)}.smallbtn{min-height:36px;padding:7px 12px;font-size:13px}.iconbtn{display:flex;align-items:center;justify-content:center;width:42px;height:42px;border:1px solid var(--line);border-radius:11px;background:var(--surface);color:var(--text)}
+.app-header{height:82px;border-bottom:1px solid var(--line);background:var(--surface);display:flex;align-items:center;justify-content:space-between;padding:0 max(28px,calc((100vw - 1280px)/2));gap:24px}.brand{display:flex;align-items:center;gap:12px;cursor:pointer}.brand-mark{display:grid;place-items:center;width:42px;height:42px;border:1px solid var(--accent);border-radius:13px;background:var(--accent-bg);color:var(--accent)}.brand-title{font-size:17px;letter-spacing:.035em;font-weight:800;line-height:1.1}.brand-sub{font-size:10px;letter-spacing:.18em;color:var(--muted);margin-top:5px}.header-nav{display:flex;align-items:center;gap:6px}.navbtn{padding:8px 15px;border-radius:10px;background:transparent;color:var(--muted);font-size:13px;font-weight:650;min-height:42px}.navbtn.active{background:var(--accent-bg);color:var(--accent)}.header-tag{font-size:12px;border:1px solid var(--line);padding:5px 11px;border-radius:30px;color:var(--muted)}
+main{max-width:1280px;margin:auto;padding:34px 28px 64px}.intro{margin-bottom:23px;display:flex;align-items:center;justify-content:space-between;gap:20px}.intro h2{font-size:26px}.name-input{width:190px;background:var(--surface);border:1px solid var(--line);color:var(--text);padding:10px 13px;border-radius:10px;font-size:13px}.hero{position:relative;overflow:hidden;background:linear-gradient(115deg,#11283c,#123a3b);border:1px solid #30514f;border-radius:24px;padding:35px 40px;color:#f1f8fb;display:grid;grid-template-columns:1.45fr 1fr;gap:38px}.hero:after{content:'';position:absolute;right:-70px;top:-150px;width:420px;height:420px;border:1px solid #8de7c21d;border-radius:50%;pointer-events:none;box-shadow:0 0 0 55px #8de7c208,0 0 0 110px #8de7c206}.hero-text,.hero-visual{position:relative;z-index:1}.hero .eyebrow{color:#89e7c8}.hero h1{margin:14px 0 15px;max-width:600px}.hero p{color:#c1d5dc;max-width:520px;font-size:14px}.hero-tags{display:flex;gap:20px;margin-top:24px;font-size:13px;color:#d6e8ec}.hero-tags span{display:flex;align-items:center;gap:7px}.hero-visual{display:flex;flex-direction:column;justify-content:center;gap:18px}.hero-progress-label{display:flex;justify-content:space-between;color:#c1d5dc;font-size:12px}.stage-track{display:flex;gap:10px}.track-step{flex:1;border:1px solid #48726b;border-radius:12px;padding:15px 4px;text-align:center;background:#ffffff08}.track-step span{display:block;font-size:11px;color:#bacfce;margin-top:8px}.track-step.done{background:#77e5c123;color:#a1f2d7;border-color:#77e5c1}.track-step.now{background:#eefaf1;color:#173f34;border-color:#eefaf1}.track-step.now span{color:#356452}.track-step.locked{color:#829c9c;opacity:.65}.hero-note{font-size:12px;color:#c3d7d6;display:flex;align-items:flex-start;gap:9px}.hero-note .icon{width:17px;height:17px;margin-top:2px}
+.dashboard-grid{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:26px;margin-top:30px}.section-head{margin-bottom:18px}.section-head h2{font-size:22px}.section-head p{font-size:13px;color:var(--muted);margin-top:5px}.variant-card{display:grid;grid-template-columns:56px minmax(0,1fr) 155px;gap:20px;align-items:center;border:1px solid var(--line);border-radius:17px;background:var(--surface);padding:23px;margin-bottom:13px;box-shadow:var(--shadow)}.variant-card.locked{background:var(--surface2);box-shadow:none}.variant-number{width:52px;height:52px;display:grid;place-items:center;font-size:21px;letter-spacing:-.03em;font-weight:750;border-radius:15px;background:var(--blue-bg);color:var(--blue)}.variant-card.passed .variant-number{background:var(--accent-bg);color:var(--accent)}.variant-card.locked .variant-number{background:var(--bg);color:var(--muted);border:1px solid var(--line)}.variant-card h3{margin-bottom:6px;font-size:18px}.variant-card p{font-size:12px;color:var(--muted)}.variant-meta{display:flex;gap:13px;flex-wrap:wrap;margin-top:9px;font-size:11px;color:var(--muted)}.variant-actions{text-align:right}.variant-actions .btn{width:100%;font-size:13px}.variant-best{display:block;font-size:11px;color:var(--muted);margin-top:8px}.tag{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:650;padding:4px 10px;border-radius:8px;background:var(--surface2);color:var(--muted)}.tag.green{background:var(--accent-bg);color:var(--accent)}.tag.blue{background:var(--blue-bg);color:var(--blue)}.tag.amber{background:var(--warning-bg);color:var(--warning)}.tag.red{background:var(--red-bg);color:var(--red)}
+.panel{padding:23px;border:1px solid var(--line);border-radius:17px;background:var(--surface);box-shadow:var(--shadow);margin-bottom:18px}.panel h3{font-size:16px;margin-bottom:15px}.topic-list{display:grid;gap:13px}.topic-row{display:flex;align-items:center;gap:10px;font-size:13px}.topic-row .icon{color:var(--blue);width:17px;height:17px}.topic-row small{margin-left:auto;color:var(--muted)}.mini-score{font-size:36px;letter-spacing:-.04em;font-weight:750;line-height:1.2}.mini-score span{font-size:16px;color:var(--muted);font-weight:400}.thin-progress{height:6px;border-radius:10px;background:var(--line);overflow:hidden;margin:15px 0}.thin-progress div{height:100%;background:var(--accent);border-radius:10px}.rule-row{display:flex;justify-content:space-between;gap:14px;font-size:12px;padding:8px 0;border-bottom:1px solid var(--line)}.rule-row:last-child{border-bottom:0}.rule-row span{color:var(--muted)}.notice{padding:16px 19px;margin:20px 0 0;border:1px solid var(--line);border-radius:13px;background:var(--surface);display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:13px}.notice .icon{color:var(--accent)}.footer-note{font-size:11px;color:var(--muted);margin-top:28px;display:flex;align-items:center;gap:8px}.footer-note .icon{width:14px;height:14px}
+.exam-top{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:25px}.exam-title{display:flex;gap:16px;align-items:center}.exam-title h2{font-size:22px}.exam-title p{font-size:12px;color:var(--muted);margin-top:4px}.timer-box{display:flex;align-items:center;gap:13px;border:1px solid var(--line);background:var(--surface);border-radius:13px;padding:10px 17px;min-width:165px}.timer-box .icon{color:var(--accent)}.timer-time{font-family:Consolas,monospace;font-size:22px;font-weight:750;line-height:1.2;letter-spacing:.02em}.timer-caption{font-size:10px;color:var(--muted)}.timer-box.urgent{color:var(--red);border-color:var(--red)}.timer-box.urgent .icon{color:var(--red)}.exam-grid{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:26px;align-items:start}.question-card{min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:30px;box-shadow:var(--shadow)}.question-meta{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:22px}.question-count{font-size:12px;color:var(--muted)}.question-count strong{font-size:15px;color:var(--text)}#question-prompt:focus{outline:none}.question-prompt{font-size:21px;line-height:1.55;font-weight:600;letter-spacing:-.015em;margin-bottom:24px;white-space:pre-line}.code-wrap{background:var(--bg);border:1px solid var(--line);border-radius:12px;margin:0 0 22px;overflow:hidden}.code-top{display:flex;justify-content:space-between;padding:8px 15px;border-bottom:1px solid var(--line);color:var(--muted);font-size:10px;letter-spacing:.07em}.code-wrap pre{margin:0;padding:18px 20px;overflow-x:auto;line-height:1.7;font-size:14px;font-family:Consolas,'Courier New',monospace;tab-size:4;white-space:pre}.options{display:grid;gap:11px}.option{display:flex;align-items:center;gap:15px;width:100%;text-align:left;background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:15px 18px;color:var(--text);min-height:66px;font-weight:550;line-height:1.45}.option:hover{border-color:var(--blue);background:var(--blue-bg)}.option.selected{border-color:var(--accent);background:var(--accent-bg)}.option-letter{width:33px;height:33px;display:grid;place-items:center;flex:none;border:1px solid var(--line);border-radius:9px;color:var(--muted);font-size:13px;font-weight:750;background:var(--surface)}.option.selected .option-letter{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}.option-text{white-space:pre-wrap;word-break:break-word}.option-indicator{margin-left:auto;color:var(--accent);width:17px;height:17px;flex:none}.question-actions{margin-top:25px;border-top:1px solid var(--line);padding-top:18px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.flag-btn.flagged{background:var(--warning-bg);color:var(--warning)}.nav-buttons{display:flex;gap:9px}.question-board{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:18px}.qnum{position:relative;aspect-ratio:1;border:1px solid var(--line);background:var(--surface2);border-radius:8px;color:var(--muted);font-size:12px;font-weight:650}.qnum.answered{background:var(--accent-bg);color:var(--accent);border-color:var(--accent)}.qnum.current{outline:2px solid var(--blue);outline-offset:2px;color:var(--text)}.qnum.flagged:after{content:'';position:absolute;right:3px;top:3px;width:5px;height:5px;border-radius:50%;background:var(--warning)}.board-legend{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0;font-size:10px;color:var(--muted)}.legend{display:flex;gap:5px;align-items:center}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--line)}.dot.green{background:var(--accent)}.dot.blue{background:var(--blue)}.dot.amber{background:var(--warning)}.exam-sidebar{min-width:0}.exam-sidebar .panel{padding:20px}.exam-sidebar .btn{width:100%}.board-count{font-size:12px;color:var(--muted)}.board-count strong{color:var(--text)}.keyboard-note{font-size:11px;line-height:1.7;color:var(--muted);padding:3px 4px}.keyboard-note kbd{font:11px Consolas,monospace;border:1px solid var(--line);padding:2px 5px;border-radius:4px;background:var(--surface)}.exam-note{font-size:11px;color:var(--muted);margin-top:16px}.mobile-map-link{display:none}
+.result-hero{border:1px solid var(--line);border-radius:22px;padding:34px;background:var(--surface);display:grid;grid-template-columns:175px minmax(0,1fr);gap:32px;align-items:center}.score-ring{position:relative;border-radius:50%;width:160px;height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(closest-side,var(--surface) 83%,transparent 85%),conic-gradient(var(--accent) calc(var(--score)*1%),var(--line) 0);font-size:43px;line-height:1.1;font-weight:800;letter-spacing:-.05em}.score-ring span{font-size:13px;font-weight:400;color:var(--muted);letter-spacing:0;margin-top:6px}.result-hero h1{font-size:30px;margin:8px 0 12px}.result-hero p{color:var(--muted);font-size:14px}.result-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:22px 0 28px}.stat-box{padding:18px 21px;border:1px solid var(--line);background:var(--surface);border-radius:14px}.stat-box strong{font-size:25px;display:block;letter-spacing:-.02em}.stat-box small{color:var(--muted)}.stat-box.good strong{color:var(--accent)}.stat-box.bad strong{color:var(--red)}.review-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:25px 0 20px}.segmented{display:flex;gap:4px;border:1px solid var(--line);border-radius:11px;padding:4px;background:var(--surface)}.segmented button{font-size:12px;color:var(--muted);padding:7px 13px;background:transparent;border-radius:7px}.segmented button.active{color:var(--accent);background:var(--accent-bg);font-weight:650}.review-card{border:1px solid var(--line);background:var(--surface);border-radius:15px;margin-bottom:15px;overflow:hidden}.review-card summary{padding:19px 22px;cursor:pointer;display:flex;gap:12px;align-items:flex-start;list-style:none}.review-card summary::-webkit-details-marker{display:none}.review-status{margin-top:3px;flex:none;color:var(--red)}.review-card.correct .review-status{color:var(--accent)}.review-card summary strong{font-size:14px;font-weight:600;line-height:1.6}.review-card summary small{display:block;color:var(--muted);margin-bottom:5px}.review-chevron{margin-left:auto;flex:none;transition:transform .15s}.review-card[open] .review-chevron{transform:rotate(180deg)}.review-content{padding:0 22px 22px 54px}.answer-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0}.answer-box{padding:13px 16px;border-radius:9px;font-size:14px;white-space:pre-wrap;word-break:break-word}.answer-box small{display:block;margin-bottom:4px;font-size:10px;font-weight:700;letter-spacing:.02em}.answer-box.wrong{background:var(--red-bg);color:var(--red)}.answer-box.right{background:var(--accent-bg);color:var(--accent)}.explanation{border-left:3px solid var(--blue);padding:10px 16px;background:var(--blue-bg);border-radius:0 9px 9px 0;font-size:13px;line-height:1.8}.explanation strong{font-size:11px;display:block;color:var(--blue);margin-bottom:5px}.topic-analysis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}.topic-analysis .panel{padding:14px 16px;margin:0}.topic-analysis strong{font-size:12px}.topic-analysis small{display:block;color:var(--muted);font-size:11px}.empty{border:1px dashed var(--line);border-radius:15px;text-align:center;padding:40px 20px;color:var(--muted);background:var(--surface)}.empty .icon{width:32px;height:32px;color:var(--accent);margin-bottom:12px}.empty h3{color:var(--text);margin-bottom:8px}
+.history-best{grid-template-columns:repeat(5,1fr)}.content-page{max-width:940px;margin:auto}.page-head{margin-bottom:28px}.page-head h1{font-size:32px;margin-bottom:10px}.page-head p{color:var(--muted);font-size:14px}.rules-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.rules-grid .panel p{font-size:13px;color:var(--muted);line-height:1.85}.rules-list{padding-left:20px;margin:0;font-size:13px;color:var(--muted)}.rules-list li{padding-bottom:10px}.data-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:12px}.data-table th,.data-table td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left}.data-table th{background:var(--surface2);color:var(--muted);font-size:10px;letter-spacing:.04em}.source-list{padding-left:20px;color:var(--muted);font-size:13px;margin:12px 0 0}.source-list li{margin-bottom:9px}.history-table-wrap{overflow-x:auto}.history-table-wrap .data-table{min-width:660px}.history-tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}.history-table-wrap td .btn{min-height:32px;padding:5px 12px}.practice-feedback{margin-top:20px}.practice-feedback .explanation{margin-top:12px}.practice-done{max-width:750px;margin:40px auto;text-align:center}.practice-done h1{font-size:30px;margin:15px 0}.practice-done p{color:var(--muted)}.practice-done .row{justify-content:center;margin-top:25px}
+dialog{color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:28px;max-width:460px;width:calc(100% - 40px);box-shadow:0 24px 90px #0006}dialog::backdrop{background:#030c1cb5;backdrop-filter:blur(4px)}dialog h2{font-size:23px;margin:0 0 12px}dialog p{font-size:14px;color:var(--muted);margin-bottom:24px}dialog .dialog-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap}.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:20;max-width:calc(100vw - 40px);padding:12px 20px;background:var(--text);color:var(--bg);border-radius:12px;box-shadow:var(--shadow);font-size:13px;text-align:center}.toast[hidden]{display:none}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.confetti{position:fixed;pointer-events:none;top:-15px;width:7px;height:12px;z-index:10;animation:fall 2.5s ease-in forwards}@keyframes fall{to{transform:translateY(110vh) rotate(700deg);opacity:0}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;animation:none!important}.confetti{display:none}}
+@media(min-width:1000px){.exam-sidebar{position:sticky;top:24px}}@media(max-width:1000px){.hero{padding:30px;gap:24px}.hero h1{font-size:35px}.dashboard-grid,.exam-grid{grid-template-columns:minmax(0,1fr) 255px;gap:19px}.variant-card{grid-template-columns:48px minmax(0,1fr);gap:15px;padding:21px}.variant-actions{grid-column:2;text-align:left;display:flex;gap:12px;align-items:center}.variant-actions .btn{width:auto}.variant-best{margin:0}.question-card{padding:24px}.question-prompt{font-size:19px}.header-tag{display:none}}
+@media(max-width:780px){.app-header{height:auto;min-height:75px;padding:16px 20px;flex-wrap:wrap;gap:12px}.brand-title{font-size:15px}.brand-sub{font-size:9px}.header-nav{order:3;width:100%;justify-content:space-between}.navbtn{font-size:12px;padding:7px 12px;flex:1}main{padding:24px 20px 45px}.hero{grid-template-columns:1fr}.hero h1{font-size:33px}.hero-visual{gap:13px}.track-step{padding:10px 4px}.track-step span{margin-top:4px}.dashboard-grid,.exam-grid{grid-template-columns:minmax(0,1fr)}.dashboard-aside{display:grid;grid-template-columns:1fr 1fr;gap:14px}.dashboard-aside .panel:last-child{grid-column:1/-1}.intro{align-items:flex-start}.intro h2{font-size:23px}.name-input{width:170px}.exam-top{align-items:flex-start}.exam-title h2{font-size:20px}.exam-title .iconbtn{display:none}.timer-box{min-width:128px;padding:9px 12px;gap:8px}.timer-time{font-size:19px}.question-prompt{font-size:19px}.question-board{grid-template-columns:repeat(10,1fr)}.qnum{max-height:42px;aspect-ratio:1}.mobile-map-link{display:inline-flex;color:var(--blue);font-size:12px;margin-bottom:15px}.keyboard-note{display:none}.stats-grid{grid-template-columns:1fr 1fr}.topic-analysis{grid-template-columns:1fr 1fr}.result-hero{grid-template-columns:120px 1fr;padding:24px;gap:20px}.score-ring{width:120px;height:120px;font-size:33px}.result-hero h1{font-size:24px}.rules-grid{grid-template-columns:1fr}.notice{flex-wrap:wrap}.review-content{padding-left:22px}}
+@media(max-width:480px){.history-best{grid-template-columns:repeat(2,1fr)}main{padding-left:14px;padding-right:14px}.app-header{padding-left:14px;padding-right:14px}.intro{flex-direction:column;gap:12px}.name-input{width:100%}.intro label{width:100%}.hero{padding:25px 22px;border-radius:19px}.hero h1{font-size:31px}.hero-tags{gap:13px;font-size:11px}.hero-tags .icon{width:16px;height:16px}.variant-card{padding:17px}.variant-card h3{font-size:16px}.variant-actions{flex-wrap:wrap;gap:8px}.dashboard-aside{grid-template-columns:1fr}.dashboard-aside .panel:last-child{grid-column:auto}.question-card{padding:19px 17px}.question-meta{gap:8px;flex-wrap:wrap}.question-prompt{font-size:18px;margin-bottom:20px}.option{padding:13px 12px;gap:11px;font-size:14px}.question-actions{gap:12px}.question-actions .flag-btn{padding:7px 10px}.nav-buttons .btn{padding:8px 11px;font-size:12px}.question-board{gap:6px}.qnum{font-size:11px}.result-hero{grid-template-columns:1fr;text-align:center}.score-ring{margin:auto;width:140px;height:140px}.result-actions{justify-content:center}.stat-box{padding:15px}.review-head{align-items:flex-start;flex-direction:column}.review-head h2{font-size:22px}.answer-pair{grid-template-columns:1fr}.topic-analysis{grid-template-columns:1fr 1fr}.review-card summary{padding:17px}.review-content{padding:0 17px 17px}.exam-title h2{font-size:17px}.exam-title p{font-size:10px}.timer-box{min-width:118px}.hero-note{font-size:11px}.header-nav .navbtn{padding:6px 8px}}
+@media print{.app-header,.result-actions,.review-head .segmented,.history-tools,.toast,.footer-note{display:none!important}html[data-theme]{--bg:#fff;--surface:#fff;--surface2:#f8f8f8;--text:#111;--muted:#555;--line:#ccc;--accent:#176a4c;--accent-bg:#eef8f2;--blue:#205095;--blue-bg:#f1f5ff;--red:#b32835;--red-bg:#fff1f1}main{max-width:none;padding:0}.review-card{break-inside:avoid}.review-card .review-content{display:block}.code-wrap pre{white-space:pre-wrap}.result-hero{break-inside:avoid}.stats-grid{gap:10px}dialog{display:none}}
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Informatika Olimpiada Testi</h1>
-            <div class="timer" id="timer">25:00</div>
-        </div>
+<header class="app-header" id="header"></header>
+<main id="app" tabindex="-1"></main>
+<dialog id="modal" aria-labelledby="modal-title"></dialog>
+<div id="toast" class="toast" role="status" hidden></div>
+<input type="file" id="import-file" accept="application/json,.json" hidden>
+<noscript><p style="padding:24px">Testni ishlash uchun brauzeringizda JavaScript yoqilgan bo‘lishi kerak.</p></noscript>
+<script id="question-data" type="application/json">[{"id":"v1q01","stage":1,"number":1,"topic":"Qurilmalar","prompt":"Quyidagi qurilmalardan qaysi biri axborotni chiqarish qurilmasi?","options":["Skaner","Mikrofon","Klaviatura","Monitor"],"answer":3,"explanation":"Monitor kompyuter natijasini ekranda ko‘rsatadi. Klaviatura, skaner va mikrofon axborotni kompyuterga kiritadi.","code":null,"difficulty":"Oson","weight":9},{"id":"v1q02","stage":1,"number":2,"topic":"Qurilmalar","prompt":"Elektr ta’minoti uzilganda qaysi xotiradagi joriy ma’lumot odatda yo‘qoladi?","options":["HDD","SSD","USB flesh xotira","RAM"],"answer":3,"explanation":"RAM — energiyaga bog‘liq tezkor xotira. SSD, HDD va flesh xotira ma’lumotni elektrsiz ham saqlaydi.","code":null,"difficulty":"Oson","weight":9},{"id":"v1q03","stage":1,"number":3,"topic":"Excel","prompt":"Excel ish kitobining zamonaviy standart fayl kengaytmasi qaysi?","options":[".xlsx",".pptx",".png",".docx"],"answer":0,"explanation":".xlsx — Excel ish kitobi; .docx — Word hujjati; .pptx — PowerPoint taqdimoti; .png — rasm.","code":null,"difficulty":"Oson","weight":9},{"id":"v1q04","stage":1,"number":4,"topic":"Dasturiy ta’minot","prompt":"Ko‘pchilik Windows dasturlarida Ctrl + Z qanday amalni bajaradi?","options":["Hujjatni saqlaydi","Hujjatni chop etadi","Oxirgi amalni bekor qiladi","Belgilangan matnni nusxalaydi"],"answer":2,"explanation":"Ctrl + Z oxirgi amalni bekor qilish uchun ishlatiladi. Saqlash — Ctrl + S, nusxalash — Ctrl + C, chop etish — Ctrl + P.","code":null,"difficulty":"Oson","weight":9},{"id":"v1q05","stage":1,"number":5,"topic":"Axborot hajmi","prompt":"1 KiB necha baytga teng?","options":["8192","8","1024","1000"],"answer":2,"explanation":"KiB — kibibayt: 2¹⁰ = 1024 bayt. 1000 bayt esa SI tizimidagi 1 kB. Bayt va bitni aralashtirmang.","code":null,"difficulty":"Oson","weight":9},{"id":"v1q06","stage":1,"number":6,"topic":"Sanoq sistemalari","prompt":"101101₂ sonining o‘nlik qiymatini toping.","options":["45","53","43","47"],"answer":0,"explanation":"101101₂ = 1·32 + 0·16 + 1·8 + 1·4 + 0·2 + 1 = 45.","code":null,"difficulty":"Oson","weight":9},{"id":"v1q07","stage":1,"number":7,"topic":"Sanoq sistemalari","prompt":"27₁₀ sonini ikkilik sanoq sistemasida yozing.","options":["11011","11101","10111","11010"],"answer":0,"explanation":"27 = 16 + 8 + 2 + 1. 16, 8, 4, 2, 1 xonalaridagi bitlar: 1, 1, 0, 1, 1.","code":null,"difficulty":"Oson","weight":9},{"id":"v1q08","stage":1,"number":8,"topic":"Mantiq","prompt":"A AND B ifodasining ikki o‘zgaruvchili rostlik jadvalida nechta satrda natija 1 bo‘ladi?","options":["4","3","2","1"],"answer":3,"explanation":"AND faqat ikkala qiymat ham 1 bo‘lganda rost: (1,1). Qolgan uchta satrda natija 0.","code":null,"difficulty":"Oson","weight":9},{"id":"v1q09","stage":1,"number":9,"topic":"Python","prompt":"Python dasturi manba faylining odatiy kengaytmasi qaysi?","options":[".xlsx",".py",".exe",".jpg"],"answer":1,"explanation":"Python manba kodi odatda .py faylda saqlanadi. .exe bajariluvchi fayl, .xlsx ish kitobi va .jpg rasm kengaytmasidir.","code":null,"difficulty":"Oson","weight":9},{"id":"v1q10","stage":1,"number":10,"topic":"Excel","prompt":"B2:D5 diapazonida nechta katak bor?","options":["10","12","9","15"],"answer":1,"explanation":"B, C, D — 3 ustun. 2, 3, 4, 5 — 4 satr. 3 · 4 = 12 katak. Chegaradagi kataklar ham hisoblanadi.","code":null,"difficulty":"Oson","weight":9},{"id":"v1q11","stage":1,"number":11,"topic":"Sanoq sistemalari","prompt":"157₈ sonini o‘nlik sanoq sistemasiga o‘tkazing.","options":["157","115","107","111"],"answer":3,"explanation":"157₈ = 1·8² + 5·8 + 7 = 64 + 40 + 7 = 111.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v1q12","stage":1,"number":12,"topic":"Sanoq sistemalari","prompt":"2E₁₆ sonining o‘nlik qiymatini toping.","options":["44","48","42","46"],"answer":3,"explanation":"O‘n oltilikda E = 14. Shuning uchun 2E₁₆ = 2·16 + 14 = 46.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v1q13","stage":1,"number":13,"topic":"Axborot hajmi","prompt":"16 xil rangni bir xil uzunlikdagi ikkilik kod bilan ifodalash uchun kamida necha bit kerak?","options":["8","2","16","4"],"answer":3,"explanation":"b bit bilan 2ᵇ xil kod yoziladi. 2³ = 8 yetmaydi, 2⁴ = 16 yetadi. Eng kam uzunlik — 4 bit.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v1q14","stage":1,"number":14,"topic":"Axborot hajmi","prompt":"512 bayt ma’lumot necha bit bo‘ladi?","options":["4096","8192","1024","512"],"answer":0,"explanation":"1 bayt = 8 bit. 512 · 8 = 4096 bit.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v1q15","stage":1,"number":15,"topic":"Excel","prompt":"A1:A4 kataklarda mos ravishda 2, 4, 6, 8 yozilgan. =SUM(A1:A4) natijasi nechaga teng?","options":["20","10","24","16"],"answer":0,"explanation":"SUM diapazondagi sonlarni qo‘shadi: 2 + 4 + 6 + 8 = 20.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v1q16","stage":1,"number":16,"topic":"Excel","prompt":"B2 katakdagi =B3+$D$1 formula D5 katakka nusxalansa, qanday formula hosil bo‘ladi?","options":["=B3+$D$1","=D6+$D$1","=D6+$F$4","=D3+$D$1"],"answer":1,"explanation":"B2 → D5 siljish: 2 ustun o‘ngga va 3 satr pastga. Nisbiy B3 → D6. $D$1 ning ustuni ham, satri ham mutlaq bo‘lgani uchun o‘zgarmaydi.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v1q17","stage":1,"number":17,"topic":"Python","prompt":"Python 3 kodi nimani chiqaradi?","options":["3 2","3 3","3.4 2","2 3"],"answer":0,"explanation":"17 // 5 butun bo‘linmani beradi: 3. 17 % 5 qoldiqni beradi: 2. print ikki natijani bo‘shliq bilan ajratadi.","code":"print(17 // 5, 17 % 5)","difficulty":"O‘rta","weight":15},{"id":"v1q18","stage":1,"number":18,"topic":"Python","prompt":"Python 3 kodi nimani chiqaradi?","options":["Xatolik","aaabbb","ab3","ababab"],"answer":3,"explanation":"Satrni butun songa ko‘paytirish shu satrni takrorlaydi: \"ab\" + \"ab\" + \"ab\" = \"ababab\".","code":"print(\"ab\" * 3)","difficulty":"O‘rta","weight":15},{"id":"v1q19","stage":1,"number":19,"topic":"Python","prompt":"Python 3 kodi nimani chiqaradi?","options":["9","12","10","11"],"answer":3,"explanation":"len satrdagi belgilarni sanaydi. I, N, F, O, R, M, A, T, I, K, A — jami 11 belgi.","code":"print(len(\"INFORMATIKA\"))","difficulty":"O‘rta","weight":15},{"id":"v1q20","stage":1,"number":20,"topic":"Python","prompt":"Python 3 kodi nimani chiqaradi?","options":["[2, 5, 8, 11]","[3, 6, 9]","[2, 5, 8]","[2, 3, 4, 5, 6, 7, 8, 9, 10]"],"answer":2,"explanation":"range 2 dan boshlanib 3 qadam bilan yuradi: 2, 5, 8. Oxirgi chegara 11 kiritilmaydi.","code":"print(list(range(2, 11, 3)))","difficulty":"O‘rta","weight":15},{"id":"v1q21","stage":1,"number":21,"topic":"Python","prompt":"Quyidagi Python 3 dasturi yakunda qaysi sonni chiqaradi?","options":["21","12","6","9"],"answer":1,"explanation":"range(1,7) sonlari 1–6. Shart faqat 2, 4, 6 uchun rost. Yig‘indi: 2 + 4 + 6 = 12.","code":"s = 0\nfor i in range(1, 7):\n    if i % 2 == 0:\n        s += i\nprint(s)","difficulty":"Murakkab","weight":26},{"id":"v1q22","stage":1,"number":22,"topic":"Python","prompt":"Python 3 kodidagi kesim natijasini toping.","options":["[2, 4, 6]","[4, 6, 8, 10]","[2, 4, 6, 8]","[4, 6, 8]"],"answer":3,"explanation":"Indekslar 0 dan boshlanadi. [1:4] indekslari 1, 2, 3 bo‘lgan elementlarni oladi; 4-indeks kiritilmaydi.","code":"a = [2, 4, 6, 8, 10]\nprint(a[1:4])","difficulty":"Murakkab","weight":26},{"id":"v1q23","stage":1,"number":23,"topic":"Axborot hajmi","prompt":"80 × 50 pikselli rasmda har piksel 8 bit bilan kodlangan. Siqish va xizmat ma’lumotlarisiz rasm necha bayt?","options":["8000","4000","500","32000"],"answer":1,"explanation":"80 · 50 = 4000 piksel. Har piksel 8 bit = 1 bayt. Jami 4000 bayt. 32000 — bitdagi hajm.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v1q24","stage":1,"number":24,"topic":"Axborot hajmi","prompt":"16 belgili alifbodan tuzilgan 2048 belgili matn bir xil minimal uzunlikdagi ikkilik kod bilan yozildi. Xizmat ma’lumotlarisiz hajmi necha KiB?","options":["2","4","1","8"],"answer":2,"explanation":"16 = 2⁴, demak har belgi 4 bit. 2048 · 4 = 8192 bit = 1024 bayt = 1 KiB.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v1q25","stage":1,"number":25,"topic":"Mantiq","prompt":"(A OR B) AND (NOT C) ifodasi uch o‘zgaruvchili rostlik jadvalining nechta satrida rost?","options":["2","6","4","3"],"answer":3,"explanation":"NOT C rost bo‘lishi uchun C = 0. A OR B esa (0,1), (1,0), (1,1) da rost. Jami 3 ta kombinatsiya.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v1q26","stage":1,"number":26,"topic":"Excel","prompt":"A1:A3 kataklarda 4, 6, 8 bor. =IF(AVERAGE(A1:A3)>=6,MAX(A1:A3),MIN(A1:A3)) natijasi nechaga teng?","options":["6","18","8","4"],"answer":2,"explanation":"AVERAGE = (4+6+8)/3 = 6. 6>=6 sharti rost, shuning uchun MAX tanlanadi: 8. MIN = 4 bu yerda ishlatilmaydi.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v1q27","stage":1,"number":27,"topic":"Sanoq sistemalari","prompt":"111001₂ + 1011₂ yig‘indisini ikkilik ko‘rinishda toping.","options":["1000010","1001100","1000100","111100"],"answer":2,"explanation":"111001₂ = 57, 1011₂ = 11. 57 + 11 = 68 = 64 + 4 = 1000100₂.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v1q28","stage":1,"number":28,"topic":"Python","prompt":"Python 3 dasturida ichki sikl jami necha marta bajariladi?","options":["10","16","20","6"],"answer":0,"explanation":"Tashqi siklda i = 1, 2, 3, 4. Ichki sikl mos ravishda 1, 2, 3, 4 marta ishlaydi: 1 + 2 + 3 + 4 = 10.","code":"count = 0\nfor i in range(1, 5):\n    for j in range(i):\n        count += 1\nprint(count)","difficulty":"Murakkab","weight":26},{"id":"v1q29","stage":1,"number":29,"topic":"Python","prompt":"Python 3 rekursiv funksiyasi natijasini toping.","options":["8","13","12","6"],"answer":0,"explanation":"f(0)=0, f(1)=1. Keyingi qiymatlar: f(2)=1, f(3)=2, f(4)=3, f(5)=5, f(6)=8. Har biri oldingi ikkita qiymat yig‘indisi.","code":"def f(n):\n    if n \u003c= 1:\n        return n\n    return f(n - 1) + f(n - 2)\n\nprint(f(6))","difficulty":"Murakkab","weight":26},{"id":"v1q30","stage":1,"number":30,"topic":"Tarmoqlar","prompt":"20 KiB fayl 4 Kibit/s tezlikda uzatiladi. Kechikish va xizmat ma’lumotlarini hisobga olmang. Uzatish necha soniya davom etadi?","options":["5","20","160","40"],"answer":3,"explanation":"20 KiB = 20·1024 bayt = 160·1024 bit. 4 Kibit/s = 4·1024 bit/s. Vaqt = hajm/tezlik = 160/4 = 40 s.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v2q01","stage":2,"number":1,"topic":"Qurilmalar","prompt":"Qog‘ozdagi tasvirni raqamli ko‘rinishda kompyuterga kiritadigan qurilma qaysi?","options":["Proyektor","Karnay","Skaner","Printer"],"answer":2,"explanation":"Skaner qog‘ozdagi tasvirni raqamlashtiradi. Printer qog‘ozga chiqaradi, proyektor tasvirni namoyish etadi, karnay ovoz chiqaradi.","code":null,"difficulty":"Oson","weight":9},{"id":"v2q02","stage":2,"number":2,"topic":"Qurilmalar","prompt":"Protsessorning asosiy vazifasi qaysi?","options":["Tasvirni qog‘ozga chiqarish","Internet signalini tarqatish","Fayllarni elektrsiz uzoq saqlash","Dastur buyruqlarini bajarish"],"answer":3,"explanation":"CPU dastur buyruqlarini bajarib, arifmetik va mantiqiy hisoblarni amalga oshiradi. Doimiy saqlash diskning, chop etish printerning vazifasi.","code":null,"difficulty":"Oson","weight":9},{"id":"v2q03","stage":2,"number":3,"topic":"Dasturiy ta’minot","prompt":"Quyidagilardan qaysi biri operatsion tizim?","options":["Microsoft Excel","Ubuntu","Microsoft Word","Python"],"answer":1,"explanation":"Ubuntu — Linux asosidagi operatsion tizim. Word va Excel amaliy dasturlar; Python dasturlash tilidir.","code":null,"difficulty":"Oson","weight":9},{"id":"v2q04","stage":2,"number":4,"topic":"Dasturiy ta’minot","prompt":"Windows dasturlarida Ctrl + C odatda qanday amalni bajaradi?","options":["Oxirgi amalni bekor qiladi","Tanlangan ma’lumotni nusxalaydi","Nusxani joylashtiradi","Tanlangan ma’lumotni kesadi"],"answer":1,"explanation":"Nusxalash — Ctrl + C. Kesish — Ctrl + X, joylashtirish — Ctrl + V, bekor qilish — Ctrl + Z.","code":null,"difficulty":"Oson","weight":9},{"id":"v2q05","stage":2,"number":5,"topic":"Tarmoqlar","prompt":"HTTPS ulanishida TLS ning asosiy vazifasi qaysi?","options":["Matnni avtomatik tarjima qilish","Uzatishdagi ma’lumotni shifrlash","Rasm sifatini oshirish","Kompyuter xotirasini ko‘paytirish"],"answer":1,"explanation":"HTTPS TLS orqali mijoz va server o‘rtasidagi ma’lumot uzatilishini himoyalaydi. Bu rasm sifati, xotira hajmi yoki tarjima bilan bog‘liq emas.","code":null,"difficulty":"Oson","weight":9},{"id":"v2q06","stage":2,"number":6,"topic":"Sanoq sistemalari","prompt":"O‘n oltilik sanoq sistemasidagi A raqamining o‘nlik qiymati nechaga teng?","options":["12","15","10","11"],"answer":2,"explanation":"O‘n oltilik raqamlar: 0–9, A=10, B=11, C=12, D=13, E=14, F=15.","code":null,"difficulty":"Oson","weight":9},{"id":"v2q07","stage":2,"number":7,"topic":"Sanoq sistemalari","prompt":"100000₂ sonini o‘nlikda yozing.","options":["64","31","16","32"],"answer":3,"explanation":"Eng chapdagi 1 — 2⁵ xonasida. Qolgan bitlar 0, natija 32.","code":null,"difficulty":"Oson","weight":9},{"id":"v2q08","stage":2,"number":8,"topic":"Python","prompt":"Python open() funksiyasida mavjud matnli fayl oxiriga yozish uchun qaysi rejim ishlatiladi?","options":["w","r","a","rb"],"answer":2,"explanation":"a — append, fayl oxiriga qo‘shib yozish. r o‘qish uchun; w mavjud tarkibni tozalab yozish uchun; rb ikkilik o‘qish uchun.","code":null,"difficulty":"Oson","weight":9},{"id":"v2q09","stage":2,"number":9,"topic":"Python","prompt":"Python 3 da qaysi nom ma’lumot turi emas, belgini kod nuqtasidan hosil qiluvchi funksiya?","options":["chr","str","float","int"],"answer":0,"explanation":"chr(kod) Unicode kod nuqtasiga mos belgini qaytaradi. int, float va str Python turlaridir.","code":null,"difficulty":"Oson","weight":9},{"id":"v2q10","stage":2,"number":10,"topic":"Excel","prompt":"Excelda sonlar yig‘indisini hisoblash funksiyasi qaysi?","options":["AVERAGE","COUNT","SUM","MAX"],"answer":2,"explanation":"SUM yig‘indini, AVERAGE o‘rtacha qiymatni, MAX eng kattasini, COUNT sonli kataklar sonini hisoblaydi.","code":null,"difficulty":"Oson","weight":9},{"id":"v2q11","stage":2,"number":11,"topic":"Sanoq sistemalari","prompt":"110101₂ yozuvida nechta 1 biti bor?","options":["6","3","5","4"],"answer":3,"explanation":"Bitlar: 1, 1, 0, 1, 0, 1. Birinchi, ikkinchi, to‘rtinchi va oltinchi bitlar 1 — jami 4 ta.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v2q12","stage":2,"number":12,"topic":"Sanoq sistemalari","prompt":"245₈ sonining o‘nlik qiymatini toping.","options":["165","245","149","169"],"answer":0,"explanation":"245₈ = 2·64 + 4·8 + 5 = 128 + 32 + 5 = 165.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v2q13","stage":2,"number":13,"topic":"Sanoq sistemalari","prompt":"83₁₀ sonining beshlik sanoq sistemasidagi yozuvini toping.","options":["323","314","303","313"],"answer":3,"explanation":"83 = 3·25 + 1·5 + 3. Demak yozuv 313₅. Barcha raqamlar 5 dan kichik.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v2q14","stage":2,"number":14,"topic":"Excel","prompt":"C4:H7 blokida nechta katak mavjud?","options":["20","28","18","24"],"answer":3,"explanation":"C–H oralig‘ida 6 ustun, 4–7 oralig‘ida 4 satr. 6·4 = 24.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v2q15","stage":2,"number":15,"topic":"Excel","prompt":"C3 katakdagi =B$2*$F5 formula E6 katakka nusxalandi. Yangi formula qaysi?","options":["=D$2*$H5","=D$5*$H8","=D$2*$F8","=B$2*$F5"],"answer":2,"explanation":"Siljish 2 ustun o‘ngga, 3 satr pastga. B$2 da B nisbiy → D, 2 mutlaq. $F5 da F mutlaq, 5 nisbiy → 8.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v2q16","stage":2,"number":16,"topic":"Python","prompt":"Python 3 ifodasining natijasini toping.","options":["12","12.5","8","14"],"answer":0,"explanation":"Avval daraja va bo‘lish: 2³=8, 18//4=4. So‘ng 8+4=12. // kasr qismini alohida qaytarmaydi.","code":"print(2 ** 3 + 18 // 4)","difficulty":"O‘rta","weight":15},{"id":"v2q17","stage":2,"number":17,"topic":"Python","prompt":"Python 3 satr kesimining natijasi qaysi?","options":["bdf","ce","bd","bcde"],"answer":2,"explanation":"Boshlang‘ich indeks 1, oxirgi 5 kiritilmaydi, qadam 2. 1-indeks b va 3-indeks d olinadi.","code":"print(\"abcdef\"[1:5:2])","difficulty":"O‘rta","weight":15},{"id":"v2q18","stage":2,"number":18,"topic":"Python","prompt":"Python 3 kodi nimani chiqaradi?","options":["Xatolik","5","4","0"],"answer":1,"explanation":"Lug‘atda c kaliti yo‘q. get(\"c\",5) topilmagan kalit uchun berilgan standart qiymat 5 ni qaytaradi; KeyError yuz bermaydi.","code":"d = {\"a\": 2, \"b\": 4}\nprint(d.get(\"c\", 5))","difficulty":"O‘rta","weight":15},{"id":"v2q19","stage":2,"number":19,"topic":"Python","prompt":"Python 3 kodining natijasini toping.","options":["[4, 1, 4, 2]","[1, 2, 4]","[1, 2, 4, 4]","[4, 4, 2, 1]"],"answer":2,"explanation":"sorted o‘sish tartibida yangi ro‘yxat hosil qiladi. Takroriy 4 olib tashlanmaydi — natijada ikkita 4 qoladi.","code":"print(sorted([4, 1, 4, 2]))","difficulty":"O‘rta","weight":15},{"id":"v2q20","stage":2,"number":20,"topic":"Python","prompt":"Python 3 kodi nimani chiqaradi?","options":["True","None","False","Xatolik"],"answer":2,"explanation":"Bo‘sh ro‘yxat mantiqiy tekshiruvda yolg‘on hisoblanadi. bool([]) — False; bo‘sh bo‘lmagan ro‘yxat — True.","code":"print(bool([]))","difficulty":"O‘rta","weight":15},{"id":"v2q21","stage":2,"number":21,"topic":"Sanoq sistemalari","prompt":"0.101₂ sonini o‘nlik kasrga o‘tkazing.","options":["0.101","0.625","0.5","0.75"],"answer":1,"explanation":"Kasr xonalari 1/2, 1/4, 1/8. 0.101₂ = 1/2 + 0/4 + 1/8 = 0.625.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v2q22","stage":2,"number":22,"topic":"Axborot hajmi","prompt":"32 belgili alifbodagi 1600 belgi minimal teng uzunlikdagi ikkilik kod bilan yozildi. Xizmat ma’lumotlarisiz hajm necha bayt?","options":["1000","8000","6400","1600"],"answer":0,"explanation":"32 = 2⁵, har belgi 5 bit. 1600·5 = 8000 bit. 8000/8 = 1000 bayt.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v2q23","stage":2,"number":23,"topic":"Tarmoqlar","prompt":"1.5 MiB fayl 512 KiB/s tezlikda uzatiladi. Kechikishsiz uzatish vaqtini soniyada toping.","options":["3","24","2","6"],"answer":0,"explanation":"1.5 MiB = 1.5·1024 = 1536 KiB. Vaqt = 1536/512 = 3 s. Tezlik bu safar bayt/s da berilgan.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v2q24","stage":2,"number":24,"topic":"Mantiq","prompt":"A XOR B XOR C ifodasining uch o‘zgaruvchili rostlik jadvalida nechta rost natija bor?","options":["6","3","2","4"],"answer":3,"explanation":"XOR 1 lar soni toq bo‘lsa rost: bitta 1 bo‘lgan uchta satr va uchta 1 bo‘lgan bitta satr. Jami 4 ta.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v2q25","stage":2,"number":25,"topic":"Excel","prompt":"A1:A5 da 3, \"matn\", 0, bo‘sh katak va 7 mavjud. =COUNT(A1:A5) natijasi nechaga teng?","options":["4","2","5","3"],"answer":3,"explanation":"COUNT faqat sonli kataklarni sanaydi: 3, 0, 7 — uchta. Nol ham son. Matn va haqiqiy bo‘sh katak hisoblanmaydi.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v2q26","stage":2,"number":26,"topic":"Python","prompt":"Python 3 dasturi chiqishini toping.","options":["9","1234","10","4"],"answer":2,"explanation":"Har qadamda oxirgi raqam qo‘shiladi va olib tashlanadi: 4, 3, 2, 1. Yig‘indi 4+3+2+1 = 10.","code":"n = 1234\ns = 0\nwhile n > 0:\n    s += n % 10\n    n //= 10\nprint(s)","difficulty":"Murakkab","weight":26},{"id":"v2q27","stage":2,"number":27,"topic":"Python","prompt":"Python 3 dasturidan keyin a ro‘yxati qanday ko‘rinadi?","options":["[1, 2, [3]]","[1, 2]","[1, 2, 3]","[3, 1, 2]"],"answer":2,"explanation":"b = a ro‘yxat nusxasini yaratmaydi; ikkalasi bitta obyektga ishora qiladi. b.append(3) shu umumiy ro‘yxatni o‘zgartiradi.","code":"a = [1, 2]\nb = a\nb.append(3)\nprint(a)","difficulty":"Murakkab","weight":26},{"id":"v2q28","stage":2,"number":28,"topic":"Python","prompt":"Python 3 rekursiv kodining natijasi nechaga teng?","options":["16","31","32","15"],"answer":1,"explanation":"g(0)=1. Keyin g(1)=3, g(2)=7, g(3)=15, g(4)=31. Har safar avvalgi qiymat 2 ga ko‘payib, 1 qo‘shiladi.","code":"def g(n):\n    if n == 0:\n        return 1\n    return 2 * g(n - 1) + 1\n\nprint(g(4))","difficulty":"Murakkab","weight":26},{"id":"v2q29","stage":2,"number":29,"topic":"Axborot hajmi","prompt":"128 × 64 pikselli rasmning har pikseli 32 bitda saqlanadi. Siqish va sarlavhasiz hajmi necha KiB?","options":["256","32","16","8"],"answer":1,"explanation":"128·64 = 8192 piksel; 32 bit = 4 bayt. 8192·4 = 32768 bayt = 32 KiB.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v2q30","stage":2,"number":30,"topic":"Mantiq","prompt":"(A OR B) AND (C XOR D) ifodasi to‘rt o‘zgaruvchili jadvalning nechta satrida rost?","options":["4","12","8","6"],"answer":3,"explanation":"A OR B uchun 3 ta rost juftlik bor. C XOR D uchun (0,1) va (1,0) — 2 ta. Juftliklar mustaqil, jami 3·2 = 6.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v3q01","stage":3,"number":1,"topic":"Qurilmalar","prompt":"Qaysi qurilma ma’lumotni elektr o‘chirilgandan keyin ham saqlash uchun ishlatiladi?","options":["Protsessor keshi","SSD","RAM","Protsessor registri"],"answer":1,"explanation":"SSD doimiy, energiyaga bog‘liq bo‘lmagan saqlash qurilmasi. RAM, odatiy CPU registrlari va keshi joriy hisoblar uchun ishlatiladigan energiyaga bog‘liq xotiradir.","code":null,"difficulty":"Oson","weight":9},{"id":"v3q02","stage":3,"number":2,"topic":"Dasturiy ta’minot","prompt":"Bir nechta faylni arxivga birlashtirish uchun odatda qaysi kengaytma ishlatiladi?","options":[".py",".bmp",".zip",".mp3"],"answer":2,"explanation":".zip arxiv formatidir. .mp3 audio, .bmp rasm, .py Python kodi uchun ishlatiladi.","code":null,"difficulty":"Oson","weight":9},{"id":"v3q03","stage":3,"number":3,"topic":"Tarmoqlar","prompt":"Turli IP tarmoqlar o‘rtasida paketlarni yo‘naltiradigan qurilma qaysi?","options":["Router","Monitor","Skaner","Klaviatura"],"answer":0,"explanation":"Router marshrutlash jadvali yordamida IP paketlarini tarmoqlar orasida yo‘naltiradi. Qolgan qurilmalar paketlarni marshrutlamaydi.","code":null,"difficulty":"Oson","weight":9},{"id":"v3q04","stage":3,"number":4,"topic":"Axborot xavfsizligi","prompt":"Fishing (phishing) hujumining asosiy belgisi qaysi?","options":["Faylni ZIP arxivga siqish","Matnning shriftini almashtirish","Soxta sahifa orqali parolni aldab olish","Diskdagi bo‘sh joyni tekshirish"],"answer":2,"explanation":"Fishingda hujumchi ishonchli xizmatga o‘xshash xabar yoki sahifa bilan login, parol yoki boshqa maxfiy ma’lumotni olishga urinadi.","code":null,"difficulty":"Oson","weight":9},{"id":"v3q05","stage":3,"number":5,"topic":"Axborot hajmi","prompt":"UTF-8 da bitta Unicode belgisi odatda necha bayt bilan kodlanishi mumkin?","options":["Har doim 8 bayt","Har doim 1 bayt","1 dan 4 baytgacha","Har doim 2 bayt"],"answer":2,"explanation":"UTF-8 o‘zgaruvchan uzunlikdagi kodlashdir: bir Unicode kod nuqtasi 1–4 bayt oladi. Shuning uchun har qanday matn uchun «belgilar soni = baytlar soni» deyish xato.","code":null,"difficulty":"Oson","weight":9},{"id":"v3q06","stage":3,"number":6,"topic":"Sanoq sistemalari","prompt":"36₁₀ sonini ikkilikda yozing.","options":["100100","101100","110000","100010"],"answer":0,"explanation":"36 = 32 + 4 = 2⁵ + 2². Tegishli bitlar 1: 100100₂.","code":null,"difficulty":"Oson","weight":9},{"id":"v3q07","stage":3,"number":7,"topic":"Mantiq","prompt":"Uchta mantiqiy o‘zgaruvchi uchun to‘liq rostlik jadvalida nechta satr bo‘ladi?","options":["9","6","3","8"],"answer":3,"explanation":"Har bir o‘zgaruvchining 2 qiymati bor. Uch o‘zgaruvchi uchun 2·2·2 = 2³ = 8 kombinatsiya.","code":null,"difficulty":"Oson","weight":9},{"id":"v3q08","stage":3,"number":8,"topic":"Mantiq","prompt":"A OR B ifodasi ikki o‘zgaruvchili rostlik jadvalining nechta satrida rost bo‘ladi?","options":["3","4","2","1"],"answer":0,"explanation":"OR faqat (0,0) da yolg‘on. (0,1), (1,0), (1,1) satrlarida rost — jami 3 ta.","code":null,"difficulty":"Oson","weight":9},{"id":"v3q09","stage":3,"number":9,"topic":"Python","prompt":"Quyidagi Python turlaridan qaysi biri elementlarini o‘zgartirishga imkon beruvchi ketma-ketlik?","options":["str","tuple","list","range"],"answer":2,"explanation":"list o‘zgaruvchan ketma-ketlik: elementni almashtirish, qo‘shish yoki o‘chirish mumkin. tuple, str va range o‘zgarmas ketma-ketliklardir.","code":null,"difficulty":"Oson","weight":9},{"id":"v3q10","stage":3,"number":10,"topic":"Excel","prompt":"Excel formulasida ustun ham, satr ham mutlaq bo‘lgan murojaatni toping.","options":["B$5","$B$5","$B5","B5"],"answer":1,"explanation":"$ belgisi o‘zidan keyingi ustun yoki satrni mahkamlaydi. $B$5 da ikkalasi ham mahkam; $B5 va B$5 aralash, B5 nisbiy murojaat.","code":null,"difficulty":"Oson","weight":9},{"id":"v3q11","stage":3,"number":11,"topic":"Sanoq sistemalari","prompt":"304₇ sonining o‘nlik qiymati nechaga teng?","options":["153","151","304","147"],"answer":1,"explanation":"304₇ = 3·7² + 0·7 + 4 = 147 + 4 = 151.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v3q12","stage":3,"number":12,"topic":"Sanoq sistemalari","prompt":"7B₁₆ sonini aynan 8 bitli ikkilik yozuvda ifodalang.","options":["11110001","10110111","01111011","01110111"],"answer":2,"explanation":"Har bir hex raqam 4 bitga mos. 7 → 0111, B=11 → 1011. Ularni birlashtirsak 01111011.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v3q13","stage":3,"number":13,"topic":"Python","prompt":"Python 3 da manfiy sonli bo‘lish natijasini toping.","options":["-4 -2","-3 2","-3 -2","-4 3"],"answer":3,"explanation":"// natijani manfiy cheksizlik tomonga yaxlitlaydi: -17/5=-3.4 → -4. Qoldiq: -17=(-4)·5+3. Shuning uchun % natijasi 3.","code":"print(-17 // 5, -17 % 5)","difficulty":"O‘rta","weight":15},{"id":"v3q14","stage":3,"number":14,"topic":"Python","prompt":"Python 3 satr metodining natijasi nechaga teng?","options":["1","3","2","9"],"answer":2,"explanation":"\"olimpiada\" satrida a belgisi ikki marta: oxiridan uchinchi va oxirgi o‘rinda keladi. count uchrashlar sonini qaytaradi.","code":"print(\"olimpiada\".count(\"a\"))","difficulty":"O‘rta","weight":15},{"id":"v3q15","stage":3,"number":15,"topic":"Python","prompt":"Python 3 kodi nimani chiqaradi?","options":["5","4","2","3"],"answer":3,"explanation":"set takrorlarni yo‘qotadi. To‘plamda 2, 3, 5 qoladi — uchta turli element.","code":"print(len(set([2, 2, 3, 5, 3])))","difficulty":"O‘rta","weight":15},{"id":"v3q16","stage":3,"number":16,"topic":"Python","prompt":"Python 3 kodining natijasini toping.","options":["90","110","100","95"],"answer":3,"explanation":"range(5,15) — 5 dan 14 gacha 10 ta son. Arifmetik yig‘indi: (5+14)·10/2 = 95. 15 kiritilmaydi.","code":"print(sum(range(5, 15)))","difficulty":"O‘rta","weight":15},{"id":"v3q17","stage":3,"number":17,"topic":"Excel","prompt":"A1=6 va B1=3. =IF(AND(A1>4,B1\u003c8),A1+B1,A1-B1) formula natijasini toping.","options":["3","6","18","9"],"answer":3,"explanation":"6>4 ham, 3\u003c8 ham rost. AND rost bo‘lgani uchun A1+B1 bajariladi: 6+3=9.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v3q18","stage":3,"number":18,"topic":"Excel","prompt":"Excelda =ROUND(12.345,2) formula natijasi qaysi? Nuqta o‘nlik ajratgich sifatida berilgan.","options":["12.345","12.3","12.34","12.35"],"answer":3,"explanation":"ROUND sonni ko‘rsatilgan kasr xonalari sonigacha yaxlitlaydi. Ikkinchi kasr xonasi 4, keyingi raqam 5 bo‘lgani uchun u 5 ga oshadi: 12.35.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v3q19","stage":3,"number":19,"topic":"Mantiq","prompt":"De Morgan qonuniga ko‘ra NOT (A OR B) ga teng ifoda qaysi?","options":["NOT (A AND B)","(NOT A) AND (NOT B)","(NOT A) OR (NOT B)","A AND B"],"answer":1,"explanation":"Disyunksiya inkorida OR → AND ga almashadi va har bir o‘zgaruvchi inkor qilinadi. Ikkala ifoda faqat A=0, B=0 da rost.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v3q20","stage":3,"number":20,"topic":"Axborot hajmi","prompt":"64 × 64 rasm 256 rangli palitradan foydalanadi. Har piksel minimal teng uzunlikdagi kodda saqlanadi. Palitra jadvali, siqish va sarlavhasiz hajmi necha KiB?","options":["32","8","4","2"],"answer":2,"explanation":"256=2⁸, har piksel 8 bit = 1 bayt. 64·64 = 4096 bayt = 4 KiB. Palitra jadvali bu hisobga kiritilmaydi.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v3q21","stage":3,"number":21,"topic":"Sanoq sistemalari","prompt":"12ₓ = 20₃ bo‘lsa, x asosini toping.","options":["4","5","6","3"],"answer":0,"explanation":"12ₓ = x+2, 20₃ = 2·3 = 6. x+2=6 → x=4. 1 va 2 raqamlari 4 asosda ruxsat etiladi.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v3q22","stage":3,"number":22,"topic":"Sanoq sistemalari","prompt":"10.5₁₀ sonini ikkilik sanoq sistemasida yozing.","options":["1011.1","1001.1","1010.1","1010.01"],"answer":2,"explanation":"Butun qism 10₁₀ = 1010₂. Kasr qism 0.5 = 1/2, demak birinchi kasr biti 1. Natija: 1010.1₂.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v3q23","stage":3,"number":23,"topic":"Axborot hajmi","prompt":"256 belgili xabar minimal teng uzunlikdagi ikkilik kodda 768 bit egalladi. Alifbo quvvati 2 ning darajasi bo‘lsa, unda nechta belgi bor?","options":["16","8","3","32"],"answer":1,"explanation":"Bitta belgi uchun 768/256=3 bit ajratilgan. Alifbo quvvati 2³=8. Bu 3 ta belgi degani emas.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v3q24","stage":3,"number":24,"topic":"Excel","prompt":"D5 dagi =$B3+C$2 formula F8 katakka nusxalandi. Natijaviy formula qaysi?","options":["=$B6+E$2","=$D6+E$5","=$B3+C$2","=$B6+C$2"],"answer":0,"explanation":"D5→F8: +2 ustun, +3 satr. $B3 da B mahkam, 3→6. C$2 da C→E, 2 mahkam. Natija =$B6+E$2.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v3q25","stage":3,"number":25,"topic":"Python","prompt":"Python 3 dasturi yakunida x ning qiymatini toping.","options":["30","16","31","15"],"answer":2,"explanation":"Boshlanishda x=1. To‘rtta yangilanishdan keyin qiymatlar 3, 7, 15, 31 bo‘ladi.","code":"x = 1\nfor _ in range(4):\n    x = 2 * x + 1\nprint(x)","difficulty":"Murakkab","weight":26},{"id":"v3q26","stage":3,"number":26,"topic":"Python","prompt":"Python 3 dasturida shart necha marta rost bo‘ladi?","options":["7","3","4","12"],"answer":1,"explanation":"i qiymatlari 0,1,2; j qiymatlari 0,1,2,3. Teng juftliklar (0,0), (1,1), (2,2) — uchta. (3,3) bo‘lmaydi.","code":"count = 0\nfor i in range(3):\n    for j in range(4):\n        if i == j:\n            count += 1\nprint(count)","difficulty":"Murakkab","weight":26},{"id":"v3q27","stage":3,"number":27,"topic":"Python","prompt":"Python 3 rekursiyasi natijasini toping.","options":["807","7","8","15"],"answer":3,"explanation":"Funksiya raqamlar yig‘indisini hisoblaydi: f(807)=7+f(80), f(80)=0+f(8), f(8)=8+f(0). Natija 7+0+8+0=15.","code":"def f(n):\n    if n == 0:\n        return 0\n    return n % 10 + f(n // 10)\n\nprint(f(807))","difficulty":"Murakkab","weight":26},{"id":"v3q28","stage":3,"number":28,"topic":"Python","prompt":"Python 3 ro‘yxat generatori natijasini toping.","options":["[4, 16, 36]","[1, 9, 25]","[1, 3, 5]","[1, 4, 9, 16, 25, 36]"],"answer":1,"explanation":"if x % 2 sharti toq x uchun rost. range(1,7) da 1,3,5 tanlanadi; ularning kvadratlari 1,9,25.","code":"print([x * x for x in range(1, 7) if x % 2])","difficulty":"Murakkab","weight":26},{"id":"v3q29","stage":3,"number":29,"topic":"Tarmoqlar","prompt":"Oddiy IPv4 /24 tarmoqda tarmoq va broadcast manzillarini ajratgandan keyin nechta host manzili qoladi?","options":["254","256","24","255"],"answer":0,"explanation":"IPv4 manzili 32 bit. /24 dan keyin 8 host biti qoladi: 2⁸=256 manzil. Tarmoq va broadcast uchun 2 tasi ayriladi: 254.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v3q30","stage":3,"number":30,"topic":"Tarmoqlar","prompt":"64 belgili alifboda 4096 belgi minimal teng uzunlikdagi kod bilan yozildi. Xabar 1536 bayt/s tezlikda, xizmat ma’lumotlarisiz uzatiladi. Vaqt necha soniya?","options":["16","8","4","2"],"answer":3,"explanation":"64=2⁶ → har belgi 6 bit. 4096·6/8=3072 bayt. 3072/1536=2 soniya.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v4q01","stage":4,"number":1,"topic":"Tarmoqlar","prompt":"DNS ning vazifasi qaysi?","options":["Domen nomini IP manzilga moslash","Fayllarni matnga aylantirish","Protsessor haroratini pasaytirish","Tasvirni monitorga chiqarish"],"answer":0,"explanation":"DNS domen nomiga mos IP manzil va boshqa domen yozuvlarini topishga xizmat qiladi. Masalan, brauzer nom orqali server manzilini aniqlaydi.","code":null,"difficulty":"Oson","weight":9},{"id":"v4q02","stage":4,"number":2,"topic":"Tarmoqlar","prompt":"Bir maktab binosidagi kompyuterlarni birlashtirgan mahalliy tarmoq odatda qanday ataladi?","options":["CPU","LAN","WAN","GPS"],"answer":1,"explanation":"LAN — Local Area Network, kichik hududdagi mahalliy tarmoq. WAN katta hududlarni qamrab oladi; GPS joylashuv tizimi, CPU protsessordir.","code":null,"difficulty":"Oson","weight":9},{"id":"v4q03","stage":4,"number":3,"topic":"Python","prompt":"Python 3 da ro‘yxat elementlari sonini qaysi funksiya qaytaradi?","options":["abs","sum","max","len"],"answer":3,"explanation":"len ketma-ketlikdagi elementlar sonini qaytaradi. sum sonlarni qo‘shadi, max eng katta qiymatni oladi, abs modulni hisoblaydi.","code":null,"difficulty":"Oson","weight":9},{"id":"v4q04","stage":4,"number":4,"topic":"Excel","prompt":"Excelda C7 manzili qaysi katakni bildiradi?","options":["C dan G gacha diapazon","C ustun, 7-satr","C ustunning 7 ta katagi","7-ustun, C satr"],"answer":1,"explanation":"A1 uslubidagi manzilda harflar ustunni, raqamlar satrni belgilaydi. C7 — bitta katak: C ustun va 7-satr kesishmasi.","code":null,"difficulty":"Oson","weight":9},{"id":"v4q05","stage":4,"number":5,"topic":"Axborot xavfsizligi","prompt":"Muhim fayllarning alohida qurilma yoki xizmatdagi zaxira nusxasi nima uchun kerak?","options":["Monitor rangini sozlash uchun","Internet tezligini oshirish uchun","Asl fayl yo‘qolsa uni tiklash uchun","Klaviatura tugmalarini almashtirish uchun"],"answer":2,"explanation":"Zaxira nusxa (backup) o‘chish, disk nosozligi yoki boshqa yo‘qotishdan keyin faylni tiklashga yordam beradi. Asl fayl bilan bitta nosoz diskda saqlash ishonchli zaxira emas.","code":null,"difficulty":"Oson","weight":9},{"id":"v4q06","stage":4,"number":6,"topic":"Python","prompt":"Python 3 kodi nimani chiqaradi?","options":["[1, 2, 3, 4, 5]","[5]","[0, 1, 2, 3, 4, 5]","[0, 1, 2, 3, 4]"],"answer":3,"explanation":"range(5) boshlanishni 0 deb oladi, 5 ni esa kiritmaydi. Natija 0,1,2,3,4 — beshta element.","code":"print(list(range(5)))","difficulty":"Oson","weight":9},{"id":"v4q07","stage":4,"number":7,"topic":"Python","prompt":"Python 3 da qoldiqni toping.","options":["3","5","0","2"],"answer":0,"explanation":"23 = 4·5 + 3. % butun bo‘lishdan qolgan qoldiqni, ya’ni 3 ni qaytaradi.","code":"print(23 % 4)","difficulty":"Oson","weight":9},{"id":"v4q08","stage":4,"number":8,"topic":"Axborot hajmi","prompt":"2 KiB ma’lumot necha baytga teng?","options":["2048","16384","1024","2000"],"answer":0,"explanation":"1 KiB = 1024 bayt. 2·1024 = 2048 bayt. 16384 — shu hajmning bitdagi qiymati.","code":null,"difficulty":"Oson","weight":9},{"id":"v4q09","stage":4,"number":9,"topic":"Sanoq sistemalari","prompt":"Musbat butun sonning ikkilik yozuvi 1 bilan tugaydi. Bu son haqida nima deyish mumkin?","options":["U albatta 1 ga teng","U toq son","U albatta tub son","U juft son"],"answer":1,"explanation":"Ikkilikdagi oxirgi bit birlik xonasidir. Boshqa xonalar 2 ning karralilarini beradi, oxirgi 1 esa sonni toq qiladi. Toq bo‘lish tub bo‘lishni anglatmaydi.","code":null,"difficulty":"Oson","weight":9},{"id":"v4q10","stage":4,"number":10,"topic":"Mantiq","prompt":"Ikki kirishli AND amali qachon 1 qaytaradi?","options":["Kamida bitta kirish 1 bo‘lganda","Ikkala kirish ham 1 bo‘lganda","Kirishlar turlicha bo‘lganda","Ikkala kirish ham 0 bo‘lganda"],"answer":1,"explanation":"AND — mantiqiy VA: 1 AND 1 = 1. Boshqa uchta juftlikda natija 0. «Kamida bitta» sharti OR ga tegishli.","code":null,"difficulty":"Oson","weight":9},{"id":"v4q11","stage":4,"number":11,"topic":"Sanoq sistemalari","prompt":"202₁₀ sonini o‘n oltilikda yozing.","options":["AC","DA","CA","C8"],"answer":2,"explanation":"202 = 12·16 + 10. 12 → C, 10 → A. Natija CA₁₆.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v4q12","stage":4,"number":12,"topic":"Sanoq sistemalari","prompt":"10101₂ · 11₂ ko‘paytmasining ikkilik yozuvini toping.","options":["111111","111101","1000001","101011"],"answer":0,"explanation":"10101₂=21, 11₂=3. 21·3=63. 63=32+16+8+4+2+1 → 111111₂.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v4q13","stage":4,"number":13,"topic":"Sanoq sistemalari","prompt":"64₈ sonining o‘nlik qiymati qaysi?","options":["64","52","48","54"],"answer":1,"explanation":"64₈ = 6·8 + 4 = 48 + 4 = 52. 64 ni o‘nlikdagi 64 bilan adashtirmang.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v4q14","stage":4,"number":14,"topic":"Python","prompt":"Python 3 kesimining natijasini toping.","options":["[7, 5, 3, 1]","[1, 3, 5, 7]","[7, 5, 3]","[1, 5]"],"answer":0,"explanation":"[::-1] ning qadami -1: ketma-ketlik oxiridan boshiga qarab olinadi. Barcha to‘rtta element saqlanadi.","code":"print([1, 3, 5, 7][::-1])","difficulty":"O‘rta","weight":15},{"id":"v4q15","stage":4,"number":15,"topic":"Python","prompt":"Python 3 ifodasi natijasini toping.","options":["14","18","24","9"],"answer":1,"explanation":"sum([2,3,4]) = 2+3+4 = 9. Keyin 9·2 = 18.","code":"print(sum([2, 3, 4]) * 2)","difficulty":"O‘rta","weight":15},{"id":"v4q16","stage":4,"number":16,"topic":"Python","prompt":"Python 3 kodi nimani chiqaradi?","options":["5","2","1","3"],"answer":1,"explanation":"Lug‘atda kalitlar noyob. Ikkinchi a avvalgi a qiymatini 5 ga almashtiradi. Kalitlar a va b — jami 2 ta.","code":"d = {\"a\": 1, \"b\": 2, \"a\": 5}\nprint(len(d))","difficulty":"O‘rta","weight":15},{"id":"v4q17","stage":4,"number":17,"topic":"Excel","prompt":"A1:A4 kataklarda -3, 5, 0, 2 bor. =MAX(A1:A4)-MIN(A1:A4) natijasini toping.","options":["5","-8","2","8"],"answer":3,"explanation":"MAX=5, MIN=-3. 5-(-3) = 5+3 = 8. Manfiy sonni ayirish qo‘shishga teng.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v4q18","stage":4,"number":18,"topic":"Excel","prompt":"A1:A5 da 3, 6, 9, 5, 0 bor. =COUNTIF(A1:A5,\">5\") natijasi nechaga teng?","options":["2","5","4","3"],"answer":0,"explanation":"5 dan qat’iy katta qiymatlar 6 va 9 — ikkita. 5 shartni bajarmaydi, chunki >= emas, > berilgan.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v4q19","stage":4,"number":19,"topic":"Excel","prompt":"A1=15. =IF(MOD(A1,3)=0,A1/3,A1+3) formula natijasini toping.","options":["3","0","5","18"],"answer":2,"explanation":"MOD(15,3)=0, shart rost. Shuning uchun 15/3=5 olinadi. 18 — yolg‘on shart tarmog‘ining natijasi.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v4q20","stage":4,"number":20,"topic":"Python","prompt":"Python 3 kodi nimani chiqaradi?","options":["IT-10-sinf-","IT-10-sinf","IT10sinf","[IT, 10, sinf]"],"answer":1,"explanation":"join elementlar orasiga ajratgich qo‘yadi. Uchta element orasida ikkita chiziqcha bor; oxiriga qo‘shimcha ajratgich qo‘shilmaydi.","code":"print(\"-\".join([\"IT\", \"10\", \"sinf\"]))","difficulty":"O‘rta","weight":15},{"id":"v4q21","stage":4,"number":21,"topic":"Axborot hajmi","prompt":"640 × 480 rasmda har piksel 16 bit. Rasm siqilmagan, sarlavhasi 1024 bayt. Umumiy hajm necha KiB?","options":["1201","601","4801","600"],"answer":1,"explanation":"Piksellar: 640·480·16/8 = 614400 bayt = 600 KiB. Sarlavha 1024 bayt = 1 KiB. Umumiy hajm 601 KiB.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v4q22","stage":4,"number":22,"topic":"Axborot hajmi","prompt":"ASCII belgilaridan tuzilgan fayl 3 KiB. Uning 40 bayti xizmat ma’lumotidir. Har belgi 1 bayt olsa, matnda nechta belgi bor?","options":["24256","3072","2960","3032"],"answer":3,"explanation":"3 KiB=3072 bayt. Xizmat ma’lumoti ajratiladi: 3072-40=3032 bayt. Har belgi 1 bayt bo‘lgani uchun 3032 belgi.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v4q23","stage":4,"number":23,"topic":"Sanoq sistemalari","prompt":"123.2₄ sonini o‘nlik ko‘rinishda toping.","options":["30.5","27.2","24.5","27.5"],"answer":3,"explanation":"Butun qism: 1·16 + 2·4 + 3 = 27. Kasr qism: 2·4⁻¹=2/4=0.5. Natija 27.5.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v4q24","stage":4,"number":24,"topic":"Mantiq","prompt":"NOT ((A AND B) OR (C AND D)) ifodasi to‘rt o‘zgaruvchili jadvalda necha marta rost bo‘ladi?","options":["9","7","12","8"],"answer":0,"explanation":"Ifoda rost bo‘lishi uchun A AND B ham, C AND D ham yolg‘on bo‘lishi kerak. Har juftlikda buning 3 imkoniyati bor: 3·3=9.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v4q25","stage":4,"number":25,"topic":"Python","prompt":"Python 3 dasturida break natijasini toping.","options":["21","10","15","45"],"answer":2,"explanation":"n=6 bo‘lganda break siklni to‘xtatadi va 6 qo‘shilmaydi. Yig‘indi 1+2+3+4+5 = 15.","code":"s = 0\nfor n in range(1, 10):\n    if n == 6:\n        break\n    s += n\nprint(s)","difficulty":"Murakkab","weight":26},{"id":"v4q26","stage":4,"number":26,"topic":"Python","prompt":"Python 3 dasturida continue dan keyingi natijani toping.","options":["28","22","19","9"],"answer":2,"explanation":"continue 3 va 6 ning qo‘shilishini o‘tkazib yuboradi. Qolganlari: 1+2+4+5+7 = 19. 8 range chegarasi sifatida kiritilmaydi.","code":"s = 0\nfor n in range(1, 8):\n    if n % 3 == 0:\n        continue\n    s += n\nprint(s)","difficulty":"Murakkab","weight":26},{"id":"v4q27","stage":4,"number":27,"topic":"Python","prompt":"Python 3 rekursiv kodining natijasini toping.","options":["120","25","60","24"],"answer":0,"explanation":"Bu faktorial: f(5)=5·4·3·2·1=120. f(1)=1 rekursiyani tugatadi.","code":"def f(n):\n    if n \u003c= 1:\n        return 1\n    return n * f(n - 1)\n\nprint(f(5))","difficulty":"Murakkab","weight":26},{"id":"v4q28","stage":4,"number":28,"topic":"Sanoq sistemalari","prompt":"11110110 ikkilik yozuv 8 bitli ishorali sonning ikkilik to‘ldiruvchi (two’s complement) kodidir. O‘nlik qiymatini toping.","options":["-9","-118","-10","246"],"answer":2,"explanation":"Ishora biti 1. Ishorasiz qiymat 246; 8 bitli ikkilik to‘ldiruvchida 246-2⁸ = 246-256 = -10. 246 faqat ishorasiz talqinda to‘g‘ri.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v4q29","stage":4,"number":29,"topic":"Sanoq sistemalari","prompt":"Faqat 0, 1, 2 raqamlaridan foydalanib nechta olti xonali o‘nlik son yozish mumkin? Raqamlar takrorlanishi mumkin, birinchi raqam 0 bo‘lmaydi.","options":["162","486","243","729"],"answer":1,"explanation":"Birinchi xona uchun 1 yoki 2 — 2 tanlov. Qolgan besh xonaning har biri uchun 3 tanlov: 2·3⁵=486.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v4q30","stage":4,"number":30,"topic":"Tarmoqlar","prompt":"Avval 512 KiB fayl 2 Mibit/s da, keyin 256 KiB fayl 1 Mibit/s da uzatiladi. Kechikish va xizmat ma’lumotlarisiz umumiy vaqt necha soniya?","options":["2","6","4","3"],"answer":2,"explanation":"512 KiB=4 Mibit, vaqt 4/2=2 s. 256 KiB=2 Mibit, vaqt 2/1=2 s. Fayllar ketma-ket: 2+2=4 s.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v5q01","stage":5,"number":1,"topic":"Dasturiy ta’minot","prompt":"Quyidagilardan qaysi biri veb-brauzer?","options":["VLC media player","Mozilla Firefox","PowerPoint","Microsoft Excel"],"answer":1,"explanation":"Firefox veb-sahifalarni ochadigan brauzer. Excel elektron jadval, PowerPoint taqdimot, VLC media fayllar uchun ishlatiladi.","code":null,"difficulty":"Oson","weight":9},{"id":"v5q02","stage":5,"number":2,"topic":"Python","prompt":"Python 3 kodining chiqishini toping.","options":["True","3","[1, 2, 3]","None"],"answer":3,"explanation":"append ro‘yxatni joyida o‘zgartiradi, lekin ro‘yxatning o‘zini qaytarmaydi. Uning qaytish qiymati None. a keyin [1,2,3] bo‘ladi, ammo print append natijasini chiqaradi.","code":"a = [1, 2]\nprint(a.append(3))","difficulty":"Oson","weight":9},{"id":"v5q03","stage":5,"number":3,"topic":"Algoritmlar","prompt":"Algoritmning yakunlanuvchanlik xossasi nimani bildiradi?","options":["Chekli sondagi qadamlardan keyin tugashini","Har bir qadam cheksiz takrorlanishini","Faqat rasm bilan ifodalanishini","Faqat bitta dasturlash tilida yozilishini"],"answer":0,"explanation":"Yakunlanuvchan algoritm belgilangan masala uchun chekli qadamlardan keyin natijaga kelib tugaydi. Cheksiz takrorlash buning aksi.","code":null,"difficulty":"Oson","weight":9},{"id":"v5q04","stage":5,"number":4,"topic":"Dasturiy ta’minot","prompt":"Operatsion tizimning vazifasini toping.","options":["Faqat audio fayllarni siqish","Kompyuter resurslari va dasturlar ishini boshqarish","Faqat slaydlar dizaynini tayyorlash","Faqat elektron jadvallar tuzish"],"answer":1,"explanation":"Operatsion tizim xotira, protsessor va qurilmalar kabi resurslarni boshqaradi hamda amaliy dasturlarga xizmat ko‘rsatadi.","code":null,"difficulty":"Oson","weight":9},{"id":"v5q05","stage":5,"number":5,"topic":"Qurilmalar","prompt":"Raqamli ovozni foydalanuvchiga eshittirish uchun qaysi chiqarish qurilmasi ishlatiladi?","options":["Skaner","Veb-kamera","Mikrofon","Karnay"],"answer":3,"explanation":"Karnay ovozni chiqaradi. Mikrofon ovozni kiritadi; veb-kamera va skaner tasvirni kiritadi.","code":null,"difficulty":"Oson","weight":9},{"id":"v5q06","stage":5,"number":6,"topic":"Axborot hajmi","prompt":"1024 xil rang uchun minimal teng uzunlikdagi ikkilik kod necha bit bo‘ladi?","options":["10","16","9","8"],"answer":0,"explanation":"2⁹=512 yetmaydi, 2¹⁰=1024 yetadi. Demak eng kam kod uzunligi 10 bit.","code":null,"difficulty":"Oson","weight":9},{"id":"v5q07","stage":5,"number":7,"topic":"Sanoq sistemalari","prompt":"F₁₆ raqamini 4 bitli ikkilik kodga aylantiring.","options":["1111","1101","1010","1001"],"answer":0,"explanation":"F₁₆=15₁₀. 15=8+4+2+1 bo‘lgani uchun to‘rtta bitning hammasi 1.","code":null,"difficulty":"Oson","weight":9},{"id":"v5q08","stage":5,"number":8,"topic":"Python","prompt":"Python 3 a’zolik tekshiruvi natijasi qaysi?","options":["False","Xatolik","True","None"],"answer":2,"explanation":"in element ketma-ketlikda mavjudligini tekshiradi. 3 ro‘yxatda bor, shuning uchun True.","code":"print(3 in [1, 3, 5])","difficulty":"Oson","weight":9},{"id":"v5q09","stage":5,"number":9,"topic":"Mantiq","prompt":"NOT (A AND B) ifodasi ikki o‘zgaruvchili jadvalda nechta satrda rost?","options":["3","1","4","2"],"answer":0,"explanation":"A AND B faqat (1,1) da rost. Uni inkor qilsak qolgan uchta satr rost bo‘ladi. Bu NAND amali.","code":null,"difficulty":"Oson","weight":9},{"id":"v5q10","stage":5,"number":10,"topic":"Excel","prompt":"A1=4, A2 katakda matn sifatida saqlangan \"5\", A3=6. =SUM(A1:A3) natijasini toping.","options":["6","4","10","15"],"answer":2,"explanation":"SUM diapazon murojaatidagi matnni, hatto u raqamga o‘xshasa ham, hisoblamaydi. Sonli kataklar 4 va 6: yig‘indi 10.","code":null,"difficulty":"Oson","weight":9},{"id":"v5q11","stage":5,"number":11,"topic":"Sanoq sistemalari","prompt":"145₁₀ sonini uchlik sanoq sistemasida yozing.","options":["12011","11201","12101","12201"],"answer":2,"explanation":"145=1·81+2·27+1·9+0·3+1. Xonalardagi koeffitsiyentlar 1,2,1,0,1 → 12101₃.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v5q12","stage":5,"number":12,"topic":"Sanoq sistemalari","prompt":"3F₁₆ + 21₁₆ yig‘indisini o‘n oltilikda toping.","options":["5F","60","50","61"],"answer":1,"explanation":"F+1=16, birlik xonasiga 0 yozilib 1 keyingi xonaga o‘tadi. 3+2+1=6. Natija 60₁₆. O‘nlikda 63+33=96.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v5q13","stage":5,"number":13,"topic":"Sanoq sistemalari","prompt":"100100₂ sonini 100₂ ga bo‘lganda natijaning ikkilik yozuvi qaysi? Bo‘linma butun son.","options":["1100","1000","1001","1010"],"answer":2,"explanation":"100100₂=36, 100₂=4. 36/4=9=1001₂. 4 ga bo‘lish ikkita oxirgi nol bitini olib tashlashga mos.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v5q14","stage":5,"number":14,"topic":"Python","prompt":"Python 3 kesimining natijasini toping.","options":["formati","format","nformat","formatik"],"answer":1,"explanation":"0-indeks i, 1-indeks n. 2–7 indekslar f,o,r,m,a,t. 8-indeksdagi i kiritilmaydi. Natija \"format\".","code":"print(\"informatika\"[2:8])","difficulty":"O‘rta","weight":15},{"id":"v5q15","stage":5,"number":15,"topic":"Python","prompt":"Python 3 bitli amallarining natijasini toping.","options":["14 2","0 16","6 10","2 14"],"answer":3,"explanation":"10=1010₂, 6=0110₂. Bitli AND: 0010₂=2. Bitli OR: 1110₂=14. & va | har bir bitga alohida qo‘llanadi.","code":"print(10 & 6, 10 | 6)","difficulty":"O‘rta","weight":15},{"id":"v5q16","stage":5,"number":16,"topic":"Python","prompt":"Python 3 shartli ifodasi natijasini toping.","options":["False","19","7","12"],"answer":3,"explanation":"x>y, ya’ni 7>12 yolg‘on. Shartli ifoda else qismidagi y qiymatini — 12 ni qaytaradi.","code":"x, y = 7, 12\nprint(x if x > y else y)","difficulty":"O‘rta","weight":15},{"id":"v5q17","stage":5,"number":17,"topic":"Excel","prompt":"A1:A4 da 5, 0, haqiqiy bo‘sh katak va 7 mavjud. =AVERAGE(A1:A4) natijasi nechaga teng?","options":["4","6","12","3"],"answer":0,"explanation":"Bo‘sh katak hisobga olinmaydi, lekin nol olinadi. Uchta sonning o‘rtachasi (5+0+7)/3=4. To‘rtta katakka bo‘lish xato.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v5q18","stage":5,"number":18,"topic":"Excel","prompt":"=LEN(REPT(\"IT\",4)) formula natijasini toping.","options":["8","2","4","6"],"answer":0,"explanation":"REPT(\"IT\",4) → \"ITITITIT\". Har takrorda 2 belgi, jami 2·4=8. LEN belgilar sonini qaytaradi.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v5q19","stage":5,"number":19,"topic":"Excel","prompt":"A1=1, B1=4, A2=5, B2=6. =SQRT(SUM(A1:B2)) natijasi nechaga teng?","options":["8","16","4","2"],"answer":2,"explanation":"A1:B2 to‘rtta katakni qamrab oladi. SUM=1+4+5+6=16. SQRT(16)=4.","code":null,"difficulty":"O‘rta","weight":15},{"id":"v5q20","stage":5,"number":20,"topic":"Python","prompt":"Python 3 dasturi nechta tub son topadi?","options":["9","10","7","8"],"answer":3,"explanation":"2 dan 20 gacha tub sonlar: 2,3,5,7,11,13,17,19 — jami 8. Bo‘luvchi topilsa prime=False bo‘ladi. 2 uchun ichki sikl bo‘sh, prime=True qoladi.","code":"count = 0\nfor n in range(2, 21):\n    prime = True\n    for d in range(2, n):\n        if n % d == 0:\n            prime = False\n            break\n    if prime:\n        count += 1\nprint(count)","difficulty":"O‘rta","weight":15},{"id":"v5q21","stage":5,"number":21,"topic":"Sanoq sistemalari","prompt":"21ᵦ = 17₁₀ bo‘lsa, b asosini toping.","options":["7","8","9","16"],"answer":1,"explanation":"21ᵦ = 2b+1. 2b+1=17 → 2b=16 → b=8. Raqamlar 2 va 1 bu asosda ruxsat etiladi.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v5q22","stage":5,"number":22,"topic":"Axborot hajmi","prompt":"256 × 128 rasm piksellari jami 8192 bayt egallaydi. Siqish yo‘q, palitra va sarlavha hisobga olinmagan. Har piksel bir xil bit uzunligida. Kod nechta turli rangni ifodalay oladi?","options":["2","16","8","4"],"answer":3,"explanation":"Piksellar 256·128=32768. Jami bitlar 8192·8=65536. Bir pikselga 65536/32768=2 bit. 2²=4 rang.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v5q23","stage":5,"number":23,"topic":"Sanoq sistemalari","prompt":"0.011₂ kasrining o‘nlik qiymatini toping.","options":["0.625","0.011","0.25","0.375"],"answer":3,"explanation":"0.011₂ = 0/2+1/4+1/8 = 0.25+0.125 = 0.375.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v5q24","stage":5,"number":24,"topic":"Python","prompt":"Python 3 rekursiv ifodasini hisoblang.","options":["16","34","32","24"],"answer":2,"explanation":"f(0)=1, f(1)=2. f(2)=2+2·1=4; f(3)=4+2·2=8; f(4)=8+2·4=16; f(5)=16+2·8=32.","code":"def f(n):\n    if n == 0:\n        return 1\n    if n == 1:\n        return 2\n    return f(n - 1) + 2 * f(n - 2)\n\nprint(f(5))","difficulty":"Murakkab","weight":26},{"id":"v5q25","stage":5,"number":25,"topic":"Python","prompt":"Python 3 dasturidagi ichki qadamlar sonini toping.","options":["10","15","25","20"],"answer":0,"explanation":"i=0 uchun 4 ta, i=1 uchun 3 ta, i=2 uchun 2 ta, i=3 uchun 1 ta, i=4 uchun 0 ta. Jami 4+3+2+1+0=10.","code":"count = 0\nfor i in range(5):\n    for j in range(i + 1, 5):\n        count += 1\nprint(count)","difficulty":"Murakkab","weight":26},{"id":"v5q26","stage":5,"number":26,"topic":"Python","prompt":"Python 3 da bir vaqtdagi qiymat almashtirish natijasini toping.","options":["13","21","7","8"],"answer":0,"explanation":"O‘ng tomondagi b va a+b eski qiymatlar bilan hisoblanadi, so‘ng ikkalasi bir vaqtda yoziladi. a ketma-ket 1,1,2,3,5,8,13 bo‘ladi.","code":"a, b = 0, 1\nfor _ in range(7):\n    a, b = b, a + b\nprint(a)","difficulty":"Murakkab","weight":26},{"id":"v5q27","stage":5,"number":27,"topic":"Excel","prompt":"A2:A4 da 2, 3, 4; B2:B4 da 5, 1, 2 bor. =SUMPRODUCT(A2:A4,B2:B4) natijasini toping.","options":["21","24","72","17"],"answer":0,"explanation":"SUMPRODUCT mos kataklarni ko‘paytirib qo‘shadi: 2·5+3·1+4·2 = 10+3+8 = 21. Avval yig‘indilarni ko‘paytirish boshqa amal.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v5q28","stage":5,"number":28,"topic":"Mantiq","prompt":"(A OR B) AND (C OR D) AND (NOT E) ifodasi besh o‘zgaruvchili jadvalning nechta satrida rost?","options":["12","18","9","6"],"answer":2,"explanation":"A OR B uchun 3, C OR D uchun 3 rost juftlik. NOT E uchun faqat E=0 — 1 tanlov. Mustaqil tanlovlar: 3·3·1=9.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v5q29","stage":5,"number":29,"topic":"Tarmoqlar","prompt":"16 belgili alifboda 320 belgili xabar minimal teng uzunlikdagi ikkilik kodda yozildi. U 160 bit/s da, xizmat ma’lumotlarisiz uzatiladi. Necha soniya kerak?","options":["16","2","8","4"],"answer":2,"explanation":"16=2⁴, har belgi 4 bit. 320·4=1280 bit. 1280/160=8 soniya. Bu yerda tezlik bit/s da.","code":null,"difficulty":"Murakkab","weight":26},{"id":"v5q30","stage":5,"number":30,"topic":"Python","prompt":"Quyidagi dastur chiqishi 250 dan qat’iy katta bo‘lishi uchun kiritiladigan eng kichik natural n ni toping.","options":["6","5","7","8"],"answer":2,"explanation":"0 dan 2ⁿ−1 gacha har bir bit xonasi sonlarning yarmida 1 bo‘ladi. Jami 1 lar n·2ⁿ⁻¹. n=6 da 192; n=7 da 448. 192≤250\u003c448, demak minimal n=7.","code":"def total(n):\n    s = 0\n    for i in range(1 \u003c\u003c n):\n        s += bin(i).count(\"1\")\n    return s\n\nprint(total(int(input())))","difficulty":"Murakkab","weight":26}]</script>
+<script>
+'use strict';
+const BANK = JSON.parse(document.getElementById('question-data').textContent);
+const STAGES = [
+  {title:'Asos va aniqlik',desc:'Tayanch bilimlar, kod natijalari va aniq hisoblash.'},
+  {title:'Kod va hisob',desc:'Aralash savollar: satrlar, kodlash va formulalar.'},
+  {title:'Mantiq va tahlil',desc:'Shartlar, rostlik jadvallari va rekursiv fikrlash.'},
+  {title:'Murakkab bog‘lanishlar',desc:'Bir nechta amalni ketma-ket tahlil qiling.'},
+  {title:'Yakuniy sinov',desc:'Barcha mavzularni bir variantda mustahkamlang.'}
+];
+const STORE_KEY='informatika-olimpiada-150-v1';
+const DURATION=90*60*1000;
+const LETTERS=['A','B','C','D'];
+const iconPaths={
+  code:'<path d="m8 6-6 6 6 6m8-12 6 6-6 6m-2-15-4 18"/>',
+  arrow:'<path d="M5 12h14m-6-6 6 6-6 6"/>',
+  left:'<path d="M19 12H5m6-6-6 6 6 6"/>',
+  lock:'<rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2"/>',
+  check:'<path d="m5 12 4 4L19 6"/>',
+  circleCheck:'<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  trophy:'<path d="M8 3h8v6a4 4 0 0 1-8 0V3zm4 10v6m-4 2h8M8 5H4v3a4 4 0 0 0 4 4m8-7h4v3a4 4 0 0 1-4 4"/>',
+  grid:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
+  flag:'<path d="M5 21V3m0 1h14l-3 4 3 4H5"/>',
+  sheet:'<path d="M5 3h14v18H5zM5 9h14M5 15h14M11 9v12"/>',
+  logic:'<circle cx="6" cy="6" r="2"/><circle cx="18" cy="12" r="2"/><circle cx="6" cy="18" r="2"/><path d="m8 6 8 6m-8 6 8-6"/>',
+  chip:'<rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4m6-4v4M9 18v4m6-4v4M2 9h4m-4 6h4m12-6h4m-4 6h4"/>',
+  book:'<path d="M12 5v16M3 4h5a4 4 0 0 1 4 2 4 4 0 0 1 4-2h5v16h-5a4 4 0 0 0-4 1 4 4 0 0 0-4-1H3V4z"/>',
+  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/>',
+  moon:'<path d="M20 15a9 9 0 0 1-11-11 9 9 0 1 0 11 11z"/>',
+  download:'<path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/>',
+  upload:'<path d="M12 15V3m-5 5 5-5 5 5M4 16v5h16v-5"/>',
+  refresh:'<path d="M20 7v5h-5m-11 5v-5h5M5 8a8 8 0 0 1 13-3l2 3M4 16l2 3a8 8 0 0 0 13-3"/>',
+  x:'<path d="m6 6 12 12M6 18 18 6"/>',
+  chevron:'<path d="m6 9 6 6 6-6"/>',
+  info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v.1"/>'
+};
+function icon(name){return `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${iconPaths[name]||iconPaths.info}</svg>`;}
+function esc(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function fmt(value){return Number.isInteger(value)?String(value):Number(value).toFixed(1);}
+function questions(stage){return BANK.filter(q=>q.stage===stage);}
+function scoreAnswers(stage,answers){const qs=questions(stage);let earned=0,correct=0,answered=0;qs.forEach((q,i)=>{if(answers[i]!==null&&answers[i]!==undefined)answered++;if(answers[i]===q.answer){correct++;earned+=q.weight;}});return {earned,correct,answered,wrong:answered-correct,blank:30-answered,score:earned/5,olympic:earned/10};}
+function unlocked(stage){return stage===1||state.passed.slice(0,stage-1).every(Boolean);}
+function freshState(){return {version:1,name:'',theme:'dark',passed:Array(5).fill(false),best:Array(5).fill(0),history:[],active:null};}
+function validOrder(order){return Array.isArray(order)&&order.length===30&&order.every(row=>Array.isArray(row)&&row.length===4&&[...row].sort().join(',')==='0,1,2,3');}
+function validAnswers(answers){return Array.isArray(answers)&&answers.length===30&&answers.every(x=>x===null||(Number.isInteger(x)&&x>=0&&x<=3));}
+function normalize(raw){
+  if(!raw||raw.version!==1)throw new Error('Format mos emas');
+  const clean=freshState();clean.name=typeof raw.name==='string'?raw.name.slice(0,50):'';clean.theme=raw.theme==='light'?'light':'dark';
+  if(Array.isArray(raw.history))clean.history=raw.history.filter(r=>r&&Number.isInteger(r.stage)&&r.stage>=1&&r.stage<=5&&validAnswers(r.answers)&&validOrder(r.order)&&Number.isFinite(r.started)&&Number.isFinite(r.ended)&&typeof r.id==='string').slice(0,60).map(r=>({...r,...scoreAnswers(r.stage,r.answers)}));
+  // Mastery is backed by a full 30-answer record, including after history is trimmed.
+  if(Array.isArray(raw.masters))clean.masters=Array.from({length:5},(_,i)=>{const r=raw.masters[i];return r&&r.stage===i+1&&validAnswers(r.answers)&&scoreAnswers(i+1,r.answers).correct===30?r:null;});
+  else clean.masters=Array(5).fill(null);
+  clean.history.forEach(r=>{clean.best[r.stage-1]=Math.max(clean.best[r.stage-1],r.score);if(r.correct===30&&!clean.masters[r.stage-1])clean.masters[r.stage-1]={stage:r.stage,answers:r.answers.slice()};});
+  for(let i=0;i<5;i++){clean.passed[i]=!!clean.masters[i]&&(i===0||clean.passed[i-1]);if(clean.passed[i])clean.best[i]=100;}
+  if(Array.isArray(raw.best))for(let i=0;i<5;i++)if(Number.isFinite(raw.best[i])&&raw.best[i]>=0&&raw.best[i]<100)clean.best[i]=Math.max(clean.best[i],raw.best[i]);
+  const a=raw.active;
+  if(a&&Number.isInteger(a.stage)&&a.stage>=1&&a.stage<=5&&(a.stage===1||clean.passed.slice(0,a.stage-1).every(Boolean))&&validAnswers(a.answers)&&validOrder(a.order)&&Number.isFinite(a.started)&&a.deadline===a.started+DURATION&&a.started<=Date.now()+1000){
+    clean.active={...a,index:Math.max(0,Math.min(29,Number.isInteger(a.index)?a.index:0)),flags:Array.from({length:30},(_,i)=>!!a.flags?.[i])};
+  }
+  return clean;
+}
+let storageOK=true;
+let state;
+try{const saved=localStorage.getItem(STORE_KEY);state=saved?normalize(JSON.parse(saved)):freshState();}catch(e){state=freshState();storageOK=false;}
+if(!state.masters)state.masters=Array(5).fill(null);
+let view='home',resultRecord=null,resultFilter='wrong',practice=null,modalAction=null,toastTimer=null;
+const app=document.getElementById('app');
+function save(){try{localStorage.setItem(STORE_KEY,JSON.stringify(state));storageOK=true;}catch(e){storageOK=false;}}
+function toast(message){clearTimeout(toastTimer);const box=document.getElementById('toast');box.textContent=message;box.hidden=false;toastTimer=setTimeout(()=>{box.hidden=true;},4200);}
+function clockText(ms){const seconds=Math.max(0,Math.ceil(ms/1000));return `${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`;}
+function dateText(timestamp){return new Date(timestamp).toLocaleString('uz-UZ',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});}
+function shuffle(){const values=[0,1,2,3];for(let i=3;i>0;i--){const j=Math.floor(Math.random()*(i+1));[values[i],values[j]]=[values[j],values[i]];}return values;}
+function modal(title,message,callback,label='Davom etish'){
+  const box=document.getElementById('modal');modalAction=callback;
+  box.innerHTML=`<h2 id="modal-title">${esc(title)}</h2><p>${esc(message)}</p><div class="dialog-actions"><button class="btn secondary" data-action="cancel-modal">Ortga</button><button class="btn primary" data-action="confirm-modal">${esc(label)}</button></div>`;
+  box.showModal();
+}
+function header(){document.getElementById('header').innerHTML=`<div class="brand" role="button" tabindex="0" data-action="go-home" aria-label="Variantlar sahifasi"><span class="brand-mark">${icon('code')}</span><div><div class="brand-title">OLIMPIADA <span style="color:var(--accent)">150</span></div><div class="brand-sub">INFORMATIKA · 10-SINF</div></div></div><nav class="header-nav" aria-label="Asosiy menyu"><button class="navbtn ${view==='home'||view==='exam'?'active':''}" data-action="go-home">Variantlar</button><button class="navbtn ${view==='history'?'active':''}" data-action="go-history">Natijalarim</button><button class="navbtn ${view==='rules'?'active':''}" data-action="go-rules">Qoida va manbalar</button></nav><div class="row"><span class="header-tag">Internetsiz ishlaydi</span><button class="iconbtn" data-action="theme" aria-label="${state.theme==='dark'?'Yorug‘ rejimga o‘tish':'Qorong‘i rejimga o‘tish'}" title="${state.theme==='dark'?'Yorug‘ rejim':'Qorong‘i rejim'}">${icon(state.theme==='dark'?'sun':'moon')}</button></div>`;}
+function render(){document.documentElement.dataset.theme=state.theme;header();if(view==='home')renderHome();else if(view==='exam')renderExam();else if(view==='result')renderResult();else if(view==='history')renderHistory();else if(view==='rules')renderRules();else if(view==='practice')renderPractice();}
+function go(target){if(state.active&&view==='exam'&&target!=='exam')toast('Javoblar saqlandi. Test taymeri davom etadi.');view=target;render();window.scrollTo({top:0,behavior:'instant'});}
+function begin(stage){clearTimeout(toastTimer);document.getElementById('toast').hidden=true;state.active={stage,started:Date.now(),deadline:Date.now()+DURATION,index:0,answers:Array(30).fill(null),flags:Array(30).fill(false),order:Array.from({length:30},shuffle)};state.active.deadline=state.active.started+DURATION;save();view='exam';render();window.scrollTo({top:0,behavior:'instant'});}
+function requestStart(stage,restart=false){
+  if(!unlocked(stage)){toast(`Avval ${stage-1}-variantdan 100/100 oling.`);return;}
+  if(state.active){if(state.active.stage===stage&&!restart){view='exam';render();checkExpiry();window.scrollTo({top:0,behavior:'instant'});return;}
+    modal('Yangi urinishni boshlash',`${state.active.stage}-variantdagi tugallanmagan urinish almashtiriladi. Oldingi yakunlangan natijalar saqlanadi.`,()=>begin(stage),'Boshlash');return;}
+  begin(stage);
+}
+function checkExpiry(){if(state.active&&Date.now()>=state.active.deadline){finish(true);return true;}return false;}
+function finish(auto=false){
+  const a=state.active;if(!a)return;
+  const score=scoreAnswers(a.stage,a.answers);
+  const record={id:String(Date.now())+'-'+Math.random().toString(36).slice(2,7),stage:a.stage,started:a.started,ended:Math.min(Date.now(),a.deadline),answers:a.answers.slice(),order:a.order.map(x=>x.slice()),timedOut:auto,...score};
+  state.best[a.stage-1]=Math.max(state.best[a.stage-1],score.score);
+  if(score.correct===30){state.passed[a.stage-1]=true;state.masters[a.stage-1]={stage:a.stage,answers:a.answers.slice()};}
+  state.history.unshift(record);state.history=state.history.slice(0,60);state.active=null;save();
+  resultRecord=record;resultFilter=score.correct===30?'all':'wrong';view='result';document.getElementById('modal').close();render();window.scrollTo({top:0,behavior:'instant'});
+  if(score.correct===30)celebrate();if(auto)toast('90 daqiqa tugadi. Natija avtomatik hisoblandi.');
+}
+function finishRequest(){if(checkExpiry())return;const a=state.active;if(!a)return;const answered=a.answers.filter(x=>x!==null).length;modal('Testni yakunlaysizmi?',`${answered}/30 savolga javob belgilangan.${answered<30?' Belgilanmagan '+(30-answered)+' ta savol uchun ball berilmaydi.':''} Yakunda natija va barcha yechim izohlarini ko‘rasiz.`,()=>finish(false),'Yakunlash');}
+function celebrate(){if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;for(let i=0;i<28;i++){const el=document.createElement('i');el.className='confetti';el.style.left=(5+Math.random()*90)+'%';el.style.background=['#77e5c1','#8cb9ff','#f4c46c'][i%3];el.style.animationDelay=(Math.random()*.5)+'s';document.body.append(el);setTimeout(()=>el.remove(),3400);}}
+function codeBlock(q){return q.code?`<div class="code-wrap"><div class="code-top"><span>PYTHON 3</span><span>KODNI TAHLIL QILING</span></div><pre><code>${esc(q.code)}</code></pre></div>`:'';}
+function footer(){return `<p class="footer-note">${icon('info')}Mustaqil mashq savollari · 2024–2025 tuman olimpiadasi mavzulari va uslubiga mos.</p>`;}
 
-        <div class="content" id="content">
-            <div id="questions-container"></div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progress-fill"></div>
-            </div>
-            <div class="answered-counter" id="answered-counter">Javoblar: 0/40</div>
-        </div>
+function renderHome(){
+  const passed=state.passed.filter(Boolean).length;const active=state.active;const counts={};BANK.forEach(q=>counts[q.topic]=(counts[q.topic]||0)+1);
+  app.innerHTML=`<div class="intro"><div><div class="eyebrow" style="margin-bottom:6px">Tayyorlanish maydoni</div><h2>${state.name?esc(state.name)+', boshlaymizmi?':'Olimpiadaga tayyormisiz?'}</h2></div><label><span class="sr-only">Ismingiz, ixtiyoriy</span><input class="name-input" id="student-name" maxlength="50" value="${esc(state.name)}" placeholder="Ismingiz (ixtiyoriy)" autocomplete="given-name"></label></div>
+  <section class="hero" aria-label="Olimpiada mashq dasturi"><div class="hero-text"><div class="eyebrow">10-SINF · INFORMATIKA</div><h1>Bilimingizni sinang.<br>Har bosqichda o‘sing.</h1><p>Haqiqiy test tartibi, aralash savollar va tushunarli yechimlar. Birinchi variantdan 100/100 oling — keyingi bosqich ochiladi.</p><div class="hero-tags"><span>${icon('book')}150 ta savol</span><span>${icon('grid')}5 ta variant</span><span>${icon('clock')}90 daqiqa</span></div></div><div class="hero-visual"><div class="hero-progress-label"><span>Sizning yo‘lingiz</span><strong>${passed}/5 bosqich</strong></div><div class="stage-track">${STAGES.map((s,i)=>`<div class="track-step ${state.passed[i]?'done':unlocked(i+1)?'now':'locked'}">${icon(state.passed[i]?'check':unlocked(i+1)?'code':'lock')}<span>${String(i+1).padStart(2,'0')}</span></div>`).join('')}</div><div class="hero-note">${icon('lock')}<span>100/100 — barcha 30 ta savolga to‘g‘ri javob.<br>Ochilgan variantlarni istalgan payt qayta ishlang.</span></div></div></section>
+  ${active?`<div class="notice"><div class="row">${icon('clock')}<span><strong>${active.stage}-variant davom etmoqda.</strong> Javoblar: ${active.answers.filter(x=>x!==null).length}/30 · Qolgan vaqt: <b data-live-clock>${clockText(active.deadline-Date.now())}</b></span></div><button class="btn primary smallbtn" data-action="start" data-stage="${active.stage}">Davom etish ${icon('arrow')}</button></div>`:''}
+  ${!storageOK?`<div class="notice" role="status"><span>Brauzerda doimiy saqlash ishlamayapti. Natijalarim sahifasidan natijalarni eksport qiling.</span></div>`:''}
+  <div class="dashboard-grid"><section><div class="section-head"><div class="row between"><h2>Test variantlari</h2><span class="tag">30 tadan savol</span></div><p>Savollarni variant ichida istalgan tartibda tanlab ishlashingiz mumkin.</p></div>${STAGES.map((s,i)=>{const n=i+1,open=unlocked(n),done=state.passed[i],continuing=active?.stage===n;return `<article class="variant-card ${!open?'locked':''} ${done?'passed':''}"><div class="variant-number">${done?icon('check'):String(n).padStart(2,'0')}</div><div><div class="row wrap" style="gap:8px;margin-bottom:4px"><h3>${esc(s.title)}</h3>${done?'<span class="tag green">100/100</span>':!open?'<span class="tag">Qulflangan</span>':'<span class="tag blue">Ochilgan</span>'}</div><p>${open?esc(s.desc):`${n-1}-variantdan 100/100 olgach ochiladi.`}</p><div class="variant-meta"><span>${n}-variant</span><span>30 savol</span><span>50 → 100 ball</span></div></div><div class="variant-actions"><button class="btn ${open?'primary':'secondary'}" data-action="start" data-stage="${n}" ${!open?'disabled':''}>${!open?icon('lock')+' Qulflangan':continuing?'Davom etish '+icon('arrow'):done?'Qayta ishlash '+icon('refresh'):'Boshlash '+icon('arrow')}</button><small class="variant-best">${state.best[i]>0?'Eng yaxshi: '+fmt(state.best[i])+'/100':open?'90 daqiqa · 1 urinish':'Avvalgi bosqichni yakunlang'}</small></div></article>`;}).join('')}</section>
+  <aside class="dashboard-aside"><div class="panel"><h3>Umumiy natija</h3><div class="mini-score">${passed}<span> / 5 bosqich</span></div><div class="thin-progress"><div style="width:${passed*20}%"></div></div><p class="muted" style="font-size:12px">${passed===5?'Barcha variantlar 100/100 bilan yakunlandi.':passed===0?'Birinchi mukammal natijangizdan boshlang.':'Yana '+(5-passed)+' ta bosqichni mukammal yakunlang.'}</p></div><div class="panel"><h3>Baholash tartibi</h3><div class="rule-row"><span>1–10-savollar</span><strong>0.9 balldan</strong></div><div class="rule-row"><span>11–20-savollar</span><strong>1.5 balldan</strong></div><div class="rule-row"><span>21–30-savollar</span><strong>2.6 balldan</strong></div><div class="rule-row"><span>Maksimal</span><strong>50 ball = 100/100</strong></div><p style="font-size:11px;color:var(--muted);margin-top:13px">Har to‘g‘ri javob o‘z ballini beradi. Noto‘g‘ri javob uchun ball ayrilmaydi.</p></div><div class="panel"><h3>Savollar qamrovi</h3><div class="topic-list">${Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([topic,count])=>`<div class="topic-row">${icon(topic==='Python'?'code':topic==='Excel'?'sheet':topic==='Mantiq'?'logic':'chip')}<span>${esc(topic)}</span><small>${count}</small></div>`).join('')}</div></div></aside></div>${footer()}`;
+}
 
-        <div class="results" id="results">
-            <h2 style="margin-bottom: 20px;">Test Natijalari</h2>
-            <div class="score-display" id="score-display">0%</div>
-            <div class="results-text" id="results-message"></div>
-            <div class="results-info">
-                <p id="results-details"></p>
-            </div>
-        </div>
+function renderExam(){
+  const a=state.active;if(!a){view='home';render();return;}
+  const qs=questions(a.stage),q=qs[a.index],count=a.answers.filter(x=>x!==null).length;
+  app.innerHTML=`<div class="exam-top"><div class="exam-title"><button class="iconbtn" data-action="go-home" aria-label="Variantlarga qaytish">${icon('left')}</button><div><div class="eyebrow" style="margin-bottom:6px">${a.stage}-VARIANT · OLIMPIADA REJIMI</div><h2>${esc(STAGES[a.stage-1].title)}</h2><p>${esc(state.name||'Ishtirokchi')} · 30 savol · Maksimal 50 ball</p></div></div><div class="timer-box" id="timer-box" role="timer" aria-label="Qolgan vaqt"><span>${icon('clock')}</span><div><div class="timer-time" data-live-clock>${clockText(a.deadline-Date.now())}</div><div class="timer-caption">QOLGAN VAQT</div></div></div></div><a href="#question-map" class="mobile-map-link">Savollar xaritasiga o‘tish ↓</a>
+  <div class="exam-grid"><section class="question-card"><div class="question-meta"><div class="row wrap" style="gap:7px"><span class="tag blue">${esc(q.topic)}</span><span class="tag">${esc(q.difficulty)} · ${fmt(q.weight/10)} ball</span></div><div class="question-count"><strong>${q.number}</strong> / 30</div></div><h2 class="question-prompt" id="question-prompt" tabindex="-1">${esc(q.prompt)}</h2>${codeBlock(q)}<div class="options" role="group" aria-label="Javob variantlari">${a.order[a.index].map((original,display)=>`<button class="option ${a.answers[a.index]===original?'selected':''}" data-action="answer" data-index="${display}" aria-pressed="${a.answers[a.index]===original}"><span class="option-letter">${LETTERS[display]}</span><span class="option-text">${esc(q.options[original])}</span>${a.answers[a.index]===original?`<span class="option-indicator">${icon('circleCheck')}</span>`:''}</button>`).join('')}</div><div class="question-actions"><button class="btn ghost smallbtn flag-btn ${a.flags[a.index]?'flagged':''}" data-action="flag" aria-pressed="${a.flags[a.index]}">${icon('flag')}${a.flags[a.index]?'Belgilangan':'Keyinga belgilash'}</button><div class="nav-buttons"><button class="btn secondary" data-action="previous" ${a.index===0?'disabled':''}>${icon('left')}Oldingi</button><button class="btn ${a.index===29?'primary':'secondary'}" data-action="${a.index===29?'finish':'next'}">${a.index===29?'Yakunlash':'Keyingi'}${icon('arrow')}</button></div></div>${a.answers[a.index]!==null?'<button class="btn ghost smallbtn" data-action="clear-answer" style="margin-top:7px">Javobni tozalash</button>':''}</section>
+  <aside class="exam-sidebar"><div class="panel" id="question-map"><div class="row between"><h3 style="margin:0">Savollar xaritasi</h3><span class="tag">${a.stage}/5</span></div><div class="thin-progress"><div style="width:${count/30*100}%"></div></div><p class="board-count"><strong>${count}</strong> / 30 ta javob belgilandi</p><div class="question-board">${qs.map((item,i)=>`<button class="qnum ${a.answers[i]!==null?'answered':''} ${a.index===i?'current':''} ${a.flags[i]?'flagged':''}" data-action="jump" data-index="${i}" aria-label="${i+1}-savol${a.answers[i]!==null?', javob belgilangan':''}${a.flags[i]?', keyinga belgilangan':''}" ${a.index===i?'aria-current="true"':''}>${i+1}</button>`).join('')}</div><div class="board-legend"><span class="legend"><i class="dot green"></i>Javob bor</span><span class="legend"><i class="dot blue"></i>Joriy</span><span class="legend"><i class="dot amber"></i>Keyinga</span></div><button class="btn primary" data-action="finish">Testni yakunlash ${icon('check')}</button><p class="exam-note">To‘g‘ri javoblar va izohlar test yakunlangandan keyin ochiladi. Taymer sahifalar almashganda ham davom etadi.</p></div><div class="keyboard-note"><kbd>1</kbd>–<kbd>4</kbd> yoki <kbd>A</kbd>–<kbd>D</kbd> javob tanlash<br><kbd>←</kbd> <kbd>→</kbd> savollar orasida o‘tish</div></aside></div>`;
+  updateClock();
+}
+function moveQuestion(index){if(checkExpiry()||!state.active)return;state.active.index=Math.max(0,Math.min(29,index));save();render();document.getElementById('question-prompt')?.focus({preventScroll:true});}
+function chooseAnswer(display){if(checkExpiry()||!state.active)return;const a=state.active;if(!Number.isInteger(display)||display<0||display>3)return;a.answers[a.index]=a.order[a.index][display];save();render();document.querySelector(`[data-action="answer"][data-index="${display}"]`)?.focus({preventScroll:true});}
+function updateClock(){if(!state.active)return;const left=state.active.deadline-Date.now();document.querySelectorAll('[data-live-clock]').forEach(el=>el.textContent=clockText(left));document.getElementById('timer-box')?.classList.toggle('urgent',left<=5*60*1000);}
 
-        <div class="footer">
-            <button class="btn-reset" onclick="resetQuiz()" id="reset-btn">Qayta boshlash</button>
-            <button class="btn-submit" onclick="submitQuiz()" id="submit-btn">Testni tugatish</button>
-        </div>
-    </div>
+function renderResult(){
+  const r=resultRecord;if(!r){view='history';render();return;}
+  const stats=scoreAnswers(r.stage,r.answers),perfect=stats.correct===30,qs=questions(r.stage),next=r.stage+1;
+  const selected=qs.filter((q,i)=>resultFilter==='all'||r.answers[i]!==q.answer);
+  const categories={};qs.forEach((q,i)=>{if(!categories[q.topic])categories[q.topic]={total:0,correct:0};categories[q.topic].total++;if(r.answers[i]===q.answer)categories[q.topic].correct++;});
+  app.innerHTML=`<div class="result-hero"><div class="score-ring" style="--score:${stats.score}">${fmt(stats.score)}<span>100 balldan</span></div><div><div class="eyebrow">${r.stage}-VARIANT · NATIJA</div><h1>${perfect?r.stage===5?'Barcha bosqichlar zabt etildi!':'Mukammal natija!':'Yechimlardan o‘rganing.'}</h1><p>${perfect?(next<=5?`${next}-variant ochildi. Bilimingizni keyingi sinovda tekshiring.`:'Barcha 150 savol bo‘yicha 5 ta mukammal natijaga erishdingiz.'):`${stats.correct}/30 ta to‘g‘ri javob. ${state.passed[r.stage-1]?'Bu bosqich avval 100/100 bilan yakunlangan. Ochilgan variantlar ochiq qoladi.':next<=5?`${next}-variantni ochish uchun shu variantdan 100/100 kerak.`:'Bu yakuniy variantni ham 100/100 bilan mustahkamlang.'}`}${r.timedOut?' 90 daqiqa tugagani uchun test avtomatik yakunlandi.':''}</p><div class="result-actions">${perfect&&next<=5?`<button class="btn primary" data-action="start" data-stage="${next}">Keyingi bosqich ${icon('arrow')}</button>`:`<button class="btn primary" data-action="retry" data-stage="${r.stage}">Variantni qayta ishlash ${icon('refresh')}</button>`}${stats.correct<30?`<button class="btn secondary" data-action="practice">Xatolarni qayta yechish ${icon('code')}</button>`:''}<button class="btn ghost" data-action="go-home">Variantlar</button></div></div></div>
+  <div class="stats-grid"><div class="stat-box good"><strong>${stats.correct}</strong><small>To‘g‘ri javob</small></div><div class="stat-box bad"><strong>${stats.wrong}</strong><small>Noto‘g‘ri javob</small></div><div class="stat-box"><strong>${stats.blank}</strong><small>Belgilanmagan</small></div><div class="stat-box"><strong>${fmt(stats.olympic)}<span style="font-size:15px;color:var(--muted)"> / 50</span></strong><small>Olimpiada balli · ${clockText(r.ended-r.started)}</small></div></div>
+  <div class="topic-analysis">${Object.entries(categories).map(([topic,c])=>`<div class="panel"><div class="row between"><strong>${esc(topic)}</strong><span class="tag ${c.correct===c.total?'green':c.correct===0?'red':'blue'}">${c.correct}/${c.total}</span></div><div class="thin-progress" style="margin:10px 0 7px"><div style="width:${c.correct/c.total*100}%"></div></div><small>${c.correct===c.total?'Barchasi to‘g‘ri':(c.total-c.correct)+' ta savolni takrorlang'}</small></div>`).join('')}</div>
+  <div class="review-head"><h2>Javoblar tahlili</h2><div class="segmented" role="group" aria-label="Tahlil filtri"><button class="${resultFilter==='wrong'?'active':''}" data-action="filter-wrong">Xatolar (${30-stats.correct})</button><button class="${resultFilter==='all'?'active':''}" data-action="filter-all">Barchasi (30)</button></div></div>
+  ${selected.length?selected.map((q)=>{const i=q.number-1,answer=r.answers[i],right=answer===q.answer,letter=answer===null?'':LETTERS[r.order[i].indexOf(answer)]+') ';return `<details class="review-card ${right?'correct':''}" ${!right?'open':''}><summary><span class="review-status">${icon(right?'circleCheck':'x')}</span><div><small>${q.number}-savol · ${esc(q.topic)} · ${fmt(q.weight/10)} ball</small><strong>${esc(q.prompt)}</strong></div><span class="review-chevron">${icon('chevron')}</span></summary><div class="review-content">${codeBlock(q)}<div class="answer-pair"><div class="answer-box ${right?'right':'wrong'}"><small>${right?'SIZNING JAVOBINGIZ':'SIZNING JAVOBINGIZ / XATO'}</small>${answer===null?'Javob belgilanmagan':esc(letter+q.options[answer])}</div><div class="answer-box right"><small>TO‘G‘RI JAVOB</small>${esc(LETTERS[r.order[i].indexOf(q.answer)]+') '+q.options[q.answer])}</div></div><div class="explanation"><strong>YECHIM VA TUSHUNTIRISH</strong>${esc(q.explanation)}</div></div></details>`;}).join(''):`<div class="empty">${icon('trophy')}<h3>Xato javob yo‘q</h3><p>Barcha 30 ta savolga to‘g‘ri javob berildi.</p></div>`}
+  <div class="row wrap" style="margin-top:24px"><button class="btn secondary" data-action="download-result">${icon('download')}Natija va izohlarni yuklab olish</button><button class="btn ghost" data-action="go-history">Barcha urinishlar</button></div>${footer()}`;
+}
 
-    <script>
-        const questions = [
-            {
-                question: "Axborotlar qandayshakllardauzatilishimumkin?",
-                options: ["Matnli, raqamli.", "Ovozli, grafik.", "Barcha javobto'g'ri."],
-                correct: 2
-            },
-            {
-                question: "Ma'lumotlarturibu - ……… .",
-                options: ["O'zgaruvchiyokidoimiyqiymatlardagima'lumotlarshakli.", "Kompyuterdaberilganma'lumotar.", "Dasturlashtilihaqidaberiladiganma'lumotlar."],
-                correct: 0
-            },
-            {
-                question: "O'zgaruvchiqabulqilganqiymatturiniqaysifunksiyayordamidaaniqlashmumkin?",
-                options: ["input().", "type().", "str()."],
-                correct: 1
-            },
-            {
-                question: "\" //\" ushbuarifmetikamalnomi?",
-                options: ["Bo'lish.", "Bo'linmaningqoldig'inihisoblash.", "Bo'linmaningbutunqiymatinihisoblash."],
-                correct: 2
-            },
-            {
-                question: "Satr nima?",
-                options: ["So'zlarketma-ketligi.", "Harf, son vabelgilarhamdaprobeldantarkibtopganbelgilarketma-ketligi.", "To'g'rijavobyo'q."],
-                correct: 1
-            },
-            {
-                question: "Satr uzunliginiqaysifunksiyayordamidaaniqlashmumkin?",
-                options: ["len().", "Print().", "input()."],
-                correct: 0
-            },
-            {
-                question: "Satrlarnibirlashtirishuchunqaysiamalqo'llaniladi?",
-                options: ["+", "-", "/"],
-                correct: 0
-            },
-            {
-                question: "Pythondasatrdagibelgilarniraqamlashnechchidanboshlanadi?",
-                options: ["1 dan.", "0 dan.", "2 dan."],
-                correct: 1
-            },
-            {
-                question: "Print() qandayvazifabajaradi?",
-                options: ["Satr uzunliginianiqlaydi.", "Satrlarnibirlashtiradi.", "Ma'lumotlarniekrangachiqarishfaylgayozishvasifasinibajaradi."],
-                correct: 2
-            },
-            {
-                question: "End vasep print nimauchunqo'llaniladi?",
-                options: ["Ma'lumotlarnichiqarishparametrlarinio'zgartirishuchun.", "Python dasturigama'lumotlarniyozishuchun.", "To'g'rijavobyo'q."],
-                correct: 0
-            },
-            {
-                question: "Dasturlashjarayonidaasosannechaxilalgoritmdanfoydalaniladi?",
-                options: ["2 xil.", "3 xil.", "5 xil."],
-                correct: 1
-            },
-            {
-                question: "Buyruqlarning qat'iyketma-ketlikdatartibbilanbajarilishinima deb ataladi?",
-                options: ["Algoritm.", "Dasturlashjarayoni.", "Chizqlialgoritm."],
-                correct: 0
-            },
-            {
-                question: "Chiziqlialgoritmlarnidasturshaklidayozilishiga ………… deyiladi.",
-                options: ["Chiziqlidastur.", "Chizqlialgoritm.", "To'g'rijavobyo'q."],
-                correct: 0
-            },
-            {
-                question: "Amallarningqat'iyketma-ketlikdabajarilishinima deb ataladi?",
-                options: ["Chiziqlidastur.", "Chiziqliijro.", "Chiziqlialgoritm."],
-                correct: 1
-            },
-            {
-                question: "O'zgaruvchilarnitaqqoslashuchunqandayamallardanfoydalaniladi?",
-                options: ["Soddaamallardan.", "Mantiqiyamallardan.", "To'g'rijavobyo'q."],
-                correct: 1
-            },
-            {
-                question: "Taqqoslashamallarigaqaysiamallarkiradi?",
-                options: ["<,>,=,!=.", "<,=,+,-.", ">,+,=."],
-                correct: 0
-            },
-            {
-                question: "Birorta shartgako'rabuyruqlarketma-ketliginingbajarilishiyokibajarilmasliginibelgilovchialgoritmnima deb ataladi?",
-                options: ["Dasturlashalgoritimi.", "Tekshiruvchialgoritm.", "Tarmoqlanuvchialgoritm."],
-                correct: 2
-            },
-            {
-                question: "If operatoritarkibidagishart True quymatqaytarsa, buyruqlar bloke bajariladimi?",
-                options: ["yo'q.", "Ha.", "Bajarilmaydi."],
-                correct: 1
-            },
-            {
-                question: "Buyruqlar_bloki if operatoridan keying satrdaxatboshidannechtaprobelqoldiribkeyinyoziladi?",
-                options: ["4 ta.", "8 ta.", "probelqoldirmayyoziladi."],
-                correct: 0
-            },
-            {
-                question: "Shartnitekshirishuchunqaysioperatordanfoydalaniladi?",
-                options: ["Print().", "if.", "To'g'rijavobyo'q."],
-                correct: 1
-            },
-            {
-                question: "Shartdankelibchiqib, harbirshartgamosbuyruqlarketma-ketliginibajaradiganifningtakomillashganko'rinishi……..?",
-                options: ["Elif operatori.", "If operatori.", "CASE operatori."],
-                correct: 0
-            },
-            {
-                question: "Elif-else va if so'zlariningkombinatsiyasibo'lib, qandayma'nonianglatadi?",
-                options: ["\"Aks holda agar\".", "\"Rost  vayolg'on\".", "To'g'rijavobyo'q."],
-                correct: 0
-            },
-            {
-                question: "Dastur tuzishjarayonidamurakkabshartliifodalarniyozishuchunnimalardanfoydalaniladi?",
-                options: ["operatorlardan.", "Mantiqiyamallardan.", "Barcha javobto'g'ri."],
-                correct: 2
-            },
-            {
-                question: "\"==\" belginingnomi?",
-                options: ["Teng emas.", "Kata yokiteng.", "Aynan teng."],
-                correct: 2
-            },
-            {
-                question: "\"/t  belginingnominima?",
-                options: ["Tabulyatsiyabelgisi.", "Yangi satrgao'tishbelgisi.", "bittalikqo'shtirnoqbelgisi."],
-                correct: 0
-            },
-            {
-                question: "Chiziqli tuzilishgaegabo'lganalgoritmningblok-sxemasiasosannimalaryordamidatuziladi?",
-                options: ["Algoritmniboshlash, tugatishboki.", "Kiritish/chiqarishbloki, funksional bloke.", "Barcha javobto'g'ri."],
-                correct: 2
-            },
-            {
-                question: "…………. Bir chiziqbo'ylabjoylashgan, ketma-ketbajariladiganko'rsatmalarto'plamiko'rinishidabo'ladi.",
-                options: ["Chizqlialgoritm.", "Chiziqlituzilish.", "To'g'rijavobyo'q."],
-                correct: 0
-            },
-            {
-                question: "Hozirgi kundaqandaydasturlashtillarikechtarqalgan?",
-                options: ["Pascal, Delphi, C, C++.", "Java, Python.", "Barcha javobto'g'ri."],
-                correct: 2
-            },
-            {
-                question: "Tarmoqlanuvchistrukturaodatdaqandaydirmantiqiyshartni ………… o'zichigaoladi?",
-                options: ["Tekshirishblokini.", "Tarmoqlanuvchituzilish.", "To'g'rijavobyo'q."],
-                correct: 0
-            },
-            {
-                question: "Birorbirsharttekshirilishiyokiqandaydirparametrningharxilqiymatlariasosidaalgoritmdatakrorlanishiyuzberadiganjarayonlarga …………. .",
-                options: ["Tarmoqanuvchialgoritm.", "Takrorlanuvchialgoritm.", "Tekshiriluvchialgoritm."],
-                correct: 1
-            },
-            {
-                question: "Hisoblash jarayoniningko'pmartatakrorlanadiganqisminima deb yuritiladi?",
-                options: ["SUMM.", "PRODUCT.", "Ichkisikltanasi."],
-                correct: 2
-            },
-            {
-                question: "Tarkibida birnechaturdagialgoritmlarqatnashganalgoriymga …………..deyiladi.",
-                options: ["Aralashalgoritm.", "Tarmoqlanuvchinalgoritm.", "Tekshiruvchialgoritm."],
-                correct: 0
-            },
-            {
-                question: "Kompyuter uchundasturtuzisharayoninimadeyiladi?",
-                options: ["Kompyuter dasturi.", "Dasturlash.", "Dasturchi."],
-                correct: 1
-            },
-            {
-                question: "Kompyuterda birormasalanihalqilishuchunengavvalonimaqilinadi?",
-                options: ["Kompyutergayoziladi.", "Dastur tuziladi.", "Modelivaalgoritmituziladi."],
-                correct: 2
-            },
-            {
-                question: "Yaratilganmatnkompyutertilidanima deb ataladi?",
-                options: ["Yozilgandastur.", "Tuzilgandastur.", "Algoritm."],
-                correct: 0
-            },
-            {
-                question: "Dastur tuzuvchishaxsnima deb yuritiladi?",
-                options: ["Dasturchi.", "Foydalanuvchi.", "To'g'rijavobyo'q."],
-                correct: 0
-            },
-            {
-                question: "Kir yuvishmashinasi ham dasturlashasosidaishlaydimi?",
-                options: ["Yo'q.", "Ha.", "To'g'rijavobyo'q."],
-                correct: 1
-            },
-            {
-                question: "Kompyuter tushunadiganvamuloqatolibboradigan \"til\" ……… deb ataladi.",
-                options: ["Dastur.", "Dasturlashtili.", "Dasturlashalgoritmi."],
-                correct: 1
-            },
-            {
-                question: "Translyatr nima?",
-                options: ["Dastur turi.", "Dasturchinomi.", "Tarjimontili."],
-                correct: 2
-            },
-            {
-                question: "IDE so'ziningto'liqnomi?",
-                options: ["Integrated Development Environment.", "Integrated Development.", "To'g'rijavobyo'q."],
-                correct: 0
-            }
-        ];
+function renderHistory(){
+  app.innerHTML=`<div class="content-page"><div class="page-head"><div class="eyebrow" style="margin-bottom:9px">Shaxsiy rivojlanish</div><h1>Natijalarim</h1><p>Yakunlangan oxirgi 60 ta urinish va har variantdagi eng yaxshi natija. Mukammal bosqichlar ochiq qoladi.</p></div><div class="stats-grid history-best">${STAGES.map((s,i)=>`<div class="stat-box ${state.passed[i]?'good':''}"><strong>${fmt(state.best[i])}</strong><small>${i+1}-variant / 100</small></div>`).join('')}</div><div class="history-tools"><button class="btn secondary" data-action="export">${icon('download')}Natijalarni eksport qilish</button><button class="btn secondary" data-action="import">${icon('upload')}Natijalarni import qilish</button></div><p class="muted" style="font-size:12px;margin-bottom:20px">Natijalar shu brauzerda saqlanadi. Boshqa brauzerga o‘tishda eksport qilingan JSON faylni import qiling.</p>${state.history.length?`<div class="panel history-table-wrap"><table class="data-table"><thead><tr><th>VARIANT</th><th>SANA</th><th>TO‘G‘RI</th><th>BALL / 100</th><th>HOLAT</th><th>TAHLIL</th></tr></thead><tbody>${state.history.map(r=>`<tr><td><strong>${r.stage}-variant</strong></td><td>${esc(dateText(r.ended))}</td><td>${r.correct}/30</td><td><strong>${fmt(r.score)}</strong></td><td><span class="tag ${r.correct===30?'green':'blue'}">${r.correct===30?'100/100':'Yakunlangan'}</span></td><td><button class="btn secondary smallbtn" data-action="open-result" data-id="${esc(r.id)}">Ko‘rish</button></td></tr>`).join('')}</tbody></table></div>`:`<div class="empty">${icon('trophy')}<h3>Hali natija yo‘q</h3><p>Birinchi variantni ishlang. Yakunlangan urinish shu yerda ko‘rinadi.</p><button class="btn primary" data-action="start" data-stage="1" style="margin-top:18px">Birinchi variantni boshlash</button></div>`}${footer()}</div>`;
+}
 
-        let userAnswers = new Array(questions.length).fill(null);
-        let timeLeft = 25 * 60;
-        let timerInterval;
-        let quizSubmitted = false;
-        let shuffledQuestions = [];
-        let questionIndices = [];
+function renderRules(){app.innerHTML=`<div class="content-page"><div class="page-head"><div class="eyebrow" style="margin-bottom:9px">Boshlashdan oldin</div><h1>Qoida va manbalar</h1><p>Bu 10-sinf informatika olimpiadasiga tayyorlanish uchun mustaqil mashq dasturi.</p></div><div class="rules-grid"><section class="panel"><h3>${icon('clock')} Test tartibi</h3><ol class="rules-list"><li>Jami 150 ta noyob savol: 5 ta variant, har birida 30 ta aralash savol.</li><li>Har bir variant uchun 90 daqiqa. Savollarni istalgan tartibda tanlash va javobni almashtirish mumkin.</li><li>Har savolda 4 ta variantdan faqat bitta to‘g‘ri javob bor. Javoblar yakunda tekshiriladi.</li><li>«Keyinga belgilash» savolni unutmaslik uchun. Bu javob berish o‘rniga o‘tmaydi.</li><li>Vaqt tugaganda test mavjud javoblar bilan avtomatik yakunlanadi. Sahifadan chiqishda ham taymer davom etadi.</li></ol></section><section class="panel"><h3>${icon('lock')} Bosqichlar ochilishi</h3><ol class="rules-list"><li>Dastlab faqat 1-variant ochiq.</li><li>To‘liq variantda 30/30 ta to‘g‘ri javob, ya’ni 100/100 olsangiz, keyingisi ochiladi.</li><li>Ochilgan variantni tanlab qayta ishlash mumkin. Keyingi yomonroq urinish uni yopmaydi.</li><li>Yakuniy tahlilda siz tanlagan javob, to‘g‘ri javob va yechim izohi bor.</li><li>«Xatolarni qayta yechish» mashq rejimidir. U keyingi bosqichni ochmaydi; buning uchun to‘liq variantni mukammal yakunlang.</li></ol></section></div><section class="panel"><h3>Olimpiada uslubidagi baholash</h3><p>2025-yilgi namunadagi 50 ballik tuzilma mashq uchun 100 ballga o‘tkazilgan. Ballar qiyinlikka qarab farq qiladi.</p><table class="data-table"><thead><tr><th>SAVOLLAR</th><th>HAR BIRI</th><th>JAMI / 50</th><th>JAMI / 100</th></tr></thead><tbody><tr><td>1–10 · Oson</td><td>0.9</td><td>9</td><td>18</td></tr><tr><td>11–20 · O‘rta</td><td>1.5</td><td>15</td><td>30</td></tr><tr><td>21–30 · Murakkab</td><td>2.6</td><td>26</td><td>52</td></tr><tr><td><strong>Jami 30 savol</strong></td><td>—</td><td><strong>50</strong></td><td><strong>100</strong></td></tr></tbody></table><p style="margin-top:14px">Noto‘g‘ri yoki belgilanmagan javob 0 ball. Yakuniy /100 ball — olimpiada ballining 2 baravari. 100/100 olish uchun barcha savollar to‘g‘ri bo‘lishi shart.</p></section><section class="panel"><h3>Savollardagi kelishuvlar</h3><p>Python savollari Python 3 uchun. Excel formulalari inglizcha nomlarda, vergul bilan yozilgan; mahalliy Excelingizda funksiya tarjimasi va ajratgich farq qilishi mumkin. Sanoq sistemasining asosi son yonidagi kichik indeksda ko‘rsatilgan. 1 bayt = 8 bit; 1 KiB = 1024 bayt; 1 MiB = 1024 KiB; 1 Kibit = 1024 bit; 1 Mibit = 1024² bit. Axborot hajmi savollarida siqish va xizmat ma’lumotlari hisobga olinishi alohida aytilgan.</p></section><section class="panel"><h3>Namunalar va tekshirish manbalari</h3><p>150 savol mustaqil tuzilgan, 2024–2025-yilgi tuman variantlarining mavzulari va savol uslubiga mos. Ular kelasi olimpiadada aynan tushadigan savollar sifatida taqdim etilmaydi.</p><ul class="source-list"><li><a href="https://darsuchun.uz/wp-content/uploads/2025/10/10-sinf-Informatika-2025-tuman-shahar-bosqichi-olimpiada.pdf" target="_blank" rel="noopener noreferrer">2025-yil: 10-sinf tuman bosqichi savollari va kalitlari (PDF)</a></li><li><a href="https://static.imtihonlar.uz/uploads/1/10-Informatika%202024%20uzb.pdf" target="_blank" rel="noopener noreferrer">2024-yil: 10-sinf tuman bosqichi topshiriqlari (PDF)</a></li><li><a href="https://docs.python.org/3/library/stdtypes.html" target="_blank" rel="noopener noreferrer">Python rasmiy qo‘llanmasi: turlar, satrlar va amallar</a></li><li><a href="https://support.microsoft.com/en-us/excel/switch-between-relative-absolute-and-mixed-references" target="_blank" rel="noopener noreferrer">Microsoft: nisbiy, mutlaq va aralash murojaatlar</a></li></ul><p style="margin-top:14px">Testni ishlash uchun internet kerak emas. Manba havolalarini ochish uchun internet kerak bo‘ladi.</p></section><button class="btn primary" data-action="go-home">Variantlarga qaytish ${icon('arrow')}</button></div>`;}
 
-        function shuffleArray(array) {
-            const shuffled = [...array];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-            }
-            return shuffled;
-        }
+function startPractice(){
+  if(!resultRecord)return;const qs=questions(resultRecord.stage);const indices=qs.map((q,i)=>resultRecord.answers[i]!==q.answer?i:null).filter(i=>i!==null);
+  if(!indices.length){toast('Bu urinishda xato yo‘q.');return;}
+  practice={stage:resultRecord.stage,indices,index:0,choice:null,order:shuffle(),checked:false,correct:0,done:false};view='practice';render();window.scrollTo({top:0,behavior:'instant'});
+}
+function renderPractice(){
+  const p=practice;if(!p){view='result';render();return;}
+  if(p.done){app.innerHTML=`<section class="panel practice-done">${icon('trophy')}<div class="eyebrow" style="margin-top:15px">XATO USTIDA ISHLASH</div><h1>Mashq yakunlandi.</h1><div class="mini-score" style="margin:20px 0">${p.correct}<span> / ${p.indices.length} to‘g‘ri</span></div><p>Keyingi bosqichni ochish uchun to‘liq 30 savolli variantdan 100/100 oling. Mashq javoblari asosiy test natijasini o‘zgartirmaydi.</p><div class="row wrap"><button class="btn primary" data-action="retry" data-stage="${p.stage}">To‘liq variantni ishlash ${icon('arrow')}</button><button class="btn secondary" data-action="back-result">Tahlilga qaytish</button></div></section>`;return;}
+  const q=questions(p.stage)[p.indices[p.index]],right=p.choice===q.answer;
+  app.innerHTML=`<div class="exam-top"><div class="exam-title"><button class="iconbtn" data-action="back-result" aria-label="Tahlilga qaytish">${icon('left')}</button><div><div class="eyebrow" style="margin-bottom:6px">XATOLARNI QAYTA YECHISH</div><h2>${p.stage}-variant · Mashq ${p.index+1}/${p.indices.length}</h2><p>Vaqt cheklanmagan · Bu mashq bosqichni ochmaydi</p></div></div><span class="tag blue">${p.correct} ta to‘g‘ri</span></div><div class="question-card" style="max-width:880px;margin:auto"><div class="question-meta"><div class="row wrap"><span class="tag blue">${esc(q.topic)}</span><span class="tag">Asl ${q.number}-savol</span></div><button class="btn ghost smallbtn" data-action="back-result">Tahlilga qaytish</button></div><h2 class="question-prompt">${esc(q.prompt)}</h2>${codeBlock(q)}<div class="options" role="group" aria-label="Mashq javoblari">${p.order.map((original,display)=>`<button class="option ${p.choice===original?'selected':''}" data-action="practice-answer" data-index="${display}" aria-pressed="${p.choice===original}" ${p.checked?'disabled':''}><span class="option-letter">${LETTERS[display]}</span><span class="option-text">${esc(q.options[original])}</span></button>`).join('')}</div>${p.checked?`<div class="practice-feedback"><span class="tag ${right?'green':'red'}">${right?'To‘g‘ri yechildi':'Yechimni yana bir bor ko‘ring'}</span><p style="margin-top:12px;font-size:14px"><strong>To‘g‘ri javob:</strong> ${esc(q.options[q.answer])}</p><div class="explanation"><strong>YECHIM VA TUSHUNTIRISH</strong>${esc(q.explanation)}</div><button class="btn primary" data-action="practice-next" style="margin-top:20px">${p.index===p.indices.length-1?'Mashqni yakunlash':'Keyingi xato savol'} ${icon('arrow')}</button></div>`:`<button class="btn primary" data-action="practice-check" style="margin-top:22px" ${p.choice===null?'disabled':''}>Javobni tekshirish ${icon('check')}</button>`}</div>`;
+}
+function practiceCheck(){if(!practice||practice.checked||practice.choice===null)return;const q=questions(practice.stage)[practice.indices[practice.index]];practice.checked=true;if(practice.choice===q.answer)practice.correct++;render();}
+function practiceNext(){if(!practice?.checked)return;if(practice.index+1===practice.indices.length)practice.done=true;else{practice.index++;practice.choice=null;practice.checked=false;practice.order=shuffle();}render();window.scrollTo({top:0,behavior:'instant'});}
+function downloadFile(filename,content,mime){const url=URL.createObjectURL(new Blob([content],{type:mime}));const a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+function downloadResult(){if(!resultRecord)return;const r=resultRecord,score=scoreAnswers(r.stage,r.answers);let text=`10-SINF INFORMATIKA — OLIMPIADA 150\nIshtirokchi: ${state.name||'Ishtirokchi'}\nVariant: ${r.stage}\nSana: ${dateText(r.ended)}\nNatija: ${fmt(score.score)}/100 (${fmt(score.olympic)}/50 olimpiada balli)\nTo‘g‘ri: ${score.correct}/30; xato: ${score.wrong}; belgilanmagan: ${score.blank}\n\n`;
+  questions(r.stage).forEach((q,i)=>{text+=`${q.number}. ${q.prompt}\n${q.code?q.code+'\n':''}Sizning javobingiz: ${r.answers[i]===null?'Belgilanmagan':q.options[r.answers[i]]}\nTo‘g‘ri javob: ${q.options[q.answer]}\nIzoh: ${q.explanation}\n\n`;});
+  downloadFile(`informatika-${r.stage}-variant-natija.txt`,text,'text/plain;charset=utf-8');
+}
+function exportState(){save();downloadFile('informatika-150-natijalar.json',JSON.stringify(state,null,2),'application/json');toast('Natijalar eksport qilindi. JSON faylni saqlab qo‘ying.');}
+document.getElementById('import-file').addEventListener('change',async event=>{
+  const file=event.target.files[0];event.target.value='';if(!file)return;
+  try{if(file.size>2*1024*1024)throw new Error('Fayl juda katta');const imported=normalize(JSON.parse(await file.text()));
+    modal('Natijalarni import qilish',`${imported.history.length} ta urinish va ${imported.passed.filter(Boolean).length} ta mukammal bosqich topildi. Bu brauzerdagi joriy natijalar va tugallanmagan urinish ushbu fayldagi ma’lumot bilan almashtiriladi.`,()=>{state=imported;save();view='history';resultRecord=null;practice=null;render();checkExpiry();toast('Natijalar tiklandi.');},'Import qilish');
+  }catch(e){toast('Fayl mos emas. Shu dasturdan eksport qilingan JSON faylni tanlang.');}
+});
+document.addEventListener('input',event=>{if(event.target.id==='student-name'){state.name=event.target.value.slice(0,50);save();}});
+document.addEventListener('click',event=>{
+  const el=event.target.closest('[data-action]');if(!el||el.disabled)return;const action=el.dataset.action;
+  if(action==='cancel-modal'){document.getElementById('modal').close();modalAction=null;return;}
+  if(action==='confirm-modal'){const callback=modalAction;document.getElementById('modal').close();modalAction=null;callback?.();return;}
+  if(action==='theme'){state.theme=state.theme==='dark'?'light':'dark';save();render();return;}
+  if(action==='go-home'){go('home');return;}if(action==='go-history'){go('history');return;}if(action==='go-rules'){go('rules');return;}
+  if(action==='start'){requestStart(Number(el.dataset.stage));return;}if(action==='retry'){requestStart(Number(el.dataset.stage),true);return;}
+  if(action==='answer'){chooseAnswer(Number(el.dataset.index));return;}if(action==='jump'){moveQuestion(Number(el.dataset.index));return;}
+  if(action==='next'){moveQuestion(state.active.index+1);return;}if(action==='previous'){moveQuestion(state.active.index-1);return;}
+  if(action==='flag'){if(checkExpiry()||!state.active)return;state.active.flags[state.active.index]=!state.active.flags[state.active.index];save();render();return;}
+  if(action==='clear-answer'){if(checkExpiry()||!state.active)return;state.active.answers[state.active.index]=null;save();render();return;}
+  if(action==='finish'){finishRequest();return;}
+  if(action==='open-result'){const r=state.history.find(x=>x.id===el.dataset.id);if(r){resultRecord=r;resultFilter=r.correct===30?'all':'wrong';go('result');}return;}
+  if(action==='filter-wrong'||action==='filter-all'){resultFilter=action==='filter-wrong'?'wrong':'all';render();return;}
+  if(action==='download-result'){downloadResult();return;}if(action==='export'){exportState();return;}if(action==='import'){document.getElementById('import-file').click();return;}
+  if(action==='practice'){startPractice();return;}if(action==='back-result'){go('result');return;}
+  if(action==='practice-answer'){if(!practice||practice.checked)return;practice.choice=practice.order[Number(el.dataset.index)];render();return;}
+  if(action==='practice-check'){practiceCheck();return;}if(action==='practice-next'){practiceNext();return;}
+});
+document.addEventListener('keydown',event=>{
+  if(event.target.matches('input,textarea,select,[contenteditable="true"]')||event.ctrlKey||event.metaKey||event.altKey||document.getElementById('modal').open)return;
+  if(event.target.closest('.brand')&&(event.key==='Enter'||event.key===' ')){event.preventDefault();go('home');return;}
+  if(view!=='exam'&&view!=='practice')return;
+  const key=event.key.toLowerCase(),display=['a','b','c','d'].indexOf(key)>=0?['a','b','c','d'].indexOf(key):['1','2','3','4'].indexOf(key);
+  if(display>=0){event.preventDefault();if(view==='exam')chooseAnswer(display);else if(practice&&!practice.checked){practice.choice=practice.order[display];render();}return;}
+  if(view==='exam'&&state.active&&(key==='arrowleft'||key==='arrowright')){event.preventDefault();moveQuestion(state.active.index+(key==='arrowright'?1:-1));}
+});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){checkExpiry();updateClock();}});
+setInterval(()=>{if(!checkExpiry())updateClock();},1000);
+render();checkExpiry();
 
-        function initQuiz() {
-            questionIndices = Array.from({ length: questions.length }, (_, i) => i);
-            questionIndices = shuffleArray(questionIndices);
-            shuffledQuestions = questionIndices.map(i => ({ ...questions[i], originalIndex: i }));
-            userAnswers = new Array(questions.length).fill(null);
-            renderQuestions();
-            startTimer();
-        }
-
-        function renderQuestions() {
-            const container = document.getElementById('questions-container');
-            container.innerHTML = '';
-
-            shuffledQuestions.forEach((q, displayIndex) => {
-                const index = q.originalIndex;
-                const div = document.createElement('div');
-                div.className = 'question-container';
-                div.innerHTML = `
-                    <div class="question-number">Savol ${displayIndex + 1}/40</div>
-                    <div class="question-text">${q.question}</div>
-                    <div class="options" id="options-${index}">
-                        ${q.options.map((option, optIndex) => `
-                            <label class="option" id="option-${index}-${optIndex}">
-                                <input type="radio" name="question-${index}" value="${optIndex}" 
-                                    onchange="selectAnswer(${index}, ${optIndex})" 
-                                    ${userAnswers[index] === optIndex ? 'checked' : ''}>
-                                <span>${String.fromCharCode(65 + optIndex)}) ${option}</span>
-                            </label>
-                        `).join('')}
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-
-            updateProgress();
-        }
-
-        function selectAnswer(questionIndex, optionIndex) {
-            userAnswers[questionIndex] = optionIndex;
-            updateProgress();
-
-            const optionLabel = document.getElementById(`option-${questionIndex}-${optionIndex}`);
-            const allOptions = document.querySelectorAll(`[id^="option-${questionIndex}-"]`);
-            allOptions.forEach(opt => opt.classList.remove('selected'));
-            optionLabel.classList.add('selected');
-        }
-
-        function updateProgress() {
-            const answered = userAnswers.filter(a => a !== null).length;
-            const percentage = (answered / questions.length) * 100;
-
-            document.getElementById('progress-fill').style.width = percentage + '%';
-            document.getElementById('answered-counter').textContent = `Javoblar: ${answered}/40`;
-        }
-
-        function startTimer() {
-            timerInterval = setInterval(() => {
-                timeLeft--;
-
-                const minutes = Math.floor(timeLeft / 60);
-                const seconds = timeLeft % 60;
-                const timerDisplay = document.getElementById('timer');
-
-                timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-
-                if (timeLeft <= 300) {
-                    timerDisplay.classList.add('warning');
-                }
-
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    submitQuiz();
-                }
-            }, 1000);
-        }
-
-        function submitQuiz() {
-            if (quizSubmitted) return;
-            quizSubmitted = true;
-
-            clearInterval(timerInterval);
-
-            const correct = userAnswers.filter((answer, index) => answer !== null && answer === questions[index].correct).length;
-            const percentage = Math.round((correct / questions.length) * 100);
-
-            const scoreDisplay = document.getElementById('score-display');
-            scoreDisplay.textContent = percentage + '%';
-
-            if (percentage >= 80) {
-                scoreDisplay.classList.add('high');
-            } else if (percentage < 50) {
-                scoreDisplay.classList.add('low');
-            }
-
-            const messagesMap = {
-                100: "Ajoyib! Siz barcha savollarga to'g'ri javob berdingiz!",
-                90: "Juda yaxshi natija! Siz 90% dan ortiq o'zingiz bilan!",
-                80: "Yaxshi! Siz 80% yuqori natija oldinggiz.",
-                70: "O'rta darajali natija. O'z bilimingizni ko'paytiring.",
-                50: "Natija o'rta. Ko'proq o'zini tekshiring.",
-                0: "Iloji bor qayta ko'paytirish. Bilimni o'rganing va qayta urinib ko'ring."
-            };
-
-            const message = Object.keys(messagesMap)
-                .sort((a, b) => b - a)
-                .find(score => percentage >= parseInt(score));
-
-            document.getElementById('results-message').textContent = messagesMap[message];
-            document.getElementById('results-details').innerHTML = `
-                <strong>To'g'ri javoblar:</strong> ${correct}/${questions.length}<br>
-                <strong>Noto'g'ri javoblar:</strong> ${questions.length - correct}/${questions.length}<br>
-                <strong>Javob bermaganlar:</strong> ${userAnswers.filter(a => a === null).length}/${questions.length}
-            `;
-
-            document.getElementById('questions-container').style.display = 'none';
-            document.getElementById('results').classList.add('show');
-            document.getElementById('submit-btn').style.display = 'none';
-        }
-
-        function resetQuiz() {
-            userAnswers = new Array(questions.length).fill(null);
-            quizSubmitted = false;
-            timeLeft = 25 * 60;
-
-            document.getElementById('questions-container').style.display = 'block';
-            document.getElementById('results').classList.remove('show');
-            document.getElementById('submit-btn').style.display = 'block';
-            document.getElementById('timer').classList.remove('warning');
-
-            renderQuestions();
-            startTimer();
-        }
-
-        window.addEventListener('load', initQuiz);
-    </script>
+</script>
 </body>
 </html>
